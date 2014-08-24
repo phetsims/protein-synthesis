@@ -28,7 +28,10 @@ define( function( require ) {
    */
   function ProteinSynthesisView( model ) {
 
+    var screenView = this;
     ScreenView.call( this );
+
+    //TODO: While dragging, show a drop shadow
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
@@ -37,17 +40,20 @@ define( function( require ) {
     var options = {fill: 'white', stroke: 'black', scale: 0.4, cursor: 'pointer'};
     var createPath = function() {
       var path = new Path( outline, options );
-//      var locationProperty = new Property( new Vector2() );
-//      path.addInputListener( new MovableDragHandler( {locationProperty: locationProperty, dragBounds: new Bounds2( -1000, -1000, 1000, 1000 )} ) );
-      path.addInputListener( new SimpleDragHandler( {
-        translate: function( args ) {
-          var delta = args.delta;
-          var oldPosition = args.oldPosition;
-          var position = args.position;
-          path.setTranslation( position );
-        }
 
-//      *    translate:            // if this exists, translate( { delta: _, oldPosition: _, position: _ } ) will be called.
+      //TODO: Use MovableDragHandler to constrain bounds?
+      path.addInputListener( new SimpleDragHandler( {
+        start: function( event, trail ) {
+
+          //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
+          path.detach();
+          path.setScaleMagnitude( 1 );
+          screenView.addChild( path );
+          this.drag( event, trail );
+        },
+        drag: function( event, trail ) {
+          path.centerBottom = screenView.globalToLocalPoint( event.pointer.point );
+        }
       } ) );
       return  path;
     };
