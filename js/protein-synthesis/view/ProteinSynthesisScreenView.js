@@ -46,8 +46,8 @@ define( function( require ) {
       return Math.abs( x - y ) <= delta;
     };
 
-    var createPath = function( shape ) {
-      var path = new Path( shape, options );
+    var createPath = function( base ) {
+      var path = new Path( base.shape, options );
       bases.push( path );
 
       //TODO: Use MovableDragHandler to constrain bounds?

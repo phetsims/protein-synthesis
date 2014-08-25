@@ -11,21 +11,22 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
+  var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
 
   /**
    * Main constructor for Adenine, which creates the bar magnet..
    * @constructor
    */
   function Adenine() {
-    BaseShape.call( this, function() {
+    Base.call( this, new BaseShape( function() {
 
       //path for top connector
       this.lineToRelative( this.topConnectorWidth / 2, -this.topConnectorWidth / 2 );
       this.lineToRelative( this.topConnectorWidth / 2, this.topConnectorWidth / 2 );
-    } );
+    } ) );
   }
 
-  return inherit( BaseShape, Adenine, {
+  return inherit( Base, Adenine, {
 
     // Resets all model elements
     reset: function() {
