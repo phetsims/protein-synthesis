@@ -30,12 +30,15 @@ define( function( require ) {
    */
   function BaseNode( base, screenView ) {
 
+    this.base = base;
+
     //Generated in Illustrator, see the mockup
     var outline = 'M536.2,288.1c-4.5,0-8.5,1.9-10.9,4.9h-11.4v-23.4 c0-2.4-2-4.4-4.4-4.4h-22.4v-38.4l-16.1,16.1l-16.5-16.5H454v38.7h-39.3c-2.4,0-4.4,2-4.4,4.4V293h11.4c2.4-3,6.4-4.9,10.9-4.9 c7.4,0,13.4,5.3,13.4,11.7c0,6.5-6,11.7-13.4,11.7c-4.5,0-8.5-1.9-10.9-4.9h-11.4v23.4c0,2.4,2,4.4,4.4,4.4h94.7 c2.4,0,4.4-2,4.4-4.4v-23.4h11.4c2.4,3,6.4,4.9,10.9,4.9c7.4,0,13.4-5.3,13.4-11.7C549.6,293.4,543.6,288.1,536.2,288.1z';
     var options = {fill: 'white', stroke: 'black', scale: 0.6, cursor: 'pointer'};
 
     Path.call( this, base.shape, options );
     var baseNode = this;
+    this.inCarousel = true;
 
     base.angleProperty.link( function( angle ) {
       baseNode.setRotation( angle );
@@ -44,6 +47,7 @@ define( function( require ) {
     baseNode.addInputListener( new SimpleDragHandler( {
       start: function( event, trail ) {
 
+        baseNode.inCarousel = false;
         //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
         baseNode.detach();
         baseNode.setScaleMagnitude( 1 );
@@ -53,7 +57,7 @@ define( function( require ) {
       drag: function( event, trail ) {
         baseNode.centerBottom = screenView.globalToLocalPoint( event.pointer.point );
 
-//        var connectionPoints = screenView.getConnectionPoints( baseNode );
+        var connectionPoints = screenView.getConnectionPoints( baseNode );
 
         //(hopefully temporary code) that flips the base if you are close to the top or bottom of the screen
         if ( baseNode.bottom < 100 ) {

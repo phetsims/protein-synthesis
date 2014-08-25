@@ -44,6 +44,8 @@ define( function( require ) {
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
     this.baseNodes = [];
+    this.hydrogenBonds = [];
+    this.backboneBonds = [];
 
     var createPath = function( base ) {
       var baseNode = new BaseNode( base, proteinSynthesisScreenView );
@@ -88,14 +90,20 @@ define( function( require ) {
         }
       }
     },
-    getConnectionPoints: function() {
+    getConnectionPoints: function( originBasePair ) {
       var connectionPoints = [];
       for ( var i = 0; i < this.baseNodes.length; i++ ) {
         var baseNode = this.baseNodes[i];
 
         connectionPoints.push( {baseNode: baseNode, side: 'left', position: new Vector2( baseNode.centerX - 140, baseNode.centerY ) } );
 
-        //TODO: make sure it wasn't in carousel
+        //Make sure it wasn't in carousel
+        if ( !baseNode.inCarousel ) {
+          //find any unbonded points of attachment on it.
+
+          //is it hydrogen bonded?
+
+        }
         if ( isCloseTo( baseNode.centerX - path.centerX, 140, 10 ) && isCloseTo( baseNode.bottom, path.bottom, 10 ) ) {
 
         }

@@ -17,9 +17,10 @@ define( function( require ) {
    * Main constructor for Base, which creates the bar magnet..
    * @constructor
    */
-  function Base( shape ) {
+  function Base( shape, abbreviation ) {
     PropertySet.call( this, {angle: 0} );
     this.shape = shape;
+    this.abbreviation = abbreviation;
   }
 
   return inherit( PropertySet, Base, {
