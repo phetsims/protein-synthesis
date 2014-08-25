@@ -22,6 +22,8 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
   var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
+  var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
+  var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
 
   /**
    * Constructor for the ProteinSynthesisView
@@ -101,12 +103,12 @@ define( function( require ) {
     this.addChild( new HCarousel( [
       createPath( new Adenine() ),
       createPath( new Thymine() ),
+      createPath( new Guanine() ),
+      createPath( new Cytosine() ),
       createPath( new Adenine() ),
       createPath( new Thymine() ),
-      createPath( new Adenine() ),
-      createPath( new Thymine() ),
-      createPath( new Adenine() ),
-      createPath( new Thymine() ),
+      createPath( new Guanine() ),
+      createPath( new Cytosine() ),
     ], { left: this.layoutBounds.minX + 10, bottom: this.layoutBounds.maxY - 10} ) );
   }
 
