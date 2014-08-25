@@ -56,14 +56,15 @@ define( function( require ) {
         this.drag( event, trail );
       },
       drag: function( event, trail ) {
-        var proposedCenterBottom = screenView.globalToLocalPoint( event.pointer.point );
+//        var proposedCenterBottom = screenView.globalToLocalPoint( event.pointer.point );
+        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
 
         var updatedLocation = false;
         //TODO: make sure types are compatible (AT, GC)
         var connectionPoints = screenView.getConnectionPoints( baseNode );
         if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.site.distance( proposedCenterBottom );} );
-          if ( closestConnectionPoint.site.distance( proposedCenterBottom ) < 30 ) {
+          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
 
             //Close enough for connection.
             console.log( 'close' );
@@ -71,42 +72,50 @@ define( function( require ) {
             //Rotate so it could connect.
             if ( closestConnectionPoint.type === 'hydrogen' ) {
               baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
-              baseNode.centerBottom = closestConnectionPoint.site;
+              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
               updatedLocation = true;
 
             }
             else {
               baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
-              baseNode.centerBottom = closestConnectionPoint.site;
+              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
               updatedLocation = true;
             }
           }
         }
         if ( !updatedLocation ) {
-          baseNode.centerBottom = proposedCenterBottom;
+          baseNode.setBodyCenter( proposedBodyCenter );
         }
       },
       end: function( event, trail ) {
-//        screenView.baseNodeDropped( baseNode );
+        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
 
+        var updatedLocation = false;
+        //TODO: make sure types are compatible (AT, GC)
         var connectionPoints = screenView.getConnectionPoints( baseNode );
         if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.site.distance( baseNode.centerBottom );} );
-          if ( closestConnectionPoint.site.distance( baseNode.centerBottom ) < 30 ) {
+          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
 
             //Close enough for connection.
-            console.log( 'connecting' );
+            console.log( 'close' );
 
             //Rotate so it could connect.
             if ( closestConnectionPoint.type === 'hydrogen' ) {
               baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
-              baseNode.centerBottom = closestConnectionPoint.site;
+              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+              updatedLocation = true;
+
             }
             else {
               baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
-              baseNode.centerBottom = closestConnectionPoint.site;
+              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+              updatedLocation = true;
             }
           }
+        }
+        if ( !updatedLocation ) {
+          baseNode.setBodyCenter( proposedBodyCenter );
         }
       }
     } ) );
@@ -117,6 +126,24 @@ define( function( require ) {
     setPointingUp: function( pointingUp ) {
       this.pointingUp = pointingUp;
       this.base.angle = this.pointingUp ? 0 : Math.PI;
+    },
+    setBodyCenter: function( bodyCenter ) {
+      if ( this.pointingUp ) {
+        this.left = bodyCenter.x - 70;//half body width, TODO magic
+        this.bottom = bodyCenter.y + 50;//half body height
+      }
+      else {
+        this.right = bodyCenter.x + 70;
+        this.top = bodyCenter.y - 50;
+      }
+    },
+    getBodyCenter: function() {
+      if ( this.pointingUp ) {
+        return new Vector2( this.left + 70, this.bottom - 50 );
+      }
+      else {
+        return new Vector2( this.right - 70, this.top + 50 );
+      }
     }
   } );
 } );

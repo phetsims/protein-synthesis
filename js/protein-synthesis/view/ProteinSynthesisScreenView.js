@@ -103,13 +103,18 @@ define( function( require ) {
           if ( !this.isHydrogenBonded( baseNode ) ) {
 
             //Handle up/down
-            connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, site: baseNode.centerBottom.plusXY( 0, -140 )} );
+            if ( baseNode.pointingUp ) {
+              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -180 )} );
+            }
+            else {
+              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +180 )} );
+            }
           }
           if ( !this.isRightSideBonded( baseNode ) ) {
-            connectionPoints.push( {type: 'right', baseNode: baseNode, site: baseNode.centerBottom.plusXY( 140, 0 )} );
+            connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140, 0 )} );
           }
           if ( !this.isLeftSideBonded( baseNode ) ) {
-            connectionPoints.push( {type: 'left', baseNode: baseNode, site: baseNode.centerBottom.plusXY( -140, 0 )} );
+            connectionPoints.push( {type: 'left', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( -140, 0 )} );
           }
         }
       }
