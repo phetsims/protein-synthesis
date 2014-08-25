@@ -95,20 +95,50 @@ define( function( require ) {
       for ( var i = 0; i < this.baseNodes.length; i++ ) {
         var baseNode = this.baseNodes[i];
 
-        connectionPoints.push( {baseNode: baseNode, side: 'left', position: new Vector2( baseNode.centerX - 140, baseNode.centerY ) } );
-
         //Make sure it wasn't in carousel
-        if ( !baseNode.inCarousel ) {
+        if ( baseNode !== originBasePair && !baseNode.inCarousel ) {
           //find any unbonded points of attachment on it.
 
           //is it hydrogen bonded?
+          if ( !this.isHydrogenBonded( baseNode ) ) {
 
-        }
-        if ( isCloseTo( baseNode.centerX - originBasePair.centerX, 140, 10 ) && isCloseTo( baseNode.bottom, originBasePair.bottom, 10 ) ) {
-
+            //Handle up/down
+            connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, site: baseNode.centerBottom.plusXY( 0, -140 )} );
+          }
+          if ( !this.isRightSideBonded( baseNode ) ) {
+            connectionPoints.push( {type: 'right', baseNode: baseNode, site: baseNode.centerBottom.plusXY( 140, 0 )} );
+          }
+          if ( !this.isLeftSideBonded( baseNode ) ) {
+            connectionPoints.push( {type: 'left', baseNode: baseNode, site: baseNode.centerBottom.plusXY( -140, 0 )} );
+          }
         }
       }
       return connectionPoints;
+    },
+    isHydrogenBonded: function( baseNode ) {
+      for ( var j = 0; j < this.hydrogenBonds.length; j++ ) {
+        var bond = this.hydrogenBonds[j];
+        if ( bond.contains( baseNode ) ) {
+          return true;
+        }
+      }
+    },
+    isRightSideBonded: function( baseNode ) {
+      for ( var j = 0; j < this.backboneBonds.length; j++ ) {
+        var bond = this.backboneBonds[j];
+        //If the left side of the bond matches the node, then the node's right side is unavailable
+        if ( bond.left === baseNode ) {
+          return true;
+        }
+      }
+    },
+    isLeftSideBonded: function( baseNode ) {
+      for ( var j = 0; j < this.backboneBonds.length; j++ ) {
+        var bond = this.backboneBonds[j];
+        if ( bond.right === baseNode ) {
+          return true;
+        }
+      }
     }
   } );
 } );

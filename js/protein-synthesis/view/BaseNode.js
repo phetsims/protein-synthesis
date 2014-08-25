@@ -39,6 +39,7 @@ define( function( require ) {
     Path.call( this, base.shape, options );
     var baseNode = this;
     this.inCarousel = true;
+    this.pointingUp = true;
 
     base.angleProperty.link( function( angle ) {
       baseNode.setRotation( angle );
@@ -55,24 +56,67 @@ define( function( require ) {
         this.drag( event, trail );
       },
       drag: function( event, trail ) {
-        baseNode.centerBottom = screenView.globalToLocalPoint( event.pointer.point );
+        var proposedCenterBottom = screenView.globalToLocalPoint( event.pointer.point );
 
+        var updatedLocation = false;
+        //TODO: make sure types are compatible (AT, GC)
         var connectionPoints = screenView.getConnectionPoints( baseNode );
+        if ( connectionPoints.length > 0 ) {
+          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.site.distance( proposedCenterBottom );} );
+          if ( closestConnectionPoint.site.distance( proposedCenterBottom ) < 30 ) {
 
-        //(hopefully temporary code) that flips the base if you are close to the top or bottom of the screen
-        if ( baseNode.bottom < 100 ) {
-          base.angle = Math.PI;
+            //Close enough for connection.
+            console.log( 'close' );
+
+            //Rotate so it could connect.
+            if ( closestConnectionPoint.type === 'hydrogen' ) {
+              baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
+              baseNode.centerBottom = closestConnectionPoint.site;
+              updatedLocation = true;
+
+            }
+            else {
+              baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
+              baseNode.centerBottom = closestConnectionPoint.site;
+              updatedLocation = true;
+            }
+          }
         }
-        if ( baseNode.bottom > 500 ) {
-          base.angle = 0;
+        if ( !updatedLocation ) {
+          baseNode.centerBottom = proposedCenterBottom;
         }
       },
       end: function( event, trail ) {
-        screenView.baseNodeDropped( baseNode );
+//        screenView.baseNodeDropped( baseNode );
+
+        var connectionPoints = screenView.getConnectionPoints( baseNode );
+        if ( connectionPoints.length > 0 ) {
+          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.site.distance( baseNode.centerBottom );} );
+          if ( closestConnectionPoint.site.distance( baseNode.centerBottom ) < 30 ) {
+
+            //Close enough for connection.
+            console.log( 'connecting' );
+
+            //Rotate so it could connect.
+            if ( closestConnectionPoint.type === 'hydrogen' ) {
+              baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
+              baseNode.centerBottom = closestConnectionPoint.site;
+            }
+            else {
+              baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
+              baseNode.centerBottom = closestConnectionPoint.site;
+            }
+          }
+        }
       }
     } ) );
     return  baseNode;
   }
 
-  return inherit( Path, BaseNode );
+  return inherit( Path, BaseNode, {
+    setPointingUp: function( pointingUp ) {
+      this.pointingUp = pointingUp;
+      this.base.angle = this.pointingUp ? 0 : Math.PI;
+    }
+  } );
 } );
