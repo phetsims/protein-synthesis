@@ -104,7 +104,7 @@ define( function( require ) {
           //is it hydrogen bonded?
 
         }
-        if ( isCloseTo( baseNode.centerX - path.centerX, 140, 10 ) && isCloseTo( baseNode.bottom, path.bottom, 10 ) ) {
+        if ( isCloseTo( baseNode.centerX - originBasePair.centerX, 140, 10 ) && isCloseTo( baseNode.bottom, originBasePair.bottom, 10 ) ) {
 
         }
       }
