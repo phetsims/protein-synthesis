@@ -55,6 +55,14 @@ define( function( require ) {
         },
         drag: function( event, trail ) {
           path.centerBottom = screenView.globalToLocalPoint( event.pointer.point );
+
+          //(hopefully temporary code) that flips the base if you are close to the top or bottom of the screen
+          if ( path.centerBottom.y < 100 ) {
+            path.setRotation( Math.PI );
+          }
+          if ( path.centerBottom.y > 500 ) {
+            path.setRotation( 0 );
+          }
         }
       } ) );
       return  path;
