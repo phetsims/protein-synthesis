@@ -20,6 +20,7 @@ define( function( require ) {
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
 
   /**
    * Constructor for the ProteinSynthesisView, it creates the bar magnet node and control panel node.
@@ -40,7 +41,8 @@ define( function( require ) {
     var options = {fill: 'white', stroke: 'black', scale: 0.6, cursor: 'pointer'};
 
     var createPath = function() {
-      var path = new Path( outline, options );
+      var shape = new Adenine();
+      var path = new Path( shape, options );
 
       //TODO: Use MovableDragHandler to constrain bounds?
       path.addInputListener( new SimpleDragHandler( {
