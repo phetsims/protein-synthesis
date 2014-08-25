@@ -50,6 +50,9 @@ define( function( require ) {
       var path = new Path( base.shape, options );
       bases.push( path );
 
+      base.angleProperty.link( function( angle ) {
+        path.setRotation( angle );
+      } );
       //TODO: Use MovableDragHandler to constrain bounds?
       path.addInputListener( new SimpleDragHandler( {
         start: function( event, trail ) {
@@ -65,10 +68,10 @@ define( function( require ) {
 
           //(hopefully temporary code) that flips the base if you are close to the top or bottom of the screen
           if ( path.centerBottom.y < 100 ) {
-            path.setRotation( Math.PI );
+            base.angle = Math.PI;
           }
           if ( path.centerBottom.y > 500 ) {
-            path.setRotation( 0 );
+            base.angle = 0;
           }
         },
         end: function( event, trail ) {
