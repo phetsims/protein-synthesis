@@ -16,7 +16,7 @@ define( function( require ) {
    * Main constructor for Base, which creates the bar magnet..
    * @constructor
    */
-  function Base( topConnector ) {
+  function BaseShape( topConnector ) {
     Shape.call( this );
     var curveLength = 8;
     var bodyHeight = 100;
@@ -84,7 +84,7 @@ define( function( require ) {
     this.verticalLineToRelative( topConnectorHeight );
   }
 
-  return inherit( Shape, Base, {
+  return inherit( Shape, BaseShape, {
 
     // Resets all model elements
     reset: function() {
