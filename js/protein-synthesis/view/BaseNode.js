@@ -32,10 +32,10 @@ define( function( require ) {
    * Constructor for the BaseNode
    * @constructor
    */
-  function BaseNode( base, screenView, labelsVisibleProperty ) {
+  function BaseNode( base, screenView, baseLabelsVisibleProperty ) {
     assert && assert( base instanceof Base );
 
-    this.labelsVisibleProperty = labelsVisibleProperty;
+    this.baseLabelsVisibleProperty = baseLabelsVisibleProperty;
     this.base = base;
 
     //Generated in Illustrator, see the mockup
@@ -128,22 +128,22 @@ define( function( require ) {
       }
     } ) );
 
-    var textNode = new Text( base.abbreviation, {
+    var baseLabelNode = new Text( base.abbreviation, {
       font: new PhetFont( 34 )//Keep in mind the entire node is scaled down
     } );
 
-    this.labelsVisibleProperty.linkAttribute( textNode, 'visible' );
-    this.addChild( textNode );
+    this.baseLabelsVisibleProperty.linkAttribute( baseLabelNode, 'visible' );
+    this.addChild( baseLabelNode );
 
     base.angleProperty.link( function( angle ) {
       pathNode.setRotation( angle );
       if ( angle === 0 ) {
-        textNode.centerX = -BaseShape.NECK_WIDTH / 2 - 15;
-        textNode.centerY = -10;
+        baseLabelNode.centerX = -BaseShape.NECK_WIDTH / 2 - 15;
+        baseLabelNode.centerY = -10;
       }
       else {
-        textNode.centerX = BaseShape.NECK_WIDTH / 2 + 15;
-        textNode.centerY = 10;
+        baseLabelNode.centerX = BaseShape.NECK_WIDTH / 2 + 15;
+        baseLabelNode.centerY = 10;
       }
     } );
   }
