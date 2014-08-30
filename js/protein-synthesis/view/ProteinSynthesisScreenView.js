@@ -99,6 +99,9 @@ define( function( require ) {
         }
       }
     },
+
+    //Determine where the baseNode can connect.  Must account for bound types, and things that are already bonded.
+    //TODO: What if the user is dragging a fragment (2+ pieces) to connect with another fragment (2+ pieces)?
     getConnectionPoints: function( originBaseNode ) {
       var connectionPoints = [];
       for ( var i = 0; i < this.baseNodes.length; i++ ) {
