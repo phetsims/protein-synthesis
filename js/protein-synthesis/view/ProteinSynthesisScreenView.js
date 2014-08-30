@@ -99,13 +99,13 @@ define( function( require ) {
         }
       }
     },
-    getConnectionPoints: function( originBasePair ) {
+    getConnectionPoints: function( originBaseNode ) {
       var connectionPoints = [];
       for ( var i = 0; i < this.baseNodes.length; i++ ) {
         var baseNode = this.baseNodes[i];
 
         //Make sure it wasn't in carousel
-        if ( baseNode !== originBasePair && !baseNode.inCarousel ) {
+        if ( baseNode !== originBaseNode && !baseNode.inCarousel ) {
           //find any unbonded points of attachment on it.
 
           //is it hydrogen bonded?
@@ -113,17 +113,17 @@ define( function( require ) {
 
             //Handle up/down
             if ( baseNode.pointingUp ) {
-              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -180 )} );
+              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -180 * originBaseNode.getBaseNodeScale() )} );
             }
             else {
-              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +180 )} );
+              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +180 * originBaseNode.getBaseNodeScale() )} );
             }
           }
           if ( !this.isRightSideBonded( baseNode ) ) {
-            connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140, 0 )} );
+            connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140 * originBaseNode.getBaseNodeScale(), 0 )} );
           }
           if ( !this.isLeftSideBonded( baseNode ) ) {
-            connectionPoints.push( {type: 'left', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( -140, 0 )} );
+            connectionPoints.push( {type: 'left', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( -140 * originBaseNode.getBaseNodeScale(), 0 )} );
           }
         }
       }

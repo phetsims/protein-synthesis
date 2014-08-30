@@ -53,7 +53,7 @@ define( function( require ) {
         baseNode.inCarousel = false;
         //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
         baseNode.detach();
-        baseNode.setScaleMagnitude( 1 );
+        baseNode.setScaleMagnitude( 0.6 );
         screenView.addChild( baseNode );
         this.drag( event, trail );
       },
@@ -129,22 +129,28 @@ define( function( require ) {
       this.pointingUp = pointingUp;
       this.base.angle = this.pointingUp ? 0 : Math.PI;
     },
+    getBaseNodeScale: function() {
+      var scaleMag = this.getScaleVector();
+      return scaleMag.x;
+    },
     setBodyCenter: function( bodyCenter ) {
+      var scale = this.getBaseNodeScale();
       if ( this.pointingUp ) {
-        this.left = bodyCenter.x - 70;//half body width, TODO magic
-        this.bottom = bodyCenter.y + 50;//half body height
+        this.left = bodyCenter.x - 70 * scale;//half body width, TODO magic
+        this.bottom = bodyCenter.y + 50 * scale;//half body height
       }
       else {
-        this.right = bodyCenter.x + 70;
-        this.top = bodyCenter.y - 50;
+        this.right = bodyCenter.x + 70 * scale;
+        this.top = bodyCenter.y - 50 * scale;
       }
     },
     getBodyCenter: function() {
+      var scale = this.getBaseNodeScale();
       if ( this.pointingUp ) {
-        return new Vector2( this.left + 70, this.bottom - 50 );
+        return new Vector2( this.left + 70 * scale, this.bottom - 50 * scale );
       }
       else {
-        return new Vector2( this.right - 70, this.top + 50 );
+        return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
       }
     }
   } );
