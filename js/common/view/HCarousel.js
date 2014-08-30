@@ -42,7 +42,7 @@ define( function( require ) {
         fill: 'white',
         stroke: 'black',
         lineWidth: 1,
-        groupLabels: []
+        groupLabelNodes: []
       }, options );
 
     // Figure out the maximum child width and height
@@ -53,7 +53,7 @@ define( function( require ) {
       maxChildHeight = Math.max( maxChildHeight, child.bounds.height );
     } );
 
-    var panelHeight = Math.max( ARROW_HEIGHT + 2 * BUTTON_MIN_Y_MARGIN, CONTENT_Y_MARGIN * 2 + maxChildHeight );
+    var panelHeight = Math.max( ARROW_HEIGHT + 2 * BUTTON_MIN_Y_MARGIN, CONTENT_Y_MARGIN * 2 + maxChildHeight ) + 10;
 
     // Create the buttons that will be used to scroll through the contents.
     var iconOptions = { stroke: 'black', lineWidth: 3, lineCap: 'square' };
@@ -101,19 +101,28 @@ define( function( require ) {
     // Add the content.  It is structured as a 'windowNode' that defines the clip area and a 'scrollingNode' that moves
     // beneath the clip window.
     var windowNode = new Node();
-    windowNode.clipArea = new Shape.rect( previousButton.right + MIN_INTER_ITEM_SPACING / 2, 0,
+    var windowNodeClipArea = new Shape.rect( previousButton.right + MIN_INTER_ITEM_SPACING / 2, 0,
         nextButton.left - previousButton.right - MIN_INTER_ITEM_SPACING, panelHeight );
+    windowNode.clipArea = windowNodeClipArea;
     this.addChild( windowNode );
     var scrollingNode = new Rectangle( 0, 0,
         buttonWidth + children.length * ( maxChildWidth + 2 * MIN_INTER_ITEM_SPACING),
       panelHeight, 0, 0, { fill: 'rgba( 0, 0, 0, 0)' }
     );
+
     children.forEach( function( child, index ) {
       child.centerX = previousButton.right + MIN_INTER_ITEM_SPACING + maxChildWidth / 2 + index * ( maxChildWidth + MIN_INTER_ITEM_SPACING );
-      child.bottom = panelHeight - 5;
+      child.bottom = panelHeight - 15;
       scrollingNode.addChild( child );
     } );
     windowNode.addChild( scrollingNode );
+
+    options.groupLabelNodes.forEach( function( groupLabelNode, index ) {
+      groupLabelNode.centerX = index === 0 ? windowNodeClipArea.bounds.centerX - previousButton.width / 4 :
+                               index === 1 ? windowNodeClipArea.bounds.centerX + windowNodeClipArea.bounds.width - previousButton.width / 4 : 0;
+      groupLabelNode.bottom = panelHeight;
+      scrollingNode.addChild( groupLabelNode );
+    } );
 
     // Set up the scrolling functions.
     var targetPosition = new Property( 0 );

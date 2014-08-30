@@ -79,12 +79,16 @@ define( function( require ) {
       createStack( function() {return new Thymine()} ),
       createStack( function() {return new Guanine()} ),
       createStack( function() {return new Cytosine()} )
-    ], { left: this.layoutBounds.minX + 10, bottom: this.layoutBounds.maxY - 10} );
+    ], {
+      left: this.layoutBounds.minX + 10,
+      bottom: this.layoutBounds.maxY - 10,
+      groupLabelNodes: [new Text( 'DNA' ), new Text( 'mRNA' )]
+    } );
     this.addChild( carousel );
 
-    var basesCheckBox = new CheckBox( new Text( 'Bases', new PhetFont( 20 ) ), viewProperties.baseLabelsVisibleProperty, {left: carousel.right + 10, top: carousel.top} );
+    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 20 ) ), viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 100, bottom: carousel.bottom} );
+    var basesCheckBox = new CheckBox( new Text( 'Bases', new PhetFont( 20 ) ), viewProperties.baseLabelsVisibleProperty, {left: structureCheckBox.left, bottom: structureCheckBox.top - 5} );
     this.addChild( basesCheckBox );
-    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 20 ) ), viewProperties.structureLabelsVisibleProperty, {left: basesCheckBox.left, top: basesCheckBox.bottom + 5} );
     this.addChild( structureCheckBox );
   }
 
