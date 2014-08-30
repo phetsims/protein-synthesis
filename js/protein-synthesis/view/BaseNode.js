@@ -32,9 +32,10 @@ define( function( require ) {
    * Constructor for the BaseNode
    * @constructor
    */
-  function BaseNode( base, screenView ) {
+  function BaseNode( base, screenView, labelsVisibleProperty ) {
     assert && assert( base instanceof Base );
 
+    this.labelsVisibleProperty = labelsVisibleProperty;
     this.base = base;
 
     //Generated in Illustrator, see the mockup
@@ -130,6 +131,8 @@ define( function( require ) {
     var textNode = new Text( base.abbreviation, {
       font: new PhetFont( 34 )//Keep in mind the entire node is scaled down
     } );
+
+    this.labelsVisibleProperty.linkAttribute( textNode, 'visible' );
     this.addChild( textNode );
 
     base.angleProperty.link( function( angle ) {

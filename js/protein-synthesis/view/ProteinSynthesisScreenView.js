@@ -26,6 +26,9 @@ define( function( require ) {
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
+  var PropertySet = require( 'AXON/PropertySet' );
+  var CheckBox = require( 'SUN/CheckBox' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -44,12 +47,14 @@ define( function( require ) {
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
+    var viewProperties = new PropertySet( {labelsVisible: true} );
+
     this.baseNodes = [];
     this.hydrogenBonds = [];
     this.backboneBonds = [];
 
     var createPath = function( base ) {
-      var baseNode = new BaseNode( base, proteinSynthesisScreenView );
+      var baseNode = new BaseNode( base, proteinSynthesisScreenView, viewProperties.labelsVisibleProperty );
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
@@ -62,7 +67,7 @@ define( function( require ) {
       }
       return new Node( {children: children} );
     };
-    this.addChild( new HCarousel( [
+    var carousel = new HCarousel( [
       createStack( function() {return new Adenine()} ),
       createStack( function() {return new Thymine()} ),
       createStack( function() {return new Guanine()} ),
@@ -71,7 +76,10 @@ define( function( require ) {
       createStack( function() {return new Thymine()} ),
       createStack( function() {return new Guanine()} ),
       createStack( function() {return new Cytosine()} )
-    ], { left: this.layoutBounds.minX + 10, bottom: this.layoutBounds.maxY - 10} ) );
+    ], { left: this.layoutBounds.minX + 10, bottom: this.layoutBounds.maxY - 10} );
+    this.addChild( carousel );
+
+    this.addChild( new CheckBox( new Text( 'Bases', new PhetFont( 20 ) ), viewProperties.labelsVisibleProperty, {left: carousel.right + 10, top: carousel.top} ) );
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
