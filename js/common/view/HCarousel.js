@@ -41,7 +41,8 @@ define( function( require ) {
         numVisibleAtOnce: 4,
         fill: 'white',
         stroke: 'black',
-        lineWidth: 1
+        lineWidth: 1,
+        groupLabels: []
       }, options );
 
     // Figure out the maximum child width and height
@@ -109,7 +110,7 @@ define( function( require ) {
     );
     children.forEach( function( child, index ) {
       child.centerX = previousButton.right + MIN_INTER_ITEM_SPACING + maxChildWidth / 2 + index * ( maxChildWidth + MIN_INTER_ITEM_SPACING );
-      child.centerY = panelHeight / 2;
+      child.bottom = panelHeight - 5;
       scrollingNode.addChild( child );
     } );
     windowNode.addChild( scrollingNode );
