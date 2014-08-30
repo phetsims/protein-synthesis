@@ -15,7 +15,6 @@ define( function( require ) {
   var HCarousel = require( 'PROTEIN_SYNTHESIS/common/view/HCarousel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
-//  var MovableDragHandler = require( 'SCENERY/input/MovableDragHandler' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -25,6 +24,7 @@ define( function( require ) {
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
+  var Node = require( 'SCENERY/nodes/Node' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -52,15 +52,24 @@ define( function( require ) {
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
+    var createStack = function( constructor ) {
+      var children = [];
+      for ( var i = 0; i < 5; i++ ) {
+        var path = createPath( constructor() );
+        path.translate( i * 4, i * 4 );
+        children.push( path );
+      }
+      return new Node( {children: children} );
+    };
     this.addChild( new HCarousel( [
-      createPath( new Adenine() ),
-      createPath( new Thymine() ),
-      createPath( new Guanine() ),
-      createPath( new Cytosine() ),
-      createPath( new Adenine() ),
-      createPath( new Thymine() ),
-      createPath( new Guanine() ),
-      createPath( new Cytosine() ),
+      createStack( function() {return new Adenine()} ),
+      createStack( function() {return new Thymine()} ),
+      createStack( function() {return new Guanine()} ),
+      createStack( function() {return new Cytosine()} ),
+      createStack( function() {return new Adenine()} ),
+      createStack( function() {return new Thymine()} ),
+      createStack( function() {return new Guanine()} ),
+      createStack( function() {return new Cytosine()} )
     ], { left: this.layoutBounds.minX + 10, bottom: this.layoutBounds.maxY - 10} ) );
   }
 

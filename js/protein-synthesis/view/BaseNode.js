@@ -23,12 +23,14 @@ define( function( require ) {
   var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
+  var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
 
   /**
    * Constructor for the BaseNode
    * @constructor
    */
   function BaseNode( base, screenView ) {
+    assert && assert( base instanceof Base );
 
     this.base = base;
 
