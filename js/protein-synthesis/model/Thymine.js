@@ -23,7 +23,7 @@ define( function( require ) {
       //path for top connector
       this.lineToRelative( this.topConnectorWidth / 2, this.topConnectorWidth / 2 );
       this.lineToRelative( this.topConnectorWidth / 2, -this.topConnectorWidth / 2 );
-    } ) );
+    } ), 'T' );
   }
 
   return inherit( Base, Thymine, {

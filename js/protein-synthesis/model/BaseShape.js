@@ -12,6 +12,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
 
+  var neckWidth = 8;
+  var topConnectorHeight = 50;
+
   /**
    * Main constructor for Base, which creates the bar magnet..
    * @constructor
@@ -22,10 +25,9 @@ define( function( require ) {
     var bodyHeight = 100;
     var bodyWidth = 140;
     var neck = 15;
-    var neckWidth = 8;
+
     var topConnectorWidth = 40;
     this.topConnectorWidth = topConnectorWidth;
-    var topConnectorHeight = 40;
 
     //Starting out below (bottom right of) the ATCG element
     this.moveTo( 0, 0 );
@@ -94,5 +96,8 @@ define( function( require ) {
     step: function() {
       // Handle model animation here.
     }
+  }, {
+    NECK_WIDTH: neckWidth,
+    TOP_CONNECTOR_HEIGHT: topConnectorHeight
   } );
 } );

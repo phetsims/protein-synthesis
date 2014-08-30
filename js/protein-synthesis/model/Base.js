@@ -14,7 +14,7 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**
-   * Main constructor for Base, which creates the bar magnet..
+   * Main constructor for Base
    * @constructor
    */
   function Base( shape, abbreviation ) {

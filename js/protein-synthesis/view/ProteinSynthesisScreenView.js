@@ -25,6 +25,7 @@ define( function( require ) {
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -114,12 +115,13 @@ define( function( require ) {
           //is it hydrogen bonded?
           if ( !this.isHydrogenBonded( baseNode ) ) {
 
+            var verticalSeparation = 100 + BaseShape.TOP_CONNECTOR_HEIGHT * 2;
             //Handle up/down
             if ( baseNode.pointingUp ) {
-              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -180 * originBaseNode.getBaseNodeScale() )} );
+              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -verticalSeparation * originBaseNode.getBaseNodeScale() )} );
             }
             else {
-              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +180 * originBaseNode.getBaseNodeScale() )} );
+              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
             }
           }
           if ( !this.isRightSideBonded( baseNode ) ) {

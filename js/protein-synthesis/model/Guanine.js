@@ -21,7 +21,7 @@ define( function( require ) {
     Base.call( this, new BaseShape( function() {
       var lastPoint = this.getLastPoint();
       this.arc( lastPoint.x + this.topConnectorWidth / 2, lastPoint.y, this.topConnectorWidth / 2, Math.PI, 0, false );
-    } ) );
+    } ), 'G' );
   }
 
   return inherit( Base, Guanine, {
