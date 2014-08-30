@@ -47,14 +47,17 @@ define( function( require ) {
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
-    var viewProperties = new PropertySet( {baseLabelsVisible: true} );
+    var viewProperties = new PropertySet( {
+      baseLabelsVisible: true,
+      structureLabelsVisible: true
+    } );
 
     this.baseNodes = [];
     this.hydrogenBonds = [];
     this.backboneBonds = [];
 
     var createPath = function( base ) {
-      var baseNode = new BaseNode( base, proteinSynthesisScreenView, viewProperties.baseLabelsVisibleProperty );
+      var baseNode = new BaseNode( base, proteinSynthesisScreenView, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
@@ -79,7 +82,10 @@ define( function( require ) {
     ], { left: this.layoutBounds.minX + 10, bottom: this.layoutBounds.maxY - 10} );
     this.addChild( carousel );
 
-    this.addChild( new CheckBox( new Text( 'Bases', new PhetFont( 20 ) ), viewProperties.baseLabelsVisibleProperty, {left: carousel.right + 10, top: carousel.top} ) );
+    var basesCheckBox = new CheckBox( new Text( 'Bases', new PhetFont( 20 ) ), viewProperties.baseLabelsVisibleProperty, {left: carousel.right + 10, top: carousel.top} );
+    this.addChild( basesCheckBox );
+    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 20 ) ), viewProperties.structureLabelsVisibleProperty, {left: basesCheckBox.left, top: basesCheckBox.bottom + 5} );
+    this.addChild( structureCheckBox );
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {

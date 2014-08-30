@@ -32,10 +32,11 @@ define( function( require ) {
    * Constructor for the BaseNode
    * @constructor
    */
-  function BaseNode( base, screenView, baseLabelsVisibleProperty ) {
+  function BaseNode( base, screenView, baseLabelsVisibleProperty, structureLabelsVisibleProperty ) {
     assert && assert( base instanceof Base );
 
     this.baseLabelsVisibleProperty = baseLabelsVisibleProperty;
+    this.structureLabelsVisibleProperty = structureLabelsVisibleProperty;
     this.base = base;
 
     //Generated in Illustrator, see the mockup
@@ -132,11 +133,14 @@ define( function( require ) {
       font: new PhetFont( 34 )//Keep in mind the entire node is scaled down
     } );
 
-    this.baseLabelsVisibleProperty.linkAttribute( baseLabelNode, 'visible' );
-    this.addChild( baseLabelNode );
-
+    //Handle angle changes
     base.angleProperty.link( function( angle ) {
       pathNode.setRotation( angle );
+    } );
+
+    this.baseLabelsVisibleProperty.linkAttribute( baseLabelNode, 'visible' );
+    this.addChild( baseLabelNode );
+    base.angleProperty.link( function( angle ) {
       if ( angle === 0 ) {
         baseLabelNode.centerX = -BaseShape.NECK_WIDTH / 2 - 15;
         baseLabelNode.centerY = -10;
@@ -144,6 +148,20 @@ define( function( require ) {
       else {
         baseLabelNode.centerX = BaseShape.NECK_WIDTH / 2 + 15;
         baseLabelNode.centerY = 10;
+      }
+    } );
+
+    var structureLabelNode = new Text( 'deoxyribose', {font: new PhetFont( 18 )} );
+    this.structureLabelsVisibleProperty.linkAttribute( structureLabelNode, 'visible' );
+    this.addChild( structureLabelNode );
+    base.angleProperty.link( function( angle ) {
+      if ( angle === 0 ) {
+        structureLabelNode.centerX = -17;
+        structureLabelNode.bottom = BaseShape.BODY_HEIGHT;
+      }
+      else {
+        structureLabelNode.centerX = +15;
+        structureLabelNode.centerY = -BaseShape.BODY_HEIGHT + 14;
       }
     } );
   }
