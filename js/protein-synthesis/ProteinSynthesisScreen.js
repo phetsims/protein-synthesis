@@ -27,8 +27,8 @@ define( function( require ) {
       function( model ) { return new ProteinSynthesisScreenView( model ); },
       {
 
-        //The background is light blue
-        backgroundColor: '#E2E9F7'
+        //The background is pale yellow (cytoplasm)
+        backgroundColor: '#f6f3bd'
       }
     );
   }

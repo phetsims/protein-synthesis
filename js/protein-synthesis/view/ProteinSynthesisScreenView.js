@@ -32,6 +32,9 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
   var CheckBox = require( 'SUN/CheckBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var HSlider = require( 'SUN/HSlider' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Circle = require( 'SCENERY/nodes/Circle' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -46,13 +49,17 @@ define( function( require ) {
     var proteinSynthesisScreenView = this;
     ScreenView.call( this, {renderer: 'svg', layoutBounds: ScreenView.UPDATED_LAYOUT_BOUNDS.copy()} );
 
+    var nucleusShape = new Circle( 1000, {fill: '#E2E9F7', stroke: 'black', lineWidth: 4, centerX: this.layoutBounds.centerX, centerY: this.layoutBounds.centerY} );
+    this.addChild( nucleusShape );
+
     //TODO: While dragging, show a drop shadow
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
     var viewProperties = new PropertySet( {
       baseLabelsVisible: true,
-      structureLabelsVisible: true
+      structureLabelsVisible: true,
+      nucleusToCytoplasm: 0
     } );
 
     this.baseNodes = [];
@@ -73,6 +80,15 @@ define( function( require ) {
       }
       return new Node( {children: children} );
     };
+
+    var slider = new HSlider( viewProperties.nucleusToCytoplasmProperty, {min: 0, max: 1} );
+    slider.centerX = this.layoutBounds.centerX;
+    slider.bottom = this.layoutBounds.bottom - 4;
+
+    this.addChild( slider );
+    this.addChild( new Text( 'Nucleus', {font: new PhetFont( 17 ), centerY: slider.centerY, right: slider.left - 10} ) );
+    this.addChild( new Text( 'Cytoplasm', {font: new PhetFont( 17 ), centerY: slider.centerY, left: slider.right + 14} ) );
+
     var carousel = new HCarousel( [
       createStack( function() {return new Adenine( 'deoxyribose' )} ),
       createStack( function() {return new Thymine( 'deoxyribose' )} ),
@@ -84,14 +100,17 @@ define( function( require ) {
       createStack( function() {return new Cytosine( 'ribose' )} )
     ], {
       left: this.layoutBounds.minX + 10,
-      bottom: this.layoutBounds.maxY - 10,
+      bottom: slider.top - 10,
       groupLabelNodes: [new Text( 'DNA' ), new Text( 'mRNA' )]
     } );
     this.addChild( carousel );
 
-    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 20 ) ), viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 100, bottom: carousel.bottom} );
-    var basesCheckBox = new CheckBox( new Text( 'Bases', new PhetFont( 20 ) ), viewProperties.baseLabelsVisibleProperty, {left: structureCheckBox.left, bottom: structureCheckBox.top - 5} );
-    this.addChild( basesCheckBox );
+    viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
+      nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
+      carousel.left = proteinSynthesisScreenView.layoutBounds.minX + 10 - nucleusToCytoplasm * 2000;
+    } );
+
+    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 200, bottom: this.layoutBounds.bottom - 17} );
     this.addChild( structureCheckBox );
   }
 
