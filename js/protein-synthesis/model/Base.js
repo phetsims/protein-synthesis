@@ -17,10 +17,11 @@ define( function( require ) {
    * Main constructor for Base
    * @constructor
    */
-  function Base( shape, abbreviation ) {
+  function Base( shape, abbreviation, backboneType ) {
     PropertySet.call( this, {angle: 0} );
     this.shape = shape;
     this.abbreviation = abbreviation;
+    this.backboneType = backboneType;
   }
 
   return inherit( PropertySet, Base, {

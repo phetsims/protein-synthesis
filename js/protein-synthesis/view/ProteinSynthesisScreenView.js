@@ -21,6 +21,7 @@ define( function( require ) {
   var Bounds2 = require( 'DOT/Bounds2' );
   var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
   var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
+  var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
@@ -71,14 +72,14 @@ define( function( require ) {
       return new Node( {children: children} );
     };
     var carousel = new HCarousel( [
-      createStack( function() {return new Adenine()} ),
-      createStack( function() {return new Thymine()} ),
-      createStack( function() {return new Guanine()} ),
-      createStack( function() {return new Cytosine()} ),
-      createStack( function() {return new Adenine()} ),
-      createStack( function() {return new Thymine()} ),
-      createStack( function() {return new Guanine()} ),
-      createStack( function() {return new Cytosine()} )
+      createStack( function() {return new Adenine( 'deoxyribose' )} ),
+      createStack( function() {return new Thymine( 'deoxyribose' )} ),
+      createStack( function() {return new Guanine( 'deoxyribose' )} ),
+      createStack( function() {return new Cytosine( 'deoxyribose' )} ),
+      createStack( function() {return new Adenine( 'ribose' )} ),
+      createStack( function() {return new Uracil( 'ribose' )} ),
+      createStack( function() {return new Guanine( 'ribose' )} ),
+      createStack( function() {return new Cytosine( 'ribose' )} )
     ], {
       left: this.layoutBounds.minX + 10,
       bottom: this.layoutBounds.maxY - 10,

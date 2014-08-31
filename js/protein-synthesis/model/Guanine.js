@@ -17,11 +17,11 @@ define( function( require ) {
    * Main constructor for Guanine, which creates the bar magnet..
    * @constructor
    */
-  function Guanine() {
+  function Guanine( backboneType ) {
     Base.call( this, new BaseShape( function() {
       var lastPoint = this.getLastPoint();
       this.arc( lastPoint.x + this.topConnectorWidth / 2, lastPoint.y, this.topConnectorWidth / 2, Math.PI, 0, false );
-    } ), 'G' );
+    } ), 'G', backboneType );
   }
 
   return inherit( Base, Guanine, {

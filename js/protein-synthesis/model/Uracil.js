@@ -1,7 +1,7 @@
 //  Copyright 2002-2014, University of Colorado Boulder
 
 /**
- * Model for the Adenine, includes its shape and metrics.
+ * Model for the Uracil, includes its shape and metrics.
  *
  * @author Sam Reid (PhET Interactive Simulations)
  */
@@ -14,19 +14,19 @@ define( function( require ) {
   var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
 
   /**
-   * Main constructor for Adenine, which creates the bar magnet..
+   * Main constructor for Uracil, which creates the bar magnet..
    * @constructor
    */
-  function Adenine( backboneType ) {
+  function Uracil( backboneType ) {
     Base.call( this, new BaseShape( function() {
 
       //path for top connector
-      this.lineToRelative( this.topConnectorWidth / 2, -this.topConnectorWidth / 2 );
       this.lineToRelative( this.topConnectorWidth / 2, this.topConnectorWidth / 2 );
-    } ), 'A', backboneType );
+      this.lineToRelative( this.topConnectorWidth / 2, -this.topConnectorWidth / 2 );
+    } ), 'U', backboneType );
   }
 
-  return inherit( Base, Adenine, {
+  return inherit( Base, Uracil, {
 
     // Resets all model elements
     reset: function() {

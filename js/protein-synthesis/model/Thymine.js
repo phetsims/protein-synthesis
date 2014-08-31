@@ -17,13 +17,13 @@ define( function( require ) {
    * Main constructor for Thymine, which creates the bar magnet..
    * @constructor
    */
-  function Thymine() {
+  function Thymine( backboneType ) {
     Base.call( this, new BaseShape( function() {
 
       //path for top connector
       this.lineToRelative( this.topConnectorWidth / 2, this.topConnectorWidth / 2 );
       this.lineToRelative( this.topConnectorWidth / 2, -this.topConnectorWidth / 2 );
-    } ), 'T' );
+    } ), 'T', backboneType );
   }
 
   return inherit( Base, Thymine, {

@@ -130,7 +130,8 @@ define( function( require ) {
     } ) );
 
     var baseLabelNode = new Text( base.abbreviation, {
-      font: new PhetFont( 34 )//Keep in mind the entire node is scaled down
+      font: new PhetFont( 34 ),//Keep in mind the entire node is scaled down
+      pickable: false
     } );
 
     //Handle angle changes
@@ -151,7 +152,10 @@ define( function( require ) {
       }
     } );
 
-    var structureLabelNode = new Text( 'deoxyribose', {font: new PhetFont( 18 )} );
+    var structureLabelNode = new Text( base.backboneType, {
+      font: new PhetFont( 18 ),
+      pickable: false
+    } );
     this.structureLabelsVisibleProperty.linkAttribute( structureLabelNode, 'visible' );
     this.addChild( structureLabelNode );
     base.angleProperty.link( function( angle ) {
