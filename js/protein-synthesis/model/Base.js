@@ -33,6 +33,12 @@ define( function( require ) {
     // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
     step: function() {
       // Handle model animation here.
+    },
+    canHydrogenBond: function( base ) {
+      return base.abbreviation === 'T' && this.abbreviation === 'A' ||
+             base.abbreviation === 'A' && this.abbreviation === 'T' ||
+             base.abbreviation === 'G' && this.abbreviation === 'C' ||
+             base.abbreviation === 'C' && this.abbreviation === 'G';
     }
   } );
 } );

@@ -137,12 +137,15 @@ define( function( require ) {
           if ( !this.isHydrogenBonded( baseNode ) ) {
 
             var verticalSeparation = 100 + BaseShape.TOP_CONNECTOR_HEIGHT * 2;
-            //Handle up/down
-            if ( baseNode.pointingUp ) {
-              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -verticalSeparation * originBaseNode.getBaseNodeScale() )} );
-            }
-            else {
-              connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
+
+            if ( baseNode.base.canHydrogenBond( originBaseNode.base ) ) {
+              //Handle up/down
+              if ( baseNode.pointingUp ) {
+                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -verticalSeparation * originBaseNode.getBaseNodeScale() )} );
+              }
+              else {
+                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
+              }
             }
           }
 
