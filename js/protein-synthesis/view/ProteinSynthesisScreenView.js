@@ -25,6 +25,7 @@ define( function( require ) {
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
+  var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -155,11 +156,11 @@ define( function( require ) {
     },
     isHydrogenBonded: function( baseNode ) {
       for ( var j = 0; j < this.hydrogenBonds.length; j++ ) {
-        var bond = this.hydrogenBonds[j];
-        if ( bond.contains( baseNode ) ) {
+        if ( this.hydrogenBonds[j].contains( baseNode ) ) {
           return true;
         }
       }
+      return false;
     },
     isRightSideBonded: function( baseNode ) {
       for ( var j = 0; j < this.backboneBonds.length; j++ ) {
@@ -177,6 +178,19 @@ define( function( require ) {
           return true;
         }
       }
+    },
+    addBond: function( baseNode, connectionPoint ) {
+      if ( connectionPoint.type === 'hydrogen' ) {
+        //TODO: Fix upside down if necessary
+        this.hydrogenBonds.push( new HydrogenBond( baseNode, connectionPoint.baseNode ) );
+      }
+      else {
+
+      }
+//      screenView.addHydrogenBond( baseNode, closestConnectionPoint );
+//      screenView.addBackboneBond( baseNode, closestConnectionPoint );
     }
+//    addHydrogenBond: function() {},
+//    addBackboneBond: function() {}
   } );
 } );

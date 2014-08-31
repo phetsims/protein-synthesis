@@ -17,16 +17,16 @@ define( function( require ) {
    * Main constructor for HydrogenBond, which creates the bar magnet..
    * @constructor
    */
-  function HydrogenBond( top, bottom ) {
+  function HydrogenBond( topBaseNode, bottomBaseNode ) {
     PropertySet.call( this, {} );
-    this.top = top;
-    this.bottom = bottom;
+    this.topBaseNode = topBaseNode;
+    this.bottomBaseNode = bottomBaseNode;
   }
 
   return inherit( PropertySet, HydrogenBond, {
 
-    contains: function( x ) {
-      return this.top === x || this.bottom === x;
+    contains: function( baseNode ) {
+      return this.topBaseNode === baseNode || this.bottomBaseNode === baseNode;
     },
     // Resets all model elements
     reset: function() {

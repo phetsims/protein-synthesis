@@ -114,12 +114,13 @@ define( function( require ) {
               baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
               baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
               updatedLocation = true;
-
+              screenView.addBond( baseNode, closestConnectionPoint );
             }
             else {
               baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
               baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
               updatedLocation = true;
+              screenView.addBond( baseNode, closestConnectionPoint );
             }
           }
         }
