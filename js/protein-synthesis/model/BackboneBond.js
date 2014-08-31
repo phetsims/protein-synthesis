@@ -17,16 +17,16 @@ define( function( require ) {
    * Main constructor for BackboneBond, which creates the bar magnet..
    * @constructor
    */
-  function BackboneBond( left, right ) {
+  function BackboneBond( leftBaseNode, rightBaseNode ) {
     PropertySet.call( this, {} );
-    this.left = left;
-    this.right = right;
+    this.leftBaseNode = leftBaseNode;
+    this.rightBaseNode = rightBaseNode;
   }
 
   return inherit( PropertySet, BackboneBond, {
 
-    contains: function( x ) {
-      return this.left === x || this.right === x;
+    contains: function( baseNode ) {
+      return this.leftBaseNode === baseNode || this.rightBaseNode === baseNode;
     },
     // Resets all model elements
     reset: function() {

@@ -26,6 +26,7 @@ define( function( require ) {
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
+  var BackboneBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BackboneBond' );
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -144,6 +145,7 @@ define( function( require ) {
               connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
             }
           }
+
           if ( !this.isRightSideBonded( baseNode ) ) {
             connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140 * originBaseNode.getBaseNodeScale(), 0 )} );
           }
@@ -166,18 +168,20 @@ define( function( require ) {
       for ( var j = 0; j < this.backboneBonds.length; j++ ) {
         var bond = this.backboneBonds[j];
         //If the left side of the bond matches the node, then the node's right side is unavailable
-        if ( bond.left === baseNode ) {
+        if ( bond.leftBaseNode === baseNode ) {
           return true;
         }
       }
+      return false;
     },
     isLeftSideBonded: function( baseNode ) {
       for ( var j = 0; j < this.backboneBonds.length; j++ ) {
         var bond = this.backboneBonds[j];
-        if ( bond.right === baseNode ) {
+        if ( bond.rightBaseNode === baseNode ) {
           return true;
         }
       }
+      return false;
     },
     addBond: function( baseNode, connectionPoint ) {
       if ( connectionPoint.type === 'hydrogen' ) {
@@ -185,7 +189,12 @@ define( function( require ) {
         this.hydrogenBonds.push( new HydrogenBond( baseNode, connectionPoint.baseNode ) );
       }
       else {
-
+        if ( baseNode.base.angle === 0 ) {
+          this.backboneBonds.push( new BackboneBond( connectionPoint.baseNode, baseNode ) );
+        }
+        else {
+          this.backboneBonds.push( new BackboneBond( baseNode, connectionPoint.baseNode ) );
+        }
       }
 //      screenView.addHydrogenBond( baseNode, closestConnectionPoint );
 //      screenView.addBackboneBond( baseNode, closestConnectionPoint );
