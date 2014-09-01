@@ -32,7 +32,7 @@ define( function( require ) {
    * Constructor for the BaseNode
    * @constructor
    */
-  function BaseNode( base, screenView, baseLabelsVisibleProperty, structureLabelsVisibleProperty ) {
+  function BaseNode( base, screenView, baseLabelsVisibleProperty, structureLabelsVisibleProperty, individuallyDraggable ) {
     assert && assert( base instanceof Base );
 
     this.baseLabelsVisibleProperty = baseLabelsVisibleProperty;
@@ -54,81 +54,83 @@ define( function( require ) {
     this.pointingUp = true;
 
     //TODO: Use MovableDragHandler to constrain bounds?
-    baseNode.addInputListener( new SimpleDragHandler( {
-      start: function( event, trail ) {
+    if ( individuallyDraggable ) {
+      baseNode.addInputListener( new SimpleDragHandler( {
+        start: function( event, trail ) {
 
-        baseNode.inCarousel = false;
-        //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
-        baseNode.detach();
-        baseNode.setScaleMagnitude( 0.6 );
-        screenView.addChild( baseNode );
-        this.drag( event, trail );
-      },
-      drag: function( event, trail ) {
+          baseNode.inCarousel = false;
+          //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
+          baseNode.detach();
+          baseNode.setScaleMagnitude( 0.6 );
+          screenView.addChild( baseNode );
+          this.drag( event, trail );
+        },
+        drag: function( event, trail ) {
 //        var proposedCenterBottom = screenView.globalToLocalPoint( event.pointer.point );
-        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+          var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
 
-        var updatedLocation = false;
-        //TODO: make sure types are compatible (AT, GC)
-        var connectionPoints = screenView.getConnectionPoints( baseNode );
-        if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
-          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
+          var updatedLocation = false;
+          //TODO: make sure types are compatible (AT, GC)
+          var connectionPoints = screenView.getConnectionPoints( baseNode );
+          if ( connectionPoints.length > 0 ) {
+            var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+            if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
 
-            //Close enough for connection.
-            console.log( 'close' );
+              //Close enough for connection.
+              console.log( 'close' );
 
-            //Rotate so it could connect.
-            if ( closestConnectionPoint.type === 'hydrogen' ) {
-              baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
-              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
+              //Rotate so it could connect.
+              if ( closestConnectionPoint.type === 'hydrogen' ) {
+                baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
+                baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+                updatedLocation = true;
 
-            }
-            else {
-              baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
-              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-            }
-          }
-        }
-        if ( !updatedLocation ) {
-          baseNode.setBodyCenter( proposedBodyCenter );
-        }
-      },
-      end: function( event, trail ) {
-        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-
-        var updatedLocation = false;
-        //TODO: make sure types are compatible (AT, GC)
-        var connectionPoints = screenView.getConnectionPoints( baseNode );
-        if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
-          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
-
-            //Close enough for connection.
-            console.log( 'close' );
-
-            //Rotate so it could connect.
-            if ( closestConnectionPoint.type === 'hydrogen' ) {
-              baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
-              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-              screenView.addBond( baseNode, closestConnectionPoint );
-            }
-            else {
-              baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
-              baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-              screenView.addBond( baseNode, closestConnectionPoint );
+              }
+              else {
+                baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
+                baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+                updatedLocation = true;
+              }
             }
           }
+          if ( !updatedLocation ) {
+            baseNode.setBodyCenter( proposedBodyCenter );
+          }
+        },
+        end: function( event, trail ) {
+          var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+
+          var updatedLocation = false;
+          //TODO: make sure types are compatible (AT, GC)
+          var connectionPoints = screenView.getConnectionPoints( baseNode );
+          if ( connectionPoints.length > 0 ) {
+            var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+            if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
+
+              //Close enough for connection.
+              console.log( 'close' );
+
+              //Rotate so it could connect.
+              if ( closestConnectionPoint.type === 'hydrogen' ) {
+                baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
+                baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+                updatedLocation = true;
+                screenView.addBond( baseNode, closestConnectionPoint );
+              }
+              else {
+                baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
+                baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+                updatedLocation = true;
+                screenView.addBond( baseNode, closestConnectionPoint );
+              }
+            }
+          }
+          if ( !updatedLocation ) {
+            baseNode.setBodyCenter( proposedBodyCenter );
+          }
         }
-        if ( !updatedLocation ) {
-          baseNode.setBodyCenter( proposedBodyCenter );
-        }
-      }
-    } ) );
+      } ) );
+    }
 
     var baseLabelNode = new Text( base.abbreviation, {
       font: new PhetFont( 34 ),//Keep in mind the entire node is scaled down

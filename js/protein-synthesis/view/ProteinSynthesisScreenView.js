@@ -25,6 +25,7 @@ define( function( require ) {
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
+  var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
   var BackboneBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BackboneBond' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -67,7 +68,7 @@ define( function( require ) {
     this.backboneBonds = [];
 
     var createPath = function( base ) {
-      var baseNode = new BaseNode( base, proteinSynthesisScreenView, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
+      var baseNode = new BaseNode( base, proteinSynthesisScreenView, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty, true );
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
@@ -112,6 +113,27 @@ define( function( require ) {
 
     var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 200, bottom: this.layoutBounds.bottom - 17} );
     this.addChild( structureCheckBox );
+
+    var choices = ['U', 'C', 'A', 'G'];
+    var index = 0;
+    var previous = null;
+    for ( var i = 0; i < choices.length; i++ ) {
+      var choice1 = choices[i];
+      for ( var j = 0; j < choices.length; j++ ) {
+        var choice2 = choices[j];
+        for ( var k = 0; k < choices.length; k++ ) {
+          var choice3 = choices[k];
+          var string = choice1 + choice2 + choice3;
+          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
+          codon.left = 0;
+          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
+          previous = codon;
+          this.addChild( codon );
+
+          index++;
+        }
+      }
+    }
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
