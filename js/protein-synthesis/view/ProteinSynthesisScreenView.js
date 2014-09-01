@@ -36,6 +36,8 @@ define( function( require ) {
   var HSlider = require( 'SUN/HSlider' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Circle = require( 'SCENERY/nodes/Circle' );
+  var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
+  var AccordionBox = require( 'SUN/AccordionBox' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -106,34 +108,42 @@ define( function( require ) {
     } );
     this.addChild( carousel );
 
-    viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
-      nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-      carousel.left = proteinSynthesisScreenView.layoutBounds.minX + 10 - nucleusToCytoplasm * 2000;
-    } );
-
     var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 200, bottom: this.layoutBounds.bottom - 17} );
     this.addChild( structureCheckBox );
 
-    var choices = ['U', 'C', 'A', 'G'];
-    var index = 0;
-    var previous = null;
-    for ( var i = 0; i < choices.length; i++ ) {
-      var choice1 = choices[i];
-      for ( var j = 0; j < choices.length; j++ ) {
-        var choice2 = choices[j];
-        for ( var k = 0; k < choices.length; k++ ) {
-          var choice3 = choices[k];
-          var string = choice1 + choice2 + choice3;
-          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
-          codon.left = 0;
-          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
-          previous = codon;
-          this.addChild( codon );
+//    var choices = ['U', 'C', 'A', 'G'];
+//    var index = 0;
+//    var previous = null;
+//    for ( var i = 0; i < choices.length; i++ ) {
+//      var choice1 = choices[i];
+//      for ( var j = 0; j < choices.length; j++ ) {
+//        var choice2 = choices[j];
+//        for ( var k = 0; k < choices.length; k++ ) {
+//          var choice3 = choices[k];
+//          var string = choice1 + choice2 + choice3;
+//          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
+//          codon.left = 0;
+//          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
+//          previous = codon;
+//          this.addChild( codon );
+//
+//          index++;
+//        }
+//      }
+//    }
 
-          index++;
-        }
-      }
-    }
+    var codonTableAccordionBox = new AccordionBox( new RNACodonTable( this, {} ), {
+      titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
+      right: this.layoutBounds.right,
+      top: this.layoutBounds.top
+    } );
+    this.addChild( codonTableAccordionBox );
+
+    viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
+      nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
+      carousel.left = proteinSynthesisScreenView.layoutBounds.minX + 10 - nucleusToCytoplasm * 2000;
+      codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
+    } );
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
