@@ -38,6 +38,7 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
   var AccordionBox = require( 'SUN/AccordionBox' );
+  var RibosomeNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RibosomeNode' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -132,6 +133,9 @@ define( function( require ) {
 //      }
 //    }
 
+    var ribosomeNode = new RibosomeNode();
+    this.addChild( ribosomeNode );
+
     var codonTableAccordionBox = new AccordionBox( new RNACodonTable( this, {} ), {
       titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
       right: this.layoutBounds.right,
@@ -143,7 +147,9 @@ define( function( require ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       carousel.left = proteinSynthesisScreenView.layoutBounds.minX + 10 - nucleusToCytoplasm * 2000;
       codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
+      ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
+
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
