@@ -59,7 +59,7 @@ define( function( require ) {
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
-    var viewProperties = new PropertySet( {
+    this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
       structureLabelsVisible: true,
       nucleusToCytoplasm: 0
@@ -70,7 +70,7 @@ define( function( require ) {
     this.backboneBonds = [];
 
     var createPath = function( base ) {
-      var baseNode = new BaseNode( base, proteinSynthesisScreenView, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty, true );
+      var baseNode = new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.structureLabelsVisibleProperty, true );
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
@@ -84,7 +84,7 @@ define( function( require ) {
       return new Node( {children: children} );
     };
 
-    var slider = new HSlider( viewProperties.nucleusToCytoplasmProperty, {min: 0, max: 1} );
+    var slider = new HSlider( this.viewProperties.nucleusToCytoplasmProperty, {min: 0, max: 1} );
     slider.centerX = this.layoutBounds.centerX;
     slider.bottom = this.layoutBounds.bottom - 4;
 
@@ -108,7 +108,7 @@ define( function( require ) {
     } );
     this.addChild( carousel );
 
-    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 200, bottom: this.layoutBounds.bottom - 17} );
+    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 200, bottom: this.layoutBounds.bottom - 17} );
     this.addChild( structureCheckBox );
 
 //    var choices = ['U', 'C', 'A', 'G'];
@@ -139,7 +139,7 @@ define( function( require ) {
     } );
     this.addChild( codonTableAccordionBox );
 
-    viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
+    this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       carousel.left = proteinSynthesisScreenView.layoutBounds.minX + 10 - nucleusToCytoplasm * 2000;
       codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;

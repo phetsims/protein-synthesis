@@ -38,6 +38,7 @@ define( function( require ) {
 
 //    debugger;
 
+    var trnaNode = this;
     var children = [];
 
     for ( var i = 0; i < triplet.length; i++ ) {
@@ -74,76 +75,76 @@ define( function( require ) {
     this.addInputListener( new SimpleDragHandler( {
       start: function( event, trail ) {
 
-        TRNANode.inCarousel = false;
-        //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
-        TRNANode.detach();
-        TRNANode.setScaleMagnitude( 1.5 );
-        screenView.addChild( TRNANode );
-        this.drag( event, trail );
+//        TRNANode.inCarousel = false;
+//        //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
+//        TRNANode.detach();
+//        TRNANode.setScaleMagnitude( 1.5 );
+//        screenView.addChild( TRNANode );
+//        this.drag( event, trail );
       },
       drag: function( event, trail ) {
 //        var proposedCenterBottom = screenView.globalToLocalPoint( event.pointer.point );
         var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-
-        var updatedLocation = false;
-        //TODO: make sure types are compatible (AT, GC)
-        var connectionPoints = screenView.getConnectionPoints( TRNANode );
-        if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
-          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
-
-            //Close enough for connection.
-            console.log( 'close' );
-
-            //Rotate so it could connect.
-            if ( closestConnectionPoint.type === 'hydrogen' ) {
-              TRNANode.setPointingUp( !closestConnectionPoint.TRNANode.pointingUp );
-              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-
-            }
-            else {
-              TRNANode.setPointingUp( closestConnectionPoint.TRNANode.pointingUp );
-              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-            }
-          }
-        }
-        if ( !updatedLocation ) {
-          TRNANode.setBodyCenter( proposedBodyCenter );
-        }
+        trnaNode.center = proposedBodyCenter;
+//        var updatedLocation = false;
+//        //TODO: make sure types are compatible (AT, GC)
+//        var connectionPoints = screenView.getConnectionPoints( TRNANode );
+//        if ( connectionPoints.length > 0 ) {
+//          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+//          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
+//
+//            //Close enough for connection.
+//            console.log( 'close' );
+//
+//            //Rotate so it could connect.
+//            if ( closestConnectionPoint.type === 'hydrogen' ) {
+//              TRNANode.setPointingUp( !closestConnectionPoint.TRNANode.pointingUp );
+//              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//              updatedLocation = true;
+//
+//            }
+//            else {
+//              TRNANode.setPointingUp( closestConnectionPoint.TRNANode.pointingUp );
+//              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//              updatedLocation = true;
+//            }
+//          }
+//        }
+//        if ( !updatedLocation ) {
+//          TRNANode.setBodyCenter( proposedBodyCenter );
+//        }
       },
       end: function( event, trail ) {
-        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-
-        var updatedLocation = false;
-        //TODO: make sure types are compatible (AT, GC)
-        var connectionPoints = screenView.getConnectionPoints( TRNANode );
-        if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
-          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
-
-            //Close enough for connection.
-            console.log( 'close' );
-
-            //Rotate so it could connect.
-            if ( closestConnectionPoint.type === 'hydrogen' ) {
-              TRNANode.setPointingUp( !closestConnectionPoint.TRNANode.pointingUp );
-              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-              screenView.addBond( TRNANode, closestConnectionPoint );
-            }
-            else {
-              TRNANode.setPointingUp( closestConnectionPoint.TRNANode.pointingUp );
-              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
-              updatedLocation = true;
-              screenView.addBond( TRNANode, closestConnectionPoint );
-            }
-          }
-        }
-        if ( !updatedLocation ) {
-          TRNANode.setBodyCenter( proposedBodyCenter );
-        }
+//        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+//
+//        var updatedLocation = false;
+//        //TODO: make sure types are compatible (AT, GC)
+//        var connectionPoints = screenView.getConnectionPoints( TRNANode );
+//        if ( connectionPoints.length > 0 ) {
+//          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+//          if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
+//
+//            //Close enough for connection.
+//            console.log( 'close' );
+//
+//            //Rotate so it could connect.
+//            if ( closestConnectionPoint.type === 'hydrogen' ) {
+//              TRNANode.setPointingUp( !closestConnectionPoint.TRNANode.pointingUp );
+//              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//              updatedLocation = true;
+//              screenView.addBond( TRNANode, closestConnectionPoint );
+//            }
+//            else {
+//              TRNANode.setPointingUp( closestConnectionPoint.TRNANode.pointingUp );
+//              TRNANode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//              updatedLocation = true;
+//              screenView.addBond( TRNANode, closestConnectionPoint );
+//            }
+//          }
+//        }
+//        if ( !updatedLocation ) {
+//          TRNANode.setBodyCenter( proposedBodyCenter );
+//        }
       }
     } ) );
 //

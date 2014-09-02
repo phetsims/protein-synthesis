@@ -10,6 +10,7 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
+  var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var HCarousel = require( 'PROTEIN_SYNTHESIS/common/view/HCarousel' );
@@ -55,6 +56,90 @@ define( function( require ) {
 //          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
 //          codon.left = 0;
 //          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
+
+          (function( string ) {
+            var createdNode = null;
+            textNode.addInputListener( new SimpleDragHandler( {
+              start: function( event, trail ) {
+
+//              baseNode.inCarousel = false;
+//              //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
+//              baseNode.detach();
+//              baseNode.setScaleMagnitude( 0.6 );
+//              screenView.addChild( baseNode );
+//              this.drag( event, trail );
+                createdNode = new TRNANode( string, screenView, screenView.viewProperties.baseLabelsVisibleProperty, screenView.viewProperties.structureLabelsVisibleProperty );
+                screenView.addChild( createdNode );
+                this.drag( event, trail );
+              },
+              drag: function( event, trail ) {
+//        var proposedCenterBottom = screenView.globalToLocalPoint( event.pointer.point );
+                var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+                createdNode.center = proposedBodyCenter;
+//
+//              var updatedLocation = false;
+//              //TODO: make sure types are compatible (AT, GC)
+//              var connectionPoints = screenView.getConnectionPoints( baseNode );
+//              if ( connectionPoints.length > 0 ) {
+//                var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+//                if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
+//
+//                  //Close enough for connection.
+//                  console.log( 'close' );
+//
+//                  //Rotate so it could connect.
+//                  if ( closestConnectionPoint.type === 'hydrogen' ) {
+//                    baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
+//                    baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//                    updatedLocation = true;
+//
+//                  }
+//                  else {
+//                    baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
+//                    baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//                    updatedLocation = true;
+//                  }
+//                }
+//              }
+//              if ( !updatedLocation ) {
+//                baseNode.setBodyCenter( proposedBodyCenter );
+//              }
+              },
+              end: function( event, trail ) {
+//              var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+//
+//              var updatedLocation = false;
+//              //TODO: make sure types are compatible (AT, GC)
+//              var connectionPoints = screenView.getConnectionPoints( baseNode );
+//              if ( connectionPoints.length > 0 ) {
+//                var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.bodyCenter.distance( proposedBodyCenter );} );
+//                if ( closestConnectionPoint.bodyCenter.distance( proposedBodyCenter ) < 30 ) {
+//
+//                  //Close enough for connection.
+//                  console.log( 'close' );
+//
+//                  //Rotate so it could connect.
+//                  if ( closestConnectionPoint.type === 'hydrogen' ) {
+//                    baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
+//                    baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//                    updatedLocation = true;
+//                    screenView.addBond( baseNode, closestConnectionPoint );
+//                  }
+//                  else {
+//                    baseNode.setPointingUp( closestConnectionPoint.baseNode.pointingUp );
+//                    baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
+//                    updatedLocation = true;
+//                    screenView.addBond( baseNode, closestConnectionPoint );
+//                  }
+//                }
+//              }
+//              if ( !updatedLocation ) {
+//                baseNode.setBodyCenter( proposedBodyCenter );
+//              }
+              }
+            } ) );
+          })( string );
+
           previous = textNode;
 
           if ( (index + 1) % 4 === 0 ) {
