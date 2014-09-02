@@ -29,6 +29,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
+  var Shape = require( 'KITE/Shape' );
 
   /**
    * Constructor for the TRNANode
@@ -41,6 +42,9 @@ define( function( require ) {
     var trnaNode = this;
     var children = [];
 
+    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: 'white', stroke: 'black', lineWidth: 1} );
+    children.push( trnaBody );
+
     for ( var i = 0; i < triplet.length; i++ ) {
       var char = triplet.charAt( i );
       var baseNode = new BaseNode( char === 'A' ? new Adenine() :
@@ -52,6 +56,8 @@ define( function( require ) {
 //      baseNode.pickable = false;
       children.push( baseNode );
     }
+
+    children.push( new Text( 'tRNA', {center: trnaBody.center} ) );
 
     Node.call( this, {
       children: children,
