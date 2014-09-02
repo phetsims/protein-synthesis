@@ -14,18 +14,12 @@ define( function( require ) {
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
   var HCarousel = require( 'PROTEIN_SYNTHESIS/common/view/HCarousel' );
   var Text = require( 'SCENERY/nodes/Text' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Property = require( 'AXON/Property' );
-  var Vector2 = require( 'DOT/Vector2' );
-  var Bounds2 = require( 'DOT/Bounds2' );
   var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
   var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
   var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
-  var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
   var BackboneBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BackboneBond' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -34,7 +28,6 @@ define( function( require ) {
   var CheckBox = require( 'SUN/CheckBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var HSlider = require( 'SUN/HSlider' );
-  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
   var AccordionBox = require( 'SUN/AccordionBox' );
@@ -94,14 +87,14 @@ define( function( require ) {
     this.addChild( new Text( 'Cytoplasm', {font: new PhetFont( 17 ), centerY: slider.centerY, left: slider.right + 14} ) );
 
     var carousel = new HCarousel( [
-      createStack( function() {return new Adenine( 'deoxyribose' )} ),
-      createStack( function() {return new Thymine( 'deoxyribose' )} ),
-      createStack( function() {return new Guanine( 'deoxyribose' )} ),
-      createStack( function() {return new Cytosine( 'deoxyribose' )} ),
-      createStack( function() {return new Adenine( 'ribose' )} ),
-      createStack( function() {return new Uracil( 'ribose' )} ),
-      createStack( function() {return new Guanine( 'ribose' )} ),
-      createStack( function() {return new Cytosine( 'ribose' )} )
+      createStack( function() {return new Adenine( 'deoxyribose' );} ),
+      createStack( function() {return new Thymine( 'deoxyribose' );} ),
+      createStack( function() {return new Guanine( 'deoxyribose' );} ),
+      createStack( function() {return new Cytosine( 'deoxyribose' );} ),
+      createStack( function() {return new Adenine( 'ribose' );} ),
+      createStack( function() {return new Uracil( 'ribose' );} ),
+      createStack( function() {return new Guanine( 'ribose' );} ),
+      createStack( function() {return new Cytosine( 'ribose' );} )
     ], {
       left: this.layoutBounds.minX + 10,
       bottom: slider.top - 10,

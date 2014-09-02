@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var Shape = require( 'KITE/Shape' );
   var PropertySet = require( 'AXON/PropertySet' );
 
   /**

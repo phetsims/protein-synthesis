@@ -4,14 +4,12 @@ define( function( require ) {
   'use strict';
 
   var Path = require( 'SCENERY/nodes/Path' );
-  var Shape = require( 'KITE/Shape' );
-  var Matrix3 = require( 'DOT/Matrix3' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
 
   function RibosomeNode() {
 
-    var options = {fill: 'green', stroke: 'black', lineWidth: 4};
+    var options = {fill: '#5D1A88', stroke: 'black', lineWidth: 4};
     Node.call( this, {
       children: [
         new Path( 'M635.743,400.307c-10.752,32.822-107,10.898-200.641,10.898s-231.41,23.641-231.41-10.898c0-34.54,140.654-62.538,234.295-62.538S647.923,363.127,635.743,400.307z', options ),

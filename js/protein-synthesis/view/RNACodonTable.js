@@ -11,22 +11,11 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
-  var ScreenView = require( 'JOIST/ScreenView' );
-  var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
-  var HCarousel = require( 'PROTEIN_SYNTHESIS/common/view/HCarousel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Property = require( 'AXON/Property' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Bounds2 = require( 'DOT/Bounds2' );
-  var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
-  var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
-  var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
-  var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
-  var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var Node = require( 'SCENERY/nodes/Node' );
 
   /**
