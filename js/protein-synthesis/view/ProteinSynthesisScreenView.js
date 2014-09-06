@@ -30,6 +30,7 @@ define( function( require ) {
   var HSlider = require( 'SUN/HSlider' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
+  var SceneSelectionPanel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/SceneSelectionPanel' );
   var AccordionBox = require( 'SUN/AccordionBox' );
   var RibosomeNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RibosomeNode' );
 
@@ -78,31 +79,43 @@ define( function( require ) {
       return new Node( {children: children} );
     };
 
-    var slider = new HSlider( this.viewProperties.nucleusToCytoplasmProperty, {min: 0, max: 1} );
-    slider.centerX = this.layoutBounds.centerX;
-    slider.bottom = this.layoutBounds.bottom - 4;
+//    var slider = new HSlider( this.viewProperties.nucleusToCytoplasmProperty, {min: 0, max: 1} );
+//    slider.centerX = this.layoutBounds.centerX;
+//    slider.bottom = this.layoutBounds.bottom - 4;
+//
+//    this.addChild( slider );
+//    this.addChild( new Text( 'Nucleus', {font: new PhetFont( 17 ), centerY: slider.centerY, right: slider.left - 10} ) );
+//    this.addChild( new Text( 'Cytoplasm', {font: new PhetFont( 17 ), centerY: slider.centerY, left: slider.right + 14} ) );
 
-    this.addChild( slider );
-    this.addChild( new Text( 'Nucleus', {font: new PhetFont( 17 ), centerY: slider.centerY, right: slider.left - 10} ) );
-    this.addChild( new Text( 'Cytoplasm', {font: new PhetFont( 17 ), centerY: slider.centerY, left: slider.right + 14} ) );
+    var sceneSelectionPanel = new SceneSelectionPanel( {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
+    this.addChild( sceneSelectionPanel );
 
-    var carousel = new HCarousel( [
+    var dnaCarousel = new HCarousel( [
       createStack( function() {return new Adenine( 'deoxyribose' );} ),
       createStack( function() {return new Thymine( 'deoxyribose' );} ),
       createStack( function() {return new Guanine( 'deoxyribose' );} ),
-      createStack( function() {return new Cytosine( 'deoxyribose' );} ),
+      createStack( function() {return new Cytosine( 'deoxyribose' );} )
+    ], {
+      centerX: this.layoutBounds.centerX,
+      bottom: sceneSelectionPanel.top - 10,
+      groupLabelNodes: [new Text( 'DNA' ), new Text( 'mRNA' )]
+    } );
+    this.addChild( dnaCarousel );
+
+    var rnaCarousel = new HCarousel( [
       createStack( function() {return new Adenine( 'ribose' );} ),
       createStack( function() {return new Uracil( 'ribose' );} ),
       createStack( function() {return new Guanine( 'ribose' );} ),
       createStack( function() {return new Cytosine( 'ribose' );} )
     ], {
-      left: this.layoutBounds.minX + 10,
-      bottom: slider.top - 10,
+      centerX: this.layoutBounds.centerX,
+      bottom: sceneSelectionPanel.top - 10,
       groupLabelNodes: [new Text( 'DNA' ), new Text( 'mRNA' )]
     } );
-    this.addChild( carousel );
+    rnaCarousel.visible = false;
+    this.addChild( rnaCarousel );
 
-    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {left: carousel.right + 200, bottom: this.layoutBounds.bottom - 17} );
+    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
     this.addChild( structureCheckBox );
 
 //    var choices = ['U', 'C', 'A', 'G'];
@@ -138,11 +151,10 @@ define( function( require ) {
 
     this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-      carousel.left = proteinSynthesisScreenView.layoutBounds.minX + 10 - nucleusToCytoplasm * 2000;
+      dnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
-
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
