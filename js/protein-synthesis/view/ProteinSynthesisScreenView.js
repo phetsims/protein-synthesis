@@ -57,7 +57,8 @@ define( function( require ) {
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
       structureLabelsVisible: true,
-      nucleusToCytoplasm: 0
+      nucleusToCytoplasm: 0,
+      state: 'dna'
     } );
 
     this.baseNodes = [];
@@ -87,7 +88,7 @@ define( function( require ) {
 //    this.addChild( new Text( 'Nucleus', {font: new PhetFont( 17 ), centerY: slider.centerY, right: slider.left - 10} ) );
 //    this.addChild( new Text( 'Cytoplasm', {font: new PhetFont( 17 ), centerY: slider.centerY, left: slider.right + 14} ) );
 
-    var sceneSelectionPanel = new SceneSelectionPanel( {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
+    var sceneSelectionPanel = new SceneSelectionPanel( this.viewProperties.stateProperty, {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
     this.addChild( sceneSelectionPanel );
 
     var dnaCarousel = new HCarousel( [
@@ -98,7 +99,7 @@ define( function( require ) {
     ], {
       centerX: this.layoutBounds.centerX,
       bottom: sceneSelectionPanel.top - 10,
-      groupLabelNodes: [new Text( 'DNA' ), new Text( 'mRNA' )]
+      groupLabelNodes: [new Text( 'DNA' )]
     } );
     this.addChild( dnaCarousel );
 
@@ -110,9 +111,14 @@ define( function( require ) {
     ], {
       centerX: this.layoutBounds.centerX,
       bottom: sceneSelectionPanel.top - 10,
-      groupLabelNodes: [new Text( 'DNA' ), new Text( 'mRNA' )]
+      groupLabelNodes: [new Text( 'mRNA' )]
     } );
     rnaCarousel.visible = false;
+
+    this.viewProperties.stateProperty.link( function( state ) {
+      dnaCarousel.visible = state === 'dna';
+      rnaCarousel.visible = state === 'transcription';
+    } );
     this.addChild( rnaCarousel );
 
     var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
