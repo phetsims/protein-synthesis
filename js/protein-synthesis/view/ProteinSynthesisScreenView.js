@@ -117,8 +117,27 @@ define( function( require ) {
 
     this.viewProperties.stateProperty.link( function( state ) {
       dnaCarousel.visible = state === 'dna';
-      rnaCarousel.visible = state === 'transcription';
+      rnaCarousel.visible = state === 'transcription' || state === 'translation';
+
+//      proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.value = state === 'translation' ? 1 : 0;
     } );
+
+    this.viewProperties.stateProperty.link( function( state ) {
+      var cytoplasm = state === 'translation';
+      if ( cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 1
+        ||
+           !cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 0 ) {
+
+        var tween = new TWEEN.Tween( { x: proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm} )
+          .to( { x: cytoplasm ? 1 : 0 }, 2000 )
+          .easing( TWEEN.Easing.Cubic.InOut )
+          .onUpdate( function() {
+            proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.set( this.x );
+          } )
+          .start();
+      }
+    } );
+
     this.addChild( rnaCarousel );
 
     var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
@@ -158,6 +177,7 @@ define( function( require ) {
     this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       dnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
+      rnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
