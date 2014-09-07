@@ -38,7 +38,7 @@ define( function( require ) {
       {fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.6} );
 
     children.push( aminoAcidNode );
-    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: 'white', stroke: 'black', lineWidth: 1, rotation: Math.PI, left: -30 + 3} );
+    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: '#f9b664', stroke: 'black', lineWidth: 1, rotation: Math.PI, left: -30 + 3} );
     children.push( trnaBody );
     aminoAcidNode.centerX = trnaBody.centerX;
     aminoAcidNode.bottom = trnaBody.top;
