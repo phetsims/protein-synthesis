@@ -51,6 +51,7 @@ define( function( require ) {
       baseNode.addInputListener( new SimpleDragHandler( {
         start: function( event, trail ) {
 
+          screenView.connectionModel.remove( baseNode );
           baseNode.inCarousel = false;
           //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
           baseNode.detach();

@@ -55,6 +55,20 @@ define( function( require ) {
         this.bottom[CENTER_INDEX + i] = baseNode;
       }
       this.trigger( 'changed' );
+    },
+    remove: function( baseNode ) {
+      var removed = false;
+      for ( var i = 0; i < LENGTH; i++ ) {
+        if ( this.top[i] === baseNode ) {
+          removed = true;
+          this.top[i] = null;
+        }
+        if ( this.bottom[i] === baseNode ) {
+          removed = true;
+          this.top[i] = null;
+        }
+      }
+      this.trigger( 'changed' );
     }
   } );
 } );
