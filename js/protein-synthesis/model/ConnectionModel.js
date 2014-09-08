@@ -11,6 +11,7 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
+  var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
 
   var CENTER_INDEX = 50;
   var LENGTH = CENTER_INDEX * 2;
@@ -19,8 +20,10 @@ define( function( require ) {
    * Main constructor for ConnectionModel
    * @constructor
    */
-  function ConnectionModel() {
+  function ConnectionModel( x, y ) {
     PropertySet.call( this, {events: true} );//note to self, this just has events.  Maybe one day it should extend events if no other properties gained
+    this.x = x;
+    this.y = y;
     this.top = [];
     this.bottom = [];
 
@@ -69,6 +72,17 @@ define( function( require ) {
         }
       }
       this.trigger( 'changed' );
+    },
+    getConnectionPoints: function( baseNode ) {
+      var connectionModel = this;
+      var connectionPoints = [];
+
+      if ( this.isEmpty ) {
+        connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() {
+          connectionModel.add( 0, 0, baseNode );
+        } ) );
+      }
+      return connectionPoints;
     }
   } );
 } );

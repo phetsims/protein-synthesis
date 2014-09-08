@@ -50,7 +50,6 @@ define( function( require ) {
 
     var proteinSynthesisScreenView = this;
 
-    this.connectionModel = new ConnectionModel();
     ScreenView.call( this, {renderer: 'svg', layoutBounds: ScreenView.UPDATED_LAYOUT_BOUNDS.copy()} );
 
     var nucleusShape = new Circle( 1000, {fill: '#E2E9F7', stroke: 'black', lineWidth: 4, centerX: this.layoutBounds.centerX, centerY: this.layoutBounds.centerY} );
@@ -198,6 +197,7 @@ define( function( require ) {
     this.addChild( this.dottedLine );
     this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, centerY: this.dottedLine.centerY} ) );
 
+    this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
     this.connectionModel.on( 'changed', function() {
       //If something connected, stop showing the initial target
       proteinSynthesisScreenView.dottedLine.visible = proteinSynthesisScreenView.connectionModel.isEmpty;
@@ -234,16 +234,8 @@ define( function( require ) {
 
     //Determine where the baseNode can connect.  Must account for bound types, and things that are already bonded.
     //TODO: What if the user is dragging a fragment (2+ pieces) to connect with another fragment (2+ pieces)?
-    getConnectionPoints: function( originBaseNode ) {
-      var proteinSynthesisScreenView = this;
-      var connectionPoints = [];
-
-      if ( this.connectionModel.isEmpty ) {
-        connectionPoints.push( new ConnectionPoint( this.dottedLine.centerX, this.dottedLine.centerY, false, function() {
-          proteinSynthesisScreenView.connectionModel.add( 0, 0, originBaseNode );
-        } ) );
-      }
-      return connectionPoints;
+    getConnectionPoints: function( baseNode ) {
+      return this.connectionModel.getConnectionPoints( baseNode );
 
 //      for ( var i = 0; i < this.baseNodes.length; i++ ) {
 //        var baseNode = this.baseNodes[i];
