@@ -61,7 +61,7 @@ define( function( require ) {
 
     this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 2} );
     this.addChild( this.dottedLine );
-    this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, centerY: this.dottedLine.centerY} ) );
+    this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, bottom: this.dottedLine.top - 10} ) );
 
     this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
     this.connectionModel.on( 'changed', function() {
