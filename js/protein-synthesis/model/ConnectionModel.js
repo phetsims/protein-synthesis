@@ -52,10 +52,10 @@ define( function( require ) {
     },
     add: function( i, j, baseNode ) {
       if ( j == 0 ) {
-        this.top[CENTER_INDEX + i] = baseNode;
+        this.top[i] = baseNode;
       }
       else {
-        this.bottom[CENTER_INDEX + i] = baseNode;
+        this.bottom[i] = baseNode;
       }
       this.trigger( 'changed' );
     },
@@ -77,11 +77,25 @@ define( function( require ) {
       var connectionModel = this;
       var connectionPoints = [];
 
-      if ( this.isEmpty ) {
-        connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() {
-          connectionModel.add( 0, 0, baseNode );
-        } ) );
+      //for every filled cell, if its left/right neighbor is empty, that is a valid connection point.
+      for ( var i = 1; i < LENGTH - 1; i++ ) {
+        if ( this.top[i] !== null ) {
+          if ( this.top[i - 1] === null ) {
+            (function( i ) {
+              var di = i - 1 - CENTER_INDEX;
+              var x = connectionModel.x + di * 84;
+              connectionPoints.push( new ConnectionPoint( x, connectionModel.y, false, function() { connectionModel.add( i - 1, 0, baseNode ); } ) );
+            })( i );
+          }
+        }
+        if ( this.bottom[i] !== null ) {
+        }
       }
+
+      if ( connectionPoints.length === 0 ) {
+        connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() { connectionModel.add( CENTER_INDEX, 0, baseNode ); } ) );
+      }
+
       return connectionPoints;
     }
   } );
