@@ -68,10 +68,29 @@ define( function( require ) {
         }
         if ( this.bottom[i] === baseNode ) {
           removed = true;
-          this.top[i] = null;
+          this.bottom[i] = null;
         }
       }
-      this.trigger( 'changed' );
+      if ( removed ) {
+        this.trigger( 'changed' );
+      }
+    },
+    contains: function( baseNode ) {
+      return this.topContains( baseNode ) || this.bottomContains( baseNode );
+    },
+    topContains: function( baseNode ) {
+      for ( var i = 0; i < LENGTH; i++ ) {
+        if ( this.top[i] === baseNode ) {
+          return true;
+        }
+      }
+    },
+    bottomContains: function( baseNode ) {
+      for ( var i = 0; i < LENGTH; i++ ) {
+        if ( this.bottom[i] === baseNode ) {
+          return true;
+        }
+      }
     },
     getConnectionPoints: function( baseNode ) {
       var connectionModel = this;

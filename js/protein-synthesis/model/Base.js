@@ -37,7 +37,9 @@ define( function( require ) {
       return base.abbreviation === 'T' && this.abbreviation === 'A' ||
              base.abbreviation === 'A' && this.abbreviation === 'T' ||
              base.abbreviation === 'G' && this.abbreviation === 'C' ||
-             base.abbreviation === 'C' && this.abbreviation === 'G';
+             base.abbreviation === 'C' && this.abbreviation === 'G' ||
+             base.abbreviation === 'A' && this.abbreviation === 'U' ||
+             base.abbreviation === 'U' && this.abbreviation === 'A';
     }
   } );
 } );
