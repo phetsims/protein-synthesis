@@ -80,13 +80,14 @@ define( function( require ) {
       //for every filled cell, if its left/right neighbor is empty, that is a valid connection point.
       //top to the left
       var adjacent = function( array, deltaI ) {
-        for ( var i = 1; i < LENGTH + deltaI; i++ ) {
+        var isTop = (array === connectionModel.top);
+        for ( var i = 1; i < LENGTH - 1; i++ ) {
           if ( array[i] !== null ) {
             if ( array[i + deltaI] === null ) {
               (function( i ) {
                 var di = i + deltaI - CENTER_INDEX;
                 var x = connectionModel.x + di * 84;
-                connectionPoints.push( new ConnectionPoint( x, connectionModel.y, false, function() { connectionModel.add( i + deltaI, 0, baseNode ); } ) );
+                connectionPoints.push( new ConnectionPoint( x, connectionModel.y + (isTop ? 0 : 123), !isTop, function() { connectionModel.add( i + deltaI, isTop ? 0 : 1, baseNode ); } ) );
               })( i );
             }
           }
@@ -94,6 +95,36 @@ define( function( require ) {
       };
       adjacent( connectionModel.top, -1 );
       adjacent( connectionModel.top, +1 );
+      adjacent( connectionModel.bottom, -1 );
+      adjacent( connectionModel.bottom, +1 );
+
+      var across = function( sourceArray, targetArray ) {
+        var targetIsBottom = targetArray === connectionModel.bottom;
+
+        for ( var i = 0; i < LENGTH; i++ ) {
+          if ( sourceArray[i] !== null ) {
+            if ( targetArray[i] === null ) {
+              (function( i ) {
+
+                var deltaI = 0;
+                var di = i + deltaI - CENTER_INDEX;
+                var x = connectionModel.x + di * 84;
+
+                var cp = new ConnectionPoint(
+                  x,
+                  ( connectionModel.y + (targetIsBottom ? 123 : 0)),
+                  targetIsBottom,
+                  function() {
+                    connectionModel.add( i + deltaI, targetIsBottom ? 1 : 0, baseNode );
+                  } );
+                connectionPoints.push( cp );
+              })( i );
+            }
+          }
+        }
+      };
+      across( connectionModel.top, connectionModel.bottom );
+      across( connectionModel.bottom, connectionModel.top );
 
       if ( connectionPoints.length === 0 ) {
         connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() { connectionModel.add( CENTER_INDEX, 0, baseNode ); } ) );
