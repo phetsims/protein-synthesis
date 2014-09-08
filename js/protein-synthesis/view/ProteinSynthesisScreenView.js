@@ -193,7 +193,7 @@ define( function( require ) {
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
 
-    this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 180, centerX: this.layoutBounds.width / 2} );
+    this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 2} );
     this.addChild( this.dottedLine );
     this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, centerY: this.dottedLine.centerY} ) );
 
@@ -202,7 +202,6 @@ define( function( require ) {
       //If something connected, stop showing the initial target
       proteinSynthesisScreenView.dottedLine.visible = proteinSynthesisScreenView.connectionModel.isEmpty;
     } );
-
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
