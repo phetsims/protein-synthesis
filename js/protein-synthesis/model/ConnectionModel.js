@@ -104,21 +104,26 @@ define( function( require ) {
         for ( var i = 0; i < LENGTH; i++ ) {
           if ( sourceArray[i] !== null ) {
             if ( targetArray[i] === null ) {
-              (function( i ) {
 
-                var deltaI = 0;
-                var di = i + deltaI - CENTER_INDEX;
-                var x = connectionModel.x + di * 84;
+              //make sure they are compatible: A-T, G-C
+              if ( sourceArray[i].base.canHydrogenBond( baseNode.base ) ) {
 
-                var cp = new ConnectionPoint(
-                  x,
-                  ( connectionModel.y + (targetIsBottom ? 123 : 0)),
-                  targetIsBottom,
-                  function() {
-                    connectionModel.add( i + deltaI, targetIsBottom ? 1 : 0, baseNode );
-                  } );
-                connectionPoints.push( cp );
-              })( i );
+                (function( i ) {
+
+                  var deltaI = 0;
+                  var di = i + deltaI - CENTER_INDEX;
+                  var x = connectionModel.x + di * 84;
+
+                  var cp = new ConnectionPoint(
+                    x,
+                    ( connectionModel.y + (targetIsBottom ? 123 : 0)),
+                    targetIsBottom,
+                    function() {
+                      connectionModel.add( i + deltaI, targetIsBottom ? 1 : 0, baseNode );
+                    } );
+                  connectionPoints.push( cp );
+                })( i );
+              }
             }
           }
         }
