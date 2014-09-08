@@ -78,19 +78,22 @@ define( function( require ) {
       var connectionPoints = [];
 
       //for every filled cell, if its left/right neighbor is empty, that is a valid connection point.
-      for ( var i = 1; i < LENGTH - 1; i++ ) {
-        if ( this.top[i] !== null ) {
-          if ( this.top[i - 1] === null ) {
-            (function( i ) {
-              var di = i - 1 - CENTER_INDEX;
-              var x = connectionModel.x + di * 84;
-              connectionPoints.push( new ConnectionPoint( x, connectionModel.y, false, function() { connectionModel.add( i - 1, 0, baseNode ); } ) );
-            })( i );
+      //top to the left
+      var adjacent = function( array, deltaI ) {
+        for ( var i = 1; i < LENGTH + deltaI; i++ ) {
+          if ( array[i] !== null ) {
+            if ( array[i + deltaI] === null ) {
+              (function( i ) {
+                var di = i + deltaI - CENTER_INDEX;
+                var x = connectionModel.x + di * 84;
+                connectionPoints.push( new ConnectionPoint( x, connectionModel.y, false, function() { connectionModel.add( i + deltaI, 0, baseNode ); } ) );
+              })( i );
+            }
           }
         }
-        if ( this.bottom[i] !== null ) {
-        }
-      }
+      };
+      adjacent( connectionModel.top, -1 );
+      adjacent( connectionModel.top, +1 );
 
       if ( connectionPoints.length === 0 ) {
         connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() { connectionModel.add( CENTER_INDEX, 0, baseNode ); } ) );
