@@ -15,6 +15,7 @@ define( function( require ) {
   var neckWidth = 8;
   var topConnectorHeight = 50;
   var bodyHeight = 100;
+  var bodyWidth = 140;
 
   /**
    * Main constructor for Base, which creates the bar magnet..
@@ -23,7 +24,6 @@ define( function( require ) {
   function BaseShape( topConnector ) {
     Shape.call( this );
     var curveLength = 8;
-    var bodyWidth = 140;
     var neck = 15;
 
     var topConnectorWidth = 40;
@@ -99,6 +99,7 @@ define( function( require ) {
   }, {
     NECK_WIDTH: neckWidth,
     TOP_CONNECTOR_HEIGHT: topConnectorHeight,
-    BODY_HEIGHT: bodyHeight
+    BODY_HEIGHT: bodyHeight,
+    BODY_WIDTH: bodyWidth
   } );
 } );

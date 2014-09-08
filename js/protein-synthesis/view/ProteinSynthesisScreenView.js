@@ -20,6 +20,7 @@ define( function( require ) {
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
+  var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
   var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
   var BackboneBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BackboneBond' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -27,12 +28,13 @@ define( function( require ) {
   var PropertySet = require( 'AXON/PropertySet' );
   var CheckBox = require( 'SUN/CheckBox' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
-  var HSlider = require( 'SUN/HSlider' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
   var SceneSelectionPanel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/SceneSelectionPanel' );
   var AccordionBox = require( 'SUN/AccordionBox' );
   var RibosomeNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RibosomeNode' );
+  var Rectangle = require( 'SCENERY/nodes/Rectangle' );
+  var Vector2 = require( 'DOT/Vector2' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -80,14 +82,6 @@ define( function( require ) {
       return new Node( {children: children} );
     };
 
-//    var slider = new HSlider( this.viewProperties.nucleusToCytoplasmProperty, {min: 0, max: 1} );
-//    slider.centerX = this.layoutBounds.centerX;
-//    slider.bottom = this.layoutBounds.bottom - 4;
-//
-//    this.addChild( slider );
-//    this.addChild( new Text( 'Nucleus', {font: new PhetFont( 17 ), centerY: slider.centerY, right: slider.left - 10} ) );
-//    this.addChild( new Text( 'Cytoplasm', {font: new PhetFont( 17 ), centerY: slider.centerY, left: slider.right + 14} ) );
-
     var sceneSelectionPanel = new SceneSelectionPanel( this.viewProperties.stateProperty, {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
     this.addChild( sceneSelectionPanel );
 
@@ -123,12 +117,11 @@ define( function( require ) {
     } );
 
     this.viewProperties.stateProperty.link( function( state ) {
-      var cytoplasm = state === 'translation';
-      if ( cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 1
-        ||
-           !cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 0 ) {
+      var cytoplasm = (state === 'translation');
+      if ( cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 1 || !cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 0 ) {
 
-        var tween = new TWEEN.Tween( { x: proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm} )
+        //TODO: var tween and cancel?
+        new TWEEN.Tween( { x: proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm} )
           .to( { x: cytoplasm ? 1 : 0 }, 2000 )
           .easing( TWEEN.Easing.Cubic.InOut )
           .onUpdate( function() {
@@ -181,6 +174,10 @@ define( function( require ) {
       codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
+
+    this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 180, centerX: this.layoutBounds.width / 2} );
+    this.addChild( this.dottedLine );
+    this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, centerY: this.dottedLine.centerY} ) );
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
@@ -213,39 +210,47 @@ define( function( require ) {
     //Determine where the baseNode can connect.  Must account for bound types, and things that are already bonded.
     //TODO: What if the user is dragging a fragment (2+ pieces) to connect with another fragment (2+ pieces)?
     getConnectionPoints: function( originBaseNode ) {
+      var proteinSynthesisScreenView = this;
       var connectionPoints = [];
-      for ( var i = 0; i < this.baseNodes.length; i++ ) {
-        var baseNode = this.baseNodes[i];
+      connectionPoints.push( new ConnectionPoint( this.dottedLine.centerX, this.dottedLine.centerY, false, function() {
 
-        //Make sure it wasn't in carousel
-        if ( baseNode !== originBaseNode && !baseNode.inCarousel ) {
-          //find any unbonded points of attachment on it.
-
-          //is it hydrogen bonded?
-          if ( !this.isHydrogenBonded( baseNode ) ) {
-
-            var verticalSeparation = 100 + BaseShape.TOP_CONNECTOR_HEIGHT * 2;
-
-            if ( baseNode.base.canHydrogenBond( originBaseNode.base ) ) {
-              //Handle up/down
-              if ( baseNode.pointingUp ) {
-                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -verticalSeparation * originBaseNode.getBaseNodeScale() )} );
-              }
-              else {
-                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
-              }
-            }
-          }
-
-          if ( !this.isRightSideBonded( baseNode ) ) {
-            connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140 * originBaseNode.getBaseNodeScale(), 0 )} );
-          }
-          if ( !this.isLeftSideBonded( baseNode ) ) {
-            connectionPoints.push( {type: 'left', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( -140 * originBaseNode.getBaseNodeScale(), 0 )} );
-          }
-        }
-      }
+        //If something connected, stop showing the initial target
+        proteinSynthesisScreenView.dottedLine.visible = false;
+      } ) );
       return connectionPoints;
+
+//      for ( var i = 0; i < this.baseNodes.length; i++ ) {
+//        var baseNode = this.baseNodes[i];
+//
+//        //Make sure it wasn't in carousel
+//        if ( baseNode !== originBaseNode && !baseNode.inCarousel ) {
+//          //find any unbonded points of attachment on it.
+//
+//          //is it hydrogen bonded?
+//          if ( !this.isHydrogenBonded( baseNode ) ) {
+//
+//            var verticalSeparation = 100 + BaseShape.TOP_CONNECTOR_HEIGHT * 2;
+//
+//            if ( baseNode.base.canHydrogenBond( originBaseNode.base ) ) {
+//              //Handle up/down
+//              if ( baseNode.pointingUp ) {
+//                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -verticalSeparation * originBaseNode.getBaseNodeScale() )} );
+//              }
+//              else {
+//                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
+//              }
+//            }
+//          }
+//
+//          if ( !this.isRightSideBonded( baseNode ) ) {
+//            connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140 * originBaseNode.getBaseNodeScale(), 0 )} );
+//          }
+//          if ( !this.isLeftSideBonded( baseNode ) ) {
+//            connectionPoints.push( {type: 'left', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( -140 * originBaseNode.getBaseNodeScale(), 0 )} );
+//          }
+//        }
+//      }
+//      return connectionPoints;
     },
     isHydrogenBonded: function( baseNode ) {
       for ( var j = 0; j < this.hydrogenBonds.length; j++ ) {

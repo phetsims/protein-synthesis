@@ -3,9 +3,7 @@
 define( function( require ) {
   'use strict';
 
-  var Path = require( 'SCENERY/nodes/Path' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var Node = require( 'SCENERY/nodes/Node' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
