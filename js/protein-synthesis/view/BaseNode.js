@@ -19,6 +19,8 @@ define( function( require ) {
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var Node = require( 'SCENERY/nodes/Node' );
 
+  var Y_THRESHOLD_FOR_UPSIDE_UP = 220;
+
   /**
    * Constructor for the BaseNode
    * @constructor
@@ -58,7 +60,7 @@ define( function( require ) {
         },
         drag: function( event, trail ) {
           var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-          if ( proposedBodyCenter.y < 220 ) {
+          if ( proposedBodyCenter.y < Y_THRESHOLD_FOR_UPSIDE_UP ) {
             baseNode.setPointingUp( false );
             baseNode.setBodyCenter( proposedBodyCenter );
           }
@@ -77,18 +79,9 @@ define( function( require ) {
               //Close enough for connection.
               console.log( 'close' );
 
-              //Rotate so it could connect.
-              if ( closestConnectionPoint.type === 'hydrogen' ) {
-                baseNode.setPointingUp( !closestConnectionPoint.baseNode.pointingUp );
-                baseNode.setBodyCenter( closestConnectionPoint.bodyCenter );
-                updatedLocation = true;
-
-              }
-              else {
-                baseNode.setPointingUp( closestConnectionPoint.up );
-                baseNode.setBodyCenter( closestConnectionPoint.point );
-                updatedLocation = true;
-              }
+              baseNode.setPointingUp( closestConnectionPoint.up );
+              baseNode.setBodyCenter( closestConnectionPoint.point );
+              updatedLocation = true;
             }
           }
           if ( !updatedLocation ) {
@@ -116,9 +109,28 @@ define( function( require ) {
               closestConnectionPoint.connect();
             }
           }
-          else {
+          if ( !updatedLocation ) {
 //            baseNode.setBodyCenter( proposedBodyCenter );
             //Fly back to the toolbox
+//            debugger;
+
+//            baseNode.setBodyCenter( bodyNode.initialBodyCenter );
+//            baseNode.x = baseNode.initialX;
+//            baseNode.y = baseNode.initialY;
+
+            var initScale = baseNode.getScaleVector().x;
+            console.log( initScale );
+            new TWEEN.Tween( { x: baseNode.x, y: baseNode.y, scale: initScale} )
+              .to( { x: baseNode.initialX, y: baseNode.initialY, scale: 0.4}, 700 )
+              .easing( TWEEN.Easing.Cubic.InOut )
+              .onUpdate( function() {
+                if ( this.y > Y_THRESHOLD_FOR_UPSIDE_UP ) {
+                  baseNode.setPointingUp( true );
+                }
+                baseNode.setScaleMagnitude( this.scale );
+                baseNode.setTranslation( this.x, this.y );
+              } )
+              .start();
           }
         }
       } ) );
@@ -193,6 +205,13 @@ define( function( require ) {
       else {
         return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
       }
+    },
+    setInitialPosition: function( x, y ) {
+      this.initialX = x;
+      this.initialY = y;
+      this.setTranslation( x, y );
+//      this.setBodyCenter( new Vector2( x, y ) );
+//      this.initialBodyCenter = new Vector2( x, y );
     }
   } );
 } );

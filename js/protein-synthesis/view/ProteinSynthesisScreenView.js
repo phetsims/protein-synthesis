@@ -21,6 +21,7 @@ define( function( require ) {
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
+  var Panel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/Panel' );
   var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
   var BackboneBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BackboneBond' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -35,6 +36,7 @@ define( function( require ) {
   var RibosomeNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RibosomeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var Vector2 = require( 'DOT/Vector2' );
+  var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
 
   var isCloseTo = function( x, y, delta ) {
     return Math.abs( x - y ) <= delta;
@@ -47,6 +49,8 @@ define( function( require ) {
   function ProteinSynthesisView( model ) {
 
     var proteinSynthesisScreenView = this;
+
+    this.connectionModel = new ConnectionModel();
     ScreenView.call( this, {renderer: 'svg', layoutBounds: ScreenView.UPDATED_LAYOUT_BOUNDS.copy()} );
 
     var nucleusShape = new Circle( 1000, {fill: '#E2E9F7', stroke: 'black', lineWidth: 4, centerX: this.layoutBounds.centerX, centerY: this.layoutBounds.centerY} );
@@ -67,51 +71,66 @@ define( function( require ) {
     this.hydrogenBonds = [];
     this.backboneBonds = [];
 
-    var createPath = function( base ) {
+    var toBaseNode = function( base ) {
       var baseNode = new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.structureLabelsVisibleProperty, true );
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
-    var createStack = function( constructor ) {
+    var createBaseNodeStack = function( index, constructor ) {
       var children = [];
+      var x = 260;
+      var y = 387;
       for ( var i = 0; i < 5; i++ ) {
-        var path = createPath( constructor() );
-        path.translate( i * 4, i * 4 );
-        children.push( path );
+        var baseNode = toBaseNode( constructor() );
+        console.log( index );
+        baseNode.setInitialPosition( x + i * 2 + index * 100, y + i * 2 );
+        children.push( baseNode );
       }
-      return new Node( {children: children} );
+      return children;
     };
 
     var sceneSelectionPanel = new SceneSelectionPanel( this.viewProperties.stateProperty, {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
     this.addChild( sceneSelectionPanel );
 
-    var dnaCarousel = new HCarousel( [
-      createStack( function() {return new Adenine( 'deoxyribose' );} ),
-      createStack( function() {return new Thymine( 'deoxyribose' );} ),
-      createStack( function() {return new Guanine( 'deoxyribose' );} ),
-      createStack( function() {return new Cytosine( 'deoxyribose' );} )
-    ], {
-      centerX: this.layoutBounds.centerX,
-      bottom: sceneSelectionPanel.top - 10,
-      groupLabelNodes: [new Text( 'DNA' )]
-    } );
-    this.addChild( dnaCarousel );
+    var dnaStacks = [
+      createBaseNodeStack( 0, function() {return new Adenine( 'deoxyribose' );} ),
+      createBaseNodeStack( 1, function() {return new Thymine( 'deoxyribose' );} ),
+      createBaseNodeStack( 2, function() {return new Guanine( 'deoxyribose' );} ),
+      createBaseNodeStack( 3, function() {return new Cytosine( 'deoxyribose' );} )
+    ];
 
-    var rnaCarousel = new HCarousel( [
-      createStack( function() {return new Adenine( 'ribose' );} ),
-      createStack( function() {return new Uracil( 'ribose' );} ),
-      createStack( function() {return new Guanine( 'ribose' );} ),
-      createStack( function() {return new Cytosine( 'ribose' );} )
-    ], {
-      centerX: this.layoutBounds.centerX,
-      bottom: sceneSelectionPanel.top - 10,
-      groupLabelNodes: [new Text( 'mRNA' )]
-    } );
-    rnaCarousel.visible = false;
+    var dnaToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {fill: 'white', lineWidth: 1, stroke: 'black', centerX: this.layoutBounds.centerX, bottom: sceneSelectionPanel.top - 10} );
+    dnaToolbox.addChild( new Text( 'DNA', {centerX: 450 / 2, bottom: 100 - 2} ) );
+    this.addChild( dnaToolbox );
+
+    for ( var i = 0; i < dnaStacks.length; i++ ) {
+      var dnaStack = dnaStacks[i];
+      for ( var j = 0; j < dnaStack.length; j++ ) {
+        this.addChild( dnaStack[j] );
+      }
+    }
+//    var dnaCarousel = new HCarousel( , {
+//      centerX: this.layoutBounds.centerX,
+//      bottom: sceneSelectionPanel.top - 10,
+//      groupLabelNodes: [new Text( 'DNA' )]
+//    } );
+//    this.addChild( dnaCarousel );
+
+//    var rnaCarousel = new HCarousel( [
+//      createStack( function() {return new Adenine( 'ribose' );} ),
+//      createStack( function() {return new Uracil( 'ribose' );} ),
+//      createStack( function() {return new Guanine( 'ribose' );} ),
+//      createStack( function() {return new Cytosine( 'ribose' );} )
+//    ], {
+//      centerX: this.layoutBounds.centerX,
+//      bottom: sceneSelectionPanel.top - 10,
+//      groupLabelNodes: [new Text( 'mRNA' )]
+//    } );
+//    rnaCarousel.visible = false;
 
     this.viewProperties.stateProperty.link( function( state ) {
-      dnaCarousel.visible = state === 'dna';
-      rnaCarousel.visible = state === 'transcription' || state === 'translation';
+//      dnaCarousel.visible = state === 'dna';
+//      rnaCarousel.visible = state === 'transcription' || state === 'translation';
 
 //      proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.value = state === 'translation' ? 1 : 0;
     } );
@@ -131,7 +150,7 @@ define( function( require ) {
       }
     } );
 
-    this.addChild( rnaCarousel );
+//    this.addChild( rnaCarousel );
 
     var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
     this.addChild( structureCheckBox );
@@ -169,8 +188,8 @@ define( function( require ) {
 
     this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-      dnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-      rnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
+//      dnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
+//      rnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
@@ -178,6 +197,12 @@ define( function( require ) {
     this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 180, centerX: this.layoutBounds.width / 2} );
     this.addChild( this.dottedLine );
     this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, centerY: this.dottedLine.centerY} ) );
+
+    this.connectionModel.on( 'changed', function() {
+      //If something connected, stop showing the initial target
+      proteinSynthesisScreenView.dottedLine.visible = proteinSynthesisScreenView.connectionModel.isEmpty;
+    } );
+
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
@@ -212,11 +237,12 @@ define( function( require ) {
     getConnectionPoints: function( originBaseNode ) {
       var proteinSynthesisScreenView = this;
       var connectionPoints = [];
-      connectionPoints.push( new ConnectionPoint( this.dottedLine.centerX, this.dottedLine.centerY, false, function() {
 
-        //If something connected, stop showing the initial target
-        proteinSynthesisScreenView.dottedLine.visible = false;
-      } ) );
+      if ( this.connectionModel.isEmpty ) {
+        connectionPoints.push( new ConnectionPoint( this.dottedLine.centerX, this.dottedLine.centerY, false, function() {
+          proteinSynthesisScreenView.connectionModel.add( 0, 0, originBaseNode );
+        } ) );
+      }
       return connectionPoints;
 
 //      for ( var i = 0; i < this.baseNodes.length; i++ ) {
