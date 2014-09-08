@@ -81,14 +81,27 @@ define( function( require ) {
       //top to the left
       var adjacent = function( array, deltaI ) {
         var isTop = (array === connectionModel.top);
+        var otherArray = isTop ? connectionModel.bottom : connectionModel.top;
         for ( var i = 1; i < LENGTH - 1; i++ ) {
           if ( array[i] !== null ) {
             if ( array[i + deltaI] === null ) {
-              (function( i ) {
-                var di = i + deltaI - CENTER_INDEX;
-                var x = connectionModel.x + di * 84;
-                connectionPoints.push( new ConnectionPoint( x, connectionModel.y + (isTop ? 0 : 123), !isTop, function() { connectionModel.add( i + deltaI, isTop ? 0 : 1, baseNode ); } ) );
-              })( i );
+
+              //prevent inappropriate hydrogen bonds
+              //What would the new node be across from?
+              var okToBond = true;
+              if ( otherArray[i + deltaI] !== null ) {
+                if ( !otherArray[i + deltaI].base.canHydrogenBond( baseNode.base ) ) {
+                  okToBond = false;
+                }
+              }
+
+              if ( okToBond ) {
+                (function( i ) {
+                  var di = i + deltaI - CENTER_INDEX;
+                  var x = connectionModel.x + di * 84;
+                  connectionPoints.push( new ConnectionPoint( x, connectionModel.y + (isTop ? 0 : 123), !isTop, function() { connectionModel.add( i + deltaI, isTop ? 0 : 1, baseNode ); } ) );
+                })( i );
+              }
             }
           }
         }
