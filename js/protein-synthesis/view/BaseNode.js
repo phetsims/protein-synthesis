@@ -20,6 +20,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
 
   var Y_THRESHOLD_FOR_UPSIDE_UP = 220;
+  var fullSize = 0.6;
 
   /**
    * Constructor for the BaseNode
@@ -55,7 +56,7 @@ define( function( require ) {
           baseNode.inCarousel = false;
           //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
           baseNode.detach();
-          baseNode.setScaleMagnitude( 0.6 );
+          baseNode.setScaleMagnitude( fullSize );
           screenView.addChild( baseNode );
           this.drag( event, trail );
         },
@@ -214,5 +215,7 @@ define( function( require ) {
 //      this.setBodyCenter( new Vector2( x, y ) );
 //      this.initialBodyCenter = new Vector2( x, y );
     }
+  }, {
+    fullSize: fullSize
   } );
 } );
