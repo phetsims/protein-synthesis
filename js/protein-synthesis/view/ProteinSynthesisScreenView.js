@@ -73,7 +73,8 @@ define( function( require ) {
       baseLabelsVisible: true,
       structureLabelsVisible: true,
       nucleusToCytoplasm: 0,
-      state: 'dna'
+      state: 'dna',//[dna,transcription/translation]
+      location: 'nucleus' // [nucleus/cytoplasm]
     } );
 
     this.baseNodes = [];
@@ -182,8 +183,8 @@ define( function( require ) {
 //      proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.value = state === 'translation' ? 1 : 0;
     } );
 
-    this.viewProperties.stateProperty.link( function( state ) {
-      var cytoplasm = (state === 'translation');
+    this.viewProperties.locationProperty.link( function( location ) {
+      var cytoplasm = (location === 'cytoplasm');
       if ( cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 1 || !cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 0 ) {
 
         //TODO: var tween and cancel?
@@ -258,7 +259,7 @@ define( function( require ) {
           //Move away the non-coding strand when translation starts
           //TODO: var tween and cancel?
           new TWEEN.Tween( { y: baseNode.y} )
-            .to( { y: baseNode.y + 700}, 3500 )
+            .to( { y: baseNode.y + 500}, 1000 )
             .easing( TWEEN.Easing.Cubic.InOut )
             .onUpdate( function() {
               baseNode.y = this.y;
@@ -269,6 +270,40 @@ define( function( require ) {
             .start();
         } );
       }
+
+      //TODO: Much duplicated code with the above
+      else if ( oldState === 'transcription' && state === 'translation' ) {
+        console.log( 'imagine the strands separating' );
+
+        //find all the base nodes on the top, move to the back and animate them south.
+        var topBaseNodes = proteinSynthesisScreenView.connectionModel.topBaseNodes;
+        topBaseNodes.forEach( function( baseNode ) {
+
+          //TODO: Move these baseNodes behind the control panels
+          proteinSynthesisScreenView.removeChild( baseNode );
+          proteinSynthesisScreenView.insertChild( proteinSynthesisScreenView.indexOfChild( nucleusShape ) + 1, baseNode );
+
+          proteinSynthesisScreenView.connectionModel.remove( baseNode );
+
+          //Move away the non-coding strand when translation starts
+          //TODO: var tween and cancel?
+          new TWEEN.Tween( { y: baseNode.y} )
+            .to( { y: baseNode.y - 500}, 1000 )
+            .easing( TWEEN.Easing.Cubic.InOut )
+            .onUpdate( function() {
+              baseNode.y = this.y;
+            } )
+            .onComplete( function() {
+              proteinSynthesisScreenView.removeChild( baseNode );
+              proteinSynthesisScreenView.viewProperties.location = 'cytoplasm';
+            } )
+            .start();
+        } );
+      }
+      else if ( oldState === 'translation' && state === 'transcription' ) {
+        proteinSynthesisScreenView.viewProperties.location = 'nucleus';
+      }
+
     } );
   }
 
