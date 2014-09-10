@@ -26,11 +26,11 @@ define( function( require ) {
    * Constructor for the BaseNode
    * @constructor
    */
-  function BaseNode( base, screenView, baseLabelsVisibleProperty, structureLabelsVisibleProperty, individuallyDraggable ) {
+  function BaseNode( base, screenView, baseLabelsVisibleProperty, labelsVisibleProperty, individuallyDraggable ) {
     assert && assert( base instanceof Base );
 
     this.baseLabelsVisibleProperty = baseLabelsVisibleProperty;
-    this.structureLabelsVisibleProperty = structureLabelsVisibleProperty;
+    this.labelsVisibleProperty = labelsVisibleProperty;
     this.base = base;
 
     //Generated in Illustrator, see the mockup
@@ -165,7 +165,7 @@ define( function( require ) {
       font: new PhetFont( 18 ),
       pickable: false
     } );
-    this.structureLabelsVisibleProperty.linkAttribute( structureLabelNode, 'visible' );
+    this.labelsVisibleProperty.linkAttribute( structureLabelNode, 'visible' );
     this.addChild( structureLabelNode );
     base.angleProperty.link( function( angle ) {
       if ( angle === 0 ) {

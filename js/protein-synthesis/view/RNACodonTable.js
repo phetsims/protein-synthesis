@@ -42,7 +42,7 @@ define( function( require ) {
           var textNode = new Text( string, {font: font, left: x, top: y, fill: highlighted.indexOf( string ) >= 0 ? 'black' : '#bbbbbb'} );
           children.push( textNode );
           y += textNode.height + 2;
-//          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
+//          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.labelsVisibleProperty );
 //          codon.left = 0;
 //          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
 
@@ -57,7 +57,7 @@ define( function( require ) {
 //              baseNode.setScaleMagnitude( 0.6 );
 //              screenView.addChild( baseNode );
 //              this.drag( event, trail );
-                createdNode = new TRNANode( string, screenView, screenView.viewProperties.baseLabelsVisibleProperty, screenView.viewProperties.structureLabelsVisibleProperty );
+                createdNode = new TRNANode( string, screenView, screenView.viewProperties.baseLabelsVisibleProperty, screenView.viewProperties.labelsVisibleProperty );
                 screenView.addChild( createdNode );
                 this.drag( event, trail );
               },

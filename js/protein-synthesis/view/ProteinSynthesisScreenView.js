@@ -59,10 +59,20 @@ define( function( require ) {
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
+    this.viewProperties = new PropertySet( {
+      baseLabelsVisible: true,
+      labelsVisible: true,
+      nucleusToCytoplasm: 0,
+      state: 'dna',//[dna,transcription/translation]
+      location: 'nucleus' // [nucleus/cytoplasm]
+    } );
+
     //Put the dotted line to the top left so students will build left to right and things will fit into the ribosome (which is on the left side of the screen)
     this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 4 + 30} );
     this.addChild( this.dottedLine );
-    this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, bottom: this.dottedLine.top - 10} ) );
+    var codingStrandLabel = new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.top - 10} );
+    this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
+    this.addChild( codingStrandLabel );
 
     this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
     this.connectionModel.on( 'changed', function() {
@@ -70,20 +80,12 @@ define( function( require ) {
       proteinSynthesisScreenView.dottedLine.visible = proteinSynthesisScreenView.connectionModel.isEmpty;
     } );
 
-    this.viewProperties = new PropertySet( {
-      baseLabelsVisible: true,
-      structureLabelsVisible: true,
-      nucleusToCytoplasm: 0,
-      state: 'dna',//[dna,transcription/translation]
-      location: 'nucleus' // [nucleus/cytoplasm]
-    } );
-
     this.baseNodes = [];
     this.hydrogenBonds = [];
     this.backboneBonds = [];
 
     var toBaseNode = function( base ) {
-      var baseNode = new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.structureLabelsVisibleProperty, true );
+      var baseNode = new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.labelsVisibleProperty, true );
       proteinSynthesisScreenView.baseNodes.push( baseNode );
       return baseNode;
     };
@@ -201,7 +203,7 @@ define( function( require ) {
 
 //    this.addChild( rnaCarousel );
 
-    var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
+    var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
     this.addChild( structureCheckBox );
 
 //    var choices = ['U', 'C', 'A', 'G'];
@@ -214,7 +216,7 @@ define( function( require ) {
 //        for ( var k = 0; k < choices.length; k++ ) {
 //          var choice3 = choices[k];
 //          var string = choice1 + choice2 + choice3;
-//          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.structureLabelsVisibleProperty );
+//          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.labelsVisibleProperty );
 //          codon.left = 0;
 //          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
 //          previous = codon;
