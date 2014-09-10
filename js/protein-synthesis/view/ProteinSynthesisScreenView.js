@@ -301,10 +301,9 @@ define( function( require ) {
         } );
         proteinSynthesisScreenView.codonTableAccordionBox.moveToFront();//move in front of mRNA strands.
       }
-      else if ( oldState === 'translation' && state === 'transcription' ) {
+      else if ( oldState === 'translation' && state === 'dna' ) {
         proteinSynthesisScreenView.viewProperties.location = 'nucleus';
       }
-
     } );
 
     //Start in the cytoplasm, for debuggnig
