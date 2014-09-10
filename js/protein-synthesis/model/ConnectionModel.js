@@ -56,6 +56,24 @@ define( function( require ) {
       return s;
     },
 
+    get topBaseNodes() {
+      var topBaseNodes = [];
+      for ( var i = 0; i < LENGTH; i++ ) {
+        if ( this.top[i] !== null ) {
+          topBaseNodes.push( this.top[i] );
+        }
+      }
+      return topBaseNodes;
+    },
+    get bottomBaseNodes() {
+      var bottomBaseNodes = [];
+      for ( var i = 0; i < LENGTH; i++ ) {
+        if ( this.bottom[i] !== null ) {
+          bottomBaseNodes.push( this.bottom[i] );
+        }
+      }
+      return bottomBaseNodes;
+    },
     get isEmpty() {
       return this.size === 0;
     },

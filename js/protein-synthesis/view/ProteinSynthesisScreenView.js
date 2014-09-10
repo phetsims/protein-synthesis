@@ -241,6 +241,29 @@ define( function( require ) {
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
 
+    this.viewProperties.stateProperty.link( function( state, oldState ) {
+      if ( oldState === 'dna' && state === 'transcription' ) {
+        console.log( 'imagine the strands separating' );
+
+        //find all the base nodes on the bottom, move to the back and animate them south.
+        var bottomBaseNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
+        bottomBaseNodes.forEach( function( baseNode ) {
+
+          //TODO: Move these baseNodes behind the control panels
+//          baseNode.moveToBack();
+
+          //Move away the non-coding strand when translation starts
+          //TODO: var tween and cancel?
+          new TWEEN.Tween( { y: baseNode.y} )
+            .to( { y: baseNode.y + 1000}, 4000 )
+            .easing( TWEEN.Easing.Cubic.InOut )
+            .onUpdate( function() {
+              baseNode.y = this.y;
+            } )
+            .start();
+        } );
+      }
+    } );
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
