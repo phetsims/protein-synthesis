@@ -35,11 +35,20 @@ define( function( require ) {
 
   return inherit( PropertySet, ConnectionModel, {
     get size() {
+      return this.sizeTop + this.sizeBottom;
+    },
+    get sizeTop() {
       var s = 0;
       for ( var i = 0; i < LENGTH; i++ ) {
         if ( this.top[i] !== null ) {
           s++;
         }
+      }
+      return s;
+    },
+    get sizeBottom() {
+      var s = 0;
+      for ( var i = 0; i < LENGTH; i++ ) {
         if ( this.bottom[i] !== null ) {
           s++;
         }
@@ -92,6 +101,25 @@ define( function( require ) {
         }
       }
     },
+    get isReadyForTranslation() {
+      //needs to have 3+ DNA bases in the coding strand and no gaps.
+      return this.sizeTop >= 3 && this.topBoundaryCount === 2;
+    },
+
+    //Count the number of fragment starts + stops, to count contiguous segments.
+    get topBoundaryCount() {
+      var changes = 0;
+      var on = this.top[0] !== null;
+      for ( var i = 1; i < LENGTH; i++ ) {
+        var isOn = this.top[i] !== null;
+        if ( on !== isOn ) {
+          on = isOn;
+          changes++;
+        }
+      }
+      return changes;
+    },
+
     getConnectionPoints: function( baseNode ) {
       var connectionModel = this;
       var connectionPoints = [];
@@ -169,5 +197,6 @@ define( function( require ) {
 
       return connectionPoints;
     }
+
   } );
 } );

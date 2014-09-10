@@ -9,10 +9,16 @@ define( function( require ) {
   var ArrowNode = require( 'SCENERY_PHET/ArrowNode' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Panel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/Panel' );
+  var Property = require( 'AXON/Property' );
 
   var font = new PhetFont( 24 );
 
-  function SceneSelectionPanel( stateProperty, options ) {
+  function SceneSelectionPanel( connectionModel, stateProperty, options ) {
+
+    var dnaButtonStateProperty = new Property( 'selected' );
+    var transcriptionButtonStateProperty = new Property( 'disabled' );
+    var translationButtonStateProperty = new Property( 'disabled' );
+
     var dnaText = new Text( 'DNA', {pickable: false, font: font, fill: 'white'} );
     var transcriptionText = new Text( 'Transcription', {pickable: false, font: font, fill: 'gray'} );
     var translationText = new Text( 'Translation', {pickable: false, font: font, fill: 'gray'} );
@@ -21,27 +27,50 @@ define( function( require ) {
     var transcriptionPanel = new Panel( transcriptionText, {lineWidth: 1, stroke: 'gray', fill: null, backgroundPickable: true, cursor: 'pointer'} );
     var translationPanel = new Panel( translationText, {lineWidth: 1, stroke: 'gray', fill: null, backgroundPickable: true, cursor: 'pointer'} );
 
-    stateProperty.link( function( state ) {
-      dnaText.fill = (state === 'dna') ? 'white' : 'gray';
-      transcriptionText.fill = (state === 'transcription') ? 'white' : 'gray';
-      translationText.fill = (state === 'translation') ? 'white' : 'gray';
+    var updateButtonStates = function() {
+      var state = stateProperty.value;
+      dnaButtonStateProperty.value = state === 'dna' ? 'selected' :
+                                     state === 'transcription' ? 'enabled' :
+                                     'disabled';
+      transcriptionButtonStateProperty.value = state === 'transcription' ? 'selected' :
+                                               (state === 'dna' && connectionModel.isReadyForTranslation) || state === 'translation' ? 'enabled' :
+                                               "disabled";
+      translationButtonStateProperty.value = state === 'transcription' ? 'enabled' :
+                                             state === 'translation' ? 'selected' :
+                                             'disabled';
+    };
 
-      dnaPanel.stroke = (state === 'dna') ? 'black' : 'gray';
-      transcriptionPanel.stroke = (state === 'transcription') ? 'black' : 'gray';
-      translationPanel.stroke = (state === 'translation') ? 'black' : 'gray';
+    transcriptionButtonStateProperty.debug( 'transcriptionButtonState' );
 
-      dnaPanel.fill = (state === 'dna') ? '#1c4ec1' : null;
-      transcriptionPanel.fill = (state === 'transcription') ? '#1c4ec1' : null;
-      translationPanel.fill = (state === 'translation') ? '#1c4ec1' : null;
+    stateProperty.link( updateButtonStates );
 
-      dnaPanel.lineWidth = (state === 'dna') ? 2 : 1;
-      transcriptionPanel.lineWidth = (state === 'transcription') ? 2 : 1;
-      translationPanel.lineWidth = (state === 'translation') ? 2 : 1;
-
-      dnaPanel.fill = (state === 'dna') ? '#1c4ec1' : null;
-      transcriptionPanel.fill = (state === 'transcription') ? '#1c4ec1' : null;
-      translationPanel.fill = (state === 'translation') ? '#1c4ec1' : null;
+    //when the user has created a 3-base strand in the coding strand, and it is contiguous, allow them to go to transcription
+    //TODO: Could tooltip over the transcription button if it would be helpful
+    connectionModel.on( 'changed', function() {
+      updateButtonStates();
     } );
+
+    var syncButton = function( buttonStateProperty, text, panel ) {
+      buttonStateProperty.link( function( buttonState ) {
+        text.fill = buttonState === 'selected' ? 'white' :
+                    buttonState === 'enabled' ? 'black' :
+                    'gray';
+        panel.stroke = buttonState === 'selected' ? 'black' :
+                       buttonState === 'enabled' ? 'black' :
+                       'gray';
+        panel.fill = buttonState === 'selected' ? '#1c4ec1' :
+                     buttonState === 'enabled' ? 'white' :
+                     null;
+        panel.lineWidth = buttonState === 'selected' ? 2 :
+                          buttonState === 'enabled' ? 1 :
+                          0;
+
+        panel.pickable = buttonState === 'enabled';
+      } );
+    };
+    syncButton( dnaButtonStateProperty, dnaText, dnaPanel );
+    syncButton( transcriptionButtonStateProperty, transcriptionText, transcriptionPanel );
+    syncButton( translationButtonStateProperty, translationText, translationPanel );
 
     dnaPanel.addInputListener( {down: function() {
       stateProperty.value = 'dna';

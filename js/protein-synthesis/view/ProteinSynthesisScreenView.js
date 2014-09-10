@@ -98,7 +98,7 @@ define( function( require ) {
       return children;
     };
 
-    var sceneSelectionPanel = new SceneSelectionPanel( this.viewProperties.stateProperty, {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
+    var sceneSelectionPanel = new SceneSelectionPanel( this.connectionModel, this.viewProperties.stateProperty, {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
     this.addChild( sceneSelectionPanel );
 
     var dnaStacks = [
