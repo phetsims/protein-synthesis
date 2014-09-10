@@ -250,15 +250,21 @@ define( function( require ) {
         bottomBaseNodes.forEach( function( baseNode ) {
 
           //TODO: Move these baseNodes behind the control panels
-//          baseNode.moveToBack();
+          proteinSynthesisScreenView.removeChild( baseNode );
+          proteinSynthesisScreenView.insertChild( proteinSynthesisScreenView.indexOfChild( nucleusShape ) + 1, baseNode );
+
+          proteinSynthesisScreenView.connectionModel.remove( baseNode );
 
           //Move away the non-coding strand when translation starts
           //TODO: var tween and cancel?
           new TWEEN.Tween( { y: baseNode.y} )
-            .to( { y: baseNode.y + 1000}, 4000 )
+            .to( { y: baseNode.y + 700}, 3500 )
             .easing( TWEEN.Easing.Cubic.InOut )
             .onUpdate( function() {
               baseNode.y = this.y;
+            } )
+            .onComplete( function() {
+              proteinSynthesisScreenView.removeChild( baseNode )
             } )
             .start();
         } );
