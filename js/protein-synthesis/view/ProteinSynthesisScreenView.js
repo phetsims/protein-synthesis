@@ -200,7 +200,7 @@ define( function( require ) {
 
 //    this.addChild( rnaCarousel );
 
-    var structureCheckBox = new CheckBox( new Text( 'Structures', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
+    var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.structureLabelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
     this.addChild( structureCheckBox );
 
 //    var choices = ['U', 'C', 'A', 'G'];
