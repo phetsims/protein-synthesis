@@ -227,18 +227,18 @@ define( function( require ) {
     var ribosomeNode = new RibosomeNode();
     this.addChild( ribosomeNode );
 
-    var codonTableAccordionBox = new AccordionBox( new RNACodonTable( this, {} ), {
+    this.codonTableAccordionBox = new AccordionBox( new RNACodonTable( this, {} ), {
       titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
       right: this.layoutBounds.right,
       top: this.layoutBounds.top
     } );
-    this.addChild( codonTableAccordionBox );
+    this.addChild( this.codonTableAccordionBox );
 
     this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
 //      dnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
 //      rnaCarousel.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-      codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
+      proteinSynthesisScreenView.codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
 
@@ -299,6 +299,7 @@ define( function( require ) {
             } )
             .start();
         } );
+        proteinSynthesisScreenView.codonTableAccordionBox.moveToFront();//move in front of mRNA strands.
       }
       else if ( oldState === 'translation' && state === 'transcription' ) {
         proteinSynthesisScreenView.viewProperties.location = 'nucleus';
