@@ -59,7 +59,8 @@ define( function( require ) {
 
     this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
 
-    this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 2} );
+    //Put the dotted line to the top left so students will build left to right and things will fit into the ribosome (which is on the left side of the screen)
+    this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 4 + 30} );
     this.addChild( this.dottedLine );
     this.addChild( new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: 10, bottom: this.dottedLine.top - 10} ) );
 
@@ -308,8 +309,8 @@ define( function( require ) {
 
     //Start in the cytoplasm, for debuggnig
     //TODO: Remove this, for debugging
-    this.viewProperties.state = 'translation';
-    this.viewProperties.location = 'cytoplasm';
+//    this.viewProperties.state = 'translation';
+//    this.viewProperties.location = 'cytoplasm';
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
