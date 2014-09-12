@@ -56,7 +56,14 @@ define( function( require ) {
 
     //TODO: While dragging, show a drop shadow
 
-    this.addChild( new ResetAllButton( { right: this.layoutBounds.maxX - 10, bottom: this.layoutBounds.maxY - 10} ) );
+    this.addChild( new ResetAllButton( {
+      right: this.layoutBounds.maxX - 10,
+      bottom: this.layoutBounds.maxY - 10,
+      listener: function() {
+        model.reset();
+        proteinSynthesisScreenView.viewProperties.reset();
+      }
+    } ) );
 
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
