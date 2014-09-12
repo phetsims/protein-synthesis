@@ -26,14 +26,17 @@ define( function( require ) {
    * Constructor for the BaseNode
    * @constructor
    */
-  function BaseNode( base, screenView, baseLabelsVisibleProperty, labelsVisibleProperty, individuallyDraggable ) {
+  function BaseNode( base, screenView, baseLabelsVisibleProperty, labelsVisibleProperty, individuallyDraggable, tRNA ) {
     assert && assert( base instanceof Base );
 
     this.baseLabelsVisibleProperty = baseLabelsVisibleProperty;
     this.labelsVisibleProperty = labelsVisibleProperty;
     this.base = base;
 
-    var pathNode = new Path( base.shape, {fill: base.backboneType === 'deoxyribose' ? 'white' : '#aee6c8', stroke: 'black', cursor: 'pointer'} );
+    var fill = tRNA ? '#f9b664' :
+               base.backboneType === 'deoxyribose' ? 'white' : '#aee6c8';
+
+    var pathNode = new Path( base.shape, {fill: fill, stroke: 'black', cursor: 'pointer'} );
     Node.call( this, {
       children: [
         pathNode

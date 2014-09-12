@@ -80,7 +80,7 @@ define( function( require ) {
     } );
 
     var toBaseNode = function( base ) {
-      return new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.labelsVisibleProperty, true );
+      return new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.labelsVisibleProperty, true, false );
     };
     var createBaseNodeStack = function( index, constructor ) {
       var children = [];

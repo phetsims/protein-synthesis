@@ -38,7 +38,8 @@ define( function( require ) {
       {fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.68} );
 
     children.push( aminoAcidNode );
-    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: '#f9b664', stroke: 'black', lineWidth: 1, rotation: Math.PI, left: -30 + 3} );
+    var orange = '#f9b664';
+    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: orange, stroke: 'black', lineWidth: 1, rotation: Math.PI, left: -30 + 3} );
     children.push( trnaBody );
     aminoAcidNode.centerX = trnaBody.centerX;
     aminoAcidNode.bottom = trnaBody.top;
@@ -49,13 +50,12 @@ define( function( require ) {
                                    char === 'U' ? new Uracil() :
                                    char === 'G' ? new Guanine() :
                                    new Cytosine(),
-        screenView, baseLabelsVisibleProperty, labelsVisibleProperty, false );
+        screenView, baseLabelsVisibleProperty, labelsVisibleProperty, false, true );
 
       //Start as pointing down (as in many textbooks).  TODO: should we allow these to flip vertically?
       baseNode.base.angle = Math.PI;
       baseNode.setScaleMagnitude( BaseNode.fullSize );
       baseNode.translate( 140 * i - 43, 43 );
-//      baseNode.pickable = false;
       children.push( baseNode );
     }
 
