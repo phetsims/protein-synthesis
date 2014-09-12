@@ -12,7 +12,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
-  var HCarousel = require( 'PROTEIN_SYNTHESIS/common/view/HCarousel' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
   var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
@@ -125,12 +124,6 @@ define( function( require ) {
         dnaBases.push( dnaStack[j] );
       }
     }
-//    var dnaCarousel = new HCarousel( , {
-//      centerX: this.layoutBounds.centerX,
-//      bottom: sceneSelectionPanel.top - 10,
-//      groupLabelNodes: [new Text( 'DNA' )]
-//    } );
-//    this.addChild( dnaCarousel );
 
     var mRNAStacks = [
       createBaseNodeStack( 0, function() {return new Adenine( 'ribose' );} ),
@@ -151,14 +144,6 @@ define( function( require ) {
         this.addChild( mRNABase );
       }
     }
-
-//    var rnaCarousel = new HCarousel( [
-//    ], {
-//      centerX: this.layoutBounds.centerX,
-//      bottom: sceneSelectionPanel.top - 10,
-//      groupLabelNodes: [new Text( 'mRNA' )]
-//    } );
-//    rnaCarousel.visible = false;
 
     this.viewProperties.stateProperty.link( function( state ) {
       dnaToolbox.visible = state === 'dna';
