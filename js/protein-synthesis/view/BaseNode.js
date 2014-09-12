@@ -33,9 +33,6 @@ define( function( require ) {
     this.labelsVisibleProperty = labelsVisibleProperty;
     this.base = base;
 
-    //Generated in Illustrator, see the mockup
-//    var outline = 'M536.2,288.1c-4.5,0-8.5,1.9-10.9,4.9h-11.4v-23.4 c0-2.4-2-4.4-4.4-4.4h-22.4v-38.4l-16.1,16.1l-16.5-16.5H454v38.7h-39.3c-2.4,0-4.4,2-4.4,4.4V293h11.4c2.4-3,6.4-4.9,10.9-4.9 c7.4,0,13.4,5.3,13.4,11.7c0,6.5-6,11.7-13.4,11.7c-4.5,0-8.5-1.9-10.9-4.9h-11.4v23.4c0,2.4,2,4.4,4.4,4.4h94.7 c2.4,0,4.4-2,4.4-4.4v-23.4h11.4c2.4,3,6.4,4.9,10.9,4.9c7.4,0,13.4-5.3,13.4-11.7C549.6,293.4,543.6,288.1,536.2,288.1z';
-
     var pathNode = new Path( base.shape, {fill: base.backboneType === 'deoxyribose' ? 'white' : '#aee6c8', stroke: 'black', cursor: 'pointer'} );
     Node.call( this, {
       children: [
@@ -107,21 +104,12 @@ define( function( require ) {
               baseNode.setPointingUp( closestConnectionPoint.up );
               baseNode.setBodyCenter( closestConnectionPoint.point );
               updatedLocation = true;
-              screenView.addBond( baseNode, closestConnectionPoint );
               closestConnectionPoint.connect();
             }
           }
           if ( !updatedLocation ) {
-//            baseNode.setBodyCenter( proposedBodyCenter );
-            //Fly back to the toolbox
-//            debugger;
-
-//            baseNode.setBodyCenter( bodyNode.initialBodyCenter );
-//            baseNode.x = baseNode.initialX;
-//            baseNode.y = baseNode.initialY;
 
             var initScale = baseNode.getScaleVector().x;
-            console.log( initScale );
             new TWEEN.Tween( { x: baseNode.x, y: baseNode.y, scale: initScale} )
               .to( { x: baseNode.initialX, y: baseNode.initialY, scale: 0.4}, 700 )
               .easing( TWEEN.Easing.Cubic.InOut )
@@ -212,8 +200,6 @@ define( function( require ) {
       this.initialX = x;
       this.initialY = y;
       this.setTranslation( x, y );
-//      this.setBodyCenter( new Vector2( x, y ) );
-//      this.initialBodyCenter = new Vector2( x, y );
     }
   }, {
     fullSize: fullSize

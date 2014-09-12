@@ -79,14 +79,8 @@ define( function( require ) {
       proteinSynthesisScreenView.dottedLine.visible = proteinSynthesisScreenView.connectionModel.isEmpty;
     } );
 
-    this.baseNodes = [];
-    this.hydrogenBonds = [];
-    this.backboneBonds = [];
-
     var toBaseNode = function( base ) {
-      var baseNode = new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.labelsVisibleProperty, true );
-      proteinSynthesisScreenView.baseNodes.push( baseNode );
-      return baseNode;
+      return new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.labelsVisibleProperty, true );
     };
     var createBaseNodeStack = function( index, constructor ) {
       var children = [];
@@ -167,8 +161,6 @@ define( function( require ) {
           base.visible = true;
         }
       }
-
-//      proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.value = state === 'translation' ? 1 : 0;
     } );
 
     this.viewProperties.locationProperty.link( function( location ) {
@@ -186,31 +178,8 @@ define( function( require ) {
       }
     } );
 
-//    this.addChild( rnaCarousel );
-
     var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
     this.addChild( structureCheckBox );
-
-//    var choices = ['U', 'C', 'A', 'G'];
-//    var index = 0;
-//    var previous = null;
-//    for ( var i = 0; i < choices.length; i++ ) {
-//      var choice1 = choices[i];
-//      for ( var j = 0; j < choices.length; j++ ) {
-//        var choice2 = choices[j];
-//        for ( var k = 0; k < choices.length; k++ ) {
-//          var choice3 = choices[k];
-//          var string = choice1 + choice2 + choice3;
-//          var codon = new TRNANode( string, this, viewProperties.baseLabelsVisibleProperty, viewProperties.labelsVisibleProperty );
-//          codon.left = 0;
-//          codon.top = previous ? previous.bottom + 2 : this.layoutBounds.top;
-//          previous = codon;
-//          this.addChild( codon );
-//
-//          index++;
-//        }
-//      }
-//    }
 
     var ribosomeNode = new RibosomeNode();
     this.addChild( ribosomeNode );
@@ -301,114 +270,10 @@ define( function( require ) {
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
-    baseNodeDropped: function( baseNode ) {
-      var proteinSynthesisScreenView = this;
-      //if it was close to another base, snap to it and bond.  maybe show the bond line as gray instead of black+black?
-
-      for ( var i = 0; i < proteinSynthesisScreenView.baseNodes.length; i++ ) {
-        var base = proteinSynthesisScreenView.baseNodes[i];
-
-        //Just to the left of an open base
-
-        //TODO: Factor out magic number 140, the width of the body shape (See Base.js)
-
-        //To the left of a base
-        if ( base !== baseNode && isCloseTo( base.centerX - baseNode.centerX, 140, 10 ) && isCloseTo( base.bottom, baseNode.bottom, 10 ) ) {
-          baseNode.centerX = base.centerX - 140;
-          baseNode.bottom = base.bottom;
-          break;
-        }
-        //To the right of a base
-        else if ( base !== baseNode && isCloseTo( base.centerX - baseNode.centerX, -140, 10 ) && isCloseTo( base.bottom, baseNode.bottom, 10 ) ) {
-          baseNode.centerX = base.centerX + 140;
-          baseNode.bottom = base.bottom;
-          break;
-        }
-      }
-    },
-
     //Determine where the baseNode can connect.  Must account for bound types, and things that are already bonded.
     //TODO: What if the user is dragging a fragment (2+ pieces) to connect with another fragment (2+ pieces)?
     getConnectionPoints: function( baseNode ) {
       return this.connectionModel.getConnectionPoints( baseNode );
-
-//      for ( var i = 0; i < this.baseNodes.length; i++ ) {
-//        var baseNode = this.baseNodes[i];
-//
-//        //Make sure it wasn't in carousel
-//        if ( baseNode !== originBaseNode && !baseNode.inCarousel ) {
-//          //find any unbonded points of attachment on it.
-//
-//          //is it hydrogen bonded?
-//          if ( !this.isHydrogenBonded( baseNode ) ) {
-//
-//            var verticalSeparation = 100 + BaseShape.TOP_CONNECTOR_HEIGHT * 2;
-//
-//            if ( baseNode.base.canHydrogenBond( originBaseNode.base ) ) {
-//              //Handle up/down
-//              if ( baseNode.pointingUp ) {
-//                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, -verticalSeparation * originBaseNode.getBaseNodeScale() )} );
-//              }
-//              else {
-//                connectionPoints.push( {type: 'hydrogen', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 0, +verticalSeparation * originBaseNode.getBaseNodeScale() )} );
-//              }
-//            }
-//          }
-//
-//          if ( !this.isRightSideBonded( baseNode ) ) {
-//            connectionPoints.push( {type: 'right', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( 140 * originBaseNode.getBaseNodeScale(), 0 )} );
-//          }
-//          if ( !this.isLeftSideBonded( baseNode ) ) {
-//            connectionPoints.push( {type: 'left', baseNode: baseNode, bodyCenter: baseNode.getBodyCenter().plusXY( -140 * originBaseNode.getBaseNodeScale(), 0 )} );
-//          }
-//        }
-//      }
-//      return connectionPoints;
-    },
-    isHydrogenBonded: function( baseNode ) {
-      for ( var j = 0; j < this.hydrogenBonds.length; j++ ) {
-        if ( this.hydrogenBonds[j].contains( baseNode ) ) {
-          return true;
-        }
-      }
-      return false;
-    },
-    isRightSideBonded: function( baseNode ) {
-      for ( var j = 0; j < this.backboneBonds.length; j++ ) {
-        var bond = this.backboneBonds[j];
-        //If the left side of the bond matches the node, then the node's right side is unavailable
-        if ( bond.leftBaseNode === baseNode ) {
-          return true;
-        }
-      }
-      return false;
-    },
-    isLeftSideBonded: function( baseNode ) {
-      for ( var j = 0; j < this.backboneBonds.length; j++ ) {
-        var bond = this.backboneBonds[j];
-        if ( bond.rightBaseNode === baseNode ) {
-          return true;
-        }
-      }
-      return false;
-    },
-    addBond: function( baseNode, connectionPoint ) {
-      if ( connectionPoint.type === 'hydrogen' ) {
-        //TODO: Fix upside down if necessary
-        this.hydrogenBonds.push( new HydrogenBond( baseNode, connectionPoint.baseNode ) );
-      }
-      else {
-        if ( baseNode.base.angle === 0 ) {
-          this.backboneBonds.push( new BackboneBond( connectionPoint.baseNode, baseNode ) );
-        }
-        else {
-          this.backboneBonds.push( new BackboneBond( baseNode, connectionPoint.baseNode ) );
-        }
-      }
-//      screenView.addHydrogenBond( baseNode, closestConnectionPoint );
-//      screenView.addBackboneBond( baseNode, closestConnectionPoint );
     }
-//    addHydrogenBond: function() {},
-//    addBackboneBond: function() {}
   } );
 } );
