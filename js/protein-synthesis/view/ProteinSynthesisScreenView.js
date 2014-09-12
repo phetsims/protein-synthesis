@@ -269,24 +269,26 @@ define( function( require ) {
 //    this.viewProperties.location = 'cytoplasm';
 
     //Create random strands
-    (function() {
-      var a = function() {return new Adenine( 'deoxyribose' );};
-      var t = function() {return new Thymine( 'deoxyribose' )};
-      var g = function() {return new Guanine( 'deoxyribose' )};
-      var c = function() {return new Cytosine( 'deoxyribose' );};
+    if ( window.phetcommon.getQueryParameter( 'randomStrand' ) ) {
+      (function() {
+        var a = function() {return new Adenine( 'deoxyribose' );};
+        var t = function() {return new Thymine( 'deoxyribose' )};
+        var g = function() {return new Guanine( 'deoxyribose' )};
+        var c = function() {return new Cytosine( 'deoxyribose' );};
 
-      var stack = [a, t, g, c];
-      for ( var k = 0; k < 60; k++ ) {
-        var baseNode = toBaseNode( stack[k % stack.length]() );
-        baseNode.setScaleMagnitude( 0.6 );
-        var cp = proteinSynthesisScreenView.connectionModel.getConnectionPoints( baseNode );
-        var element = Math.floor( Math.random() * cp.length );
-        baseNode.setPointingUp( cp[element].up );
-        baseNode.setBodyCenter( cp[element].point );
-        cp[element].connect();
-        proteinSynthesisScreenView.addChild( baseNode );
-      }
-    })();
+        var stack = [a, t, g, c];
+        for ( var k = 0; k < 60; k++ ) {
+          var baseNode = toBaseNode( stack[k % stack.length]() );
+          baseNode.setScaleMagnitude( 0.6 );
+          var cp = proteinSynthesisScreenView.connectionModel.getConnectionPoints( baseNode );
+          var element = Math.floor( Math.random() * cp.length );
+          baseNode.setPointingUp( cp[element].up );
+          baseNode.setBodyCenter( cp[element].point );
+          cp[element].connect();
+          proteinSynthesisScreenView.addChild( baseNode );
+        }
+      })();
+    }
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
