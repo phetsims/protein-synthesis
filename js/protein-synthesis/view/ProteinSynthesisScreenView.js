@@ -279,12 +279,12 @@ define( function( require ) {
       for ( var k = 0; k < 60; k++ ) {
         var baseNode = toBaseNode( stack[k % stack.length]() );
         baseNode.setScaleMagnitude( 0.6 );
-        var cp = this.connectionModel.getConnectionPoints( baseNode );
+        var cp = proteinSynthesisScreenView.connectionModel.getConnectionPoints( baseNode );
         var element = Math.floor( Math.random() * cp.length );
         baseNode.setPointingUp( cp[element].up );
         baseNode.setBodyCenter( cp[element].point );
         cp[element].connect();
-        this.addChild( baseNode );
+        proteinSynthesisScreenView.addChild( baseNode );
       }
     })();
   }
