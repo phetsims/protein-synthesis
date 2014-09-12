@@ -264,9 +264,10 @@ define( function( require ) {
     } );
 
     //Start in the cytoplasm, for debuggnig
-    //TODO: Remove this, for debugging
-//    this.viewProperties.state = 'translation';
-//    this.viewProperties.location = 'cytoplasm';
+    if ( window.phetcommon.getQueryParameter( 'translatino' ) ) {
+      this.viewProperties.state = 'translation';
+      this.viewProperties.location = 'cytoplasm';
+    }
 
     //Create random strands
     if ( window.phetcommon.getQueryParameter( 'randomStrand' ) ) {
