@@ -46,10 +46,10 @@ define( function( require ) {
 
     for ( var i = 0; i < triplet.length; i++ ) {
       var char = triplet.charAt( i );
-      var baseNode = new BaseNode( char === 'A' ? new Adenine() :
-                                   char === 'U' ? new Uracil() :
-                                   char === 'G' ? new Guanine() :
-                                   new Cytosine(),
+      var baseNode = new BaseNode( char === 'A' ? new Adenine( 'ribose' ) :
+                                   char === 'U' ? new Uracil( 'ribose' ) :
+                                   char === 'G' ? new Guanine( 'ribose' ) :
+                                   new Cytosine( 'ribose' ),
         screenView, baseLabelsVisibleProperty, labelsVisibleProperty, false, true );
 
       //Start as pointing down (as in many textbooks).  TODO: should we allow these to flip vertically?
