@@ -25,6 +25,15 @@ define( function( require ) {
 
   return inherit( PropertySet, Base, {
 
+    //For making tRNA in the codon table, show the pairing partners
+    get partnerAbbreviation() {
+      var result = this.abbreviation === 'A' ? 'U' :
+                   this.abbreviation === 'U' ? 'A' :
+                   this.abbreviation === 'C' ? 'G' :
+                   this.abbreviation === 'G' ? 'C' : null;
+      assert && assert( result !== null );
+      return result;
+    },
     // Resets all model elements
     reset: function() {
     },

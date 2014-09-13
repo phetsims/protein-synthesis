@@ -31,8 +31,20 @@ define( function( require ) {
     var previous = null;
     var x = 0;
     var y = 0;
-    var highlighted = ['AUG', 'GAG'];
-    for ( var i = 0; i < choices.length; i++ ) {
+    var i = 0;
+
+    //Highlight the nodes corresponding to what is in the ribosome, or generally, start to the left of the connection model (or search for a start codon?)
+    var highlighted = [];
+    for ( i = 0; i < screenView.connectionModel.bottom.length - 2; i++ ) {
+      var a = screenView.connectionModel.bottom[i];
+      var b = screenView.connectionModel.bottom[i + 1];
+      var c = screenView.connectionModel.bottom[i + 2];
+      if ( a !== null && b !== null && c !== null ) {
+        highlighted.push( '' + a.base.partnerAbbreviation + b.base.partnerAbbreviation + c.base.partnerAbbreviation );
+      }
+    }
+    console.log( 'highlighted', highlighted );
+    for ( i = 0; i < choices.length; i++ ) {
       var choice1 = choices[i];
       for ( var j = 0; j < choices.length; j++ ) {
         var choice2 = choices[j];

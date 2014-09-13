@@ -191,18 +191,14 @@ define( function( require ) {
     var ribosomeNode = new RibosomeNode();
     this.addChild( ribosomeNode );
 
-    this.codonTableAccordionBox = new AccordionBox( new RNACodonTable( this, {} ), {
-      titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
-      right: this.layoutBounds.right,
-      top: this.layoutBounds.top
-    } );
-    this.addChild( this.codonTableAccordionBox );
 
     this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       dnaToolbox.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
       mRNAToolbox.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-      proteinSynthesisScreenView.codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
+      if ( proteinSynthesisScreenView.codonTableAccordionBox ) {
+        proteinSynthesisScreenView.codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
+      }
       ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
     } );
 
@@ -241,7 +237,15 @@ define( function( require ) {
 
       //TODO: Much duplicated code with the above
       else if ( oldState === 'transcription' && state === 'translation' ) {
-        console.log( 'imagine the strands separating' );
+        console.log( 'moving to translation' );
+
+        //Create the RNACodonTable lazily so it will have the right highlighting
+        proteinSynthesisScreenView.codonTableAccordionBox = new AccordionBox( new RNACodonTable( proteinSynthesisScreenView, {} ), {
+          titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
+          right: proteinSynthesisScreenView.layoutBounds.right,
+          top: proteinSynthesisScreenView.layoutBounds.top
+        } );
+        proteinSynthesisScreenView.addChild( proteinSynthesisScreenView.codonTableAccordionBox );
 
         //find all the base nodes on the top, move to the back and animate them south.
         var topBaseNodes = proteinSynthesisScreenView.connectionModel.topBaseNodes;
