@@ -291,7 +291,7 @@ define( function( require ) {
     } );
 
     //Start in the cytoplasm, for debuggnig
-    if ( window.phetcommon.getQueryParameter( 'translatino' ) ) {
+    if ( window.phetcommon.getQueryParameter( 'translation' ) ) {
       this.viewProperties.state = 'translation';
       this.viewProperties.location = 'cytoplasm';
     }
