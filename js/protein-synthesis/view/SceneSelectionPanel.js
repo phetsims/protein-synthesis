@@ -30,7 +30,6 @@ define( function( require ) {
     var updateButtonStates = function() {
       var state = stateProperty.value;
       dnaButtonStateProperty.value = state === 'dna' ? 'selected' :
-                                     state === 'transcription' || state === 'translation' ? 'enabled' :
                                      'disabled';
       transcriptionButtonStateProperty.value = state === 'transcription' ? 'selected' :
                                                (state === 'dna' && connectionModel.isReadyForTranslation) ? 'enabled' :
