@@ -61,7 +61,7 @@ define( function( require ) {
 
                 createdNode = screenView.createTRNANode( string );
                 screenView.addChild( createdNode );
-                this.drag( event, trail );
+                createdNode.start( event, trail );
               },
               drag: function( event, trail ) {
                 createdNode.drag( event, trail );

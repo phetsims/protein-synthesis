@@ -78,9 +78,10 @@ define( function( require ) {
 //    //TODO: Use MovableDragHandler to constrain bounds?
     this.addInputListener( new SimpleDragHandler( {
       start: function( event, trail ) {
+        trnaNode.drag( event, trail );
       },
       drag: function( event, trail ) {
-        this.drag( event, trail );
+        trnaNode.drag( event, trail );
       },
       end: function( event, trail ) {
       }
@@ -94,12 +95,15 @@ define( function( require ) {
     },
     setBodyCenter: function( bodyCenter ) {
       var scale = this.getTRNANodeScale();
-      this.right = bodyCenter.x + 70 * scale;
-      this.top = bodyCenter.y - 50 * scale;
+      this.centerX = bodyCenter.x-10*scale;
+      this.bottom = bodyCenter.y + 15 * scale;
     },
     getBodyCenter: function() {
       var scale = this.getTRNANodeScale();
-      return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
+      return new Vector2( this.centerX+10*scale, this.bottom - 15 * scale );
+    },
+    start: function( event, trail ) {
+      this.drag( event, trail );
     },
     drag: function( event, trail ) {
       var trnaNode = this;
@@ -107,23 +111,24 @@ define( function( require ) {
 
       var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
 
-      var updatedLocation = false;
+      var snapped = false;
       //TODO: make sure types are compatible (AT, GC)
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var distance = closestConnectionPoint.point.distance( proposedBodyCenter );
+        var newPoint = closestConnectionPoint.point.plusXY( 80, 60 );
+        var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
 
           //Close enough for connection.
           console.log( 'close' );
 
-          trnaNode.setBodyCenter( closestConnectionPoint.point );
-          updatedLocation = true;
+          trnaNode.setBodyCenter( newPoint );
+          snapped = true;
         }
       }
-      if ( !updatedLocation ) {
+      if ( !snapped ) {
         trnaNode.setBodyCenter( proposedBodyCenter );
       }
 
