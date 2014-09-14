@@ -84,6 +84,7 @@ define( function( require ) {
         trnaNode.drag( event, trail );
       },
       end: function( event, trail ) {
+        trnaNode.end( event, trail );
       }
     } ) );
   }
@@ -95,12 +96,12 @@ define( function( require ) {
     },
     setBodyCenter: function( bodyCenter ) {
       var scale = this.getTRNANodeScale();
-      this.centerX = bodyCenter.x-10*scale;
+      this.centerX = bodyCenter.x - 10 * scale;
       this.bottom = bodyCenter.y + 15 * scale;
     },
     getBodyCenter: function() {
       var scale = this.getTRNANodeScale();
-      return new Vector2( this.centerX+10*scale, this.bottom - 15 * scale );
+      return new Vector2( this.centerX + 10 * scale, this.bottom - 15 * scale );
     },
     start: function( event, trail ) {
       this.drag( event, trail );
@@ -131,7 +132,46 @@ define( function( require ) {
       if ( !snapped ) {
         trnaNode.setBodyCenter( proposedBodyCenter );
       }
+    },
+    end: function( event, trail ) {
+      //if it did not connect, then fly back to the RNACodonTable, where it originated
 
+      var trnaNode = this;
+      var screenView = this.screenView;
+
+      var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+
+      var snapped = false;
+      //TODO: make sure types are compatible (AT, GC)
+      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
+      if ( connectionPoints.length > 0 ) {
+        var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
+        var newPoint = closestConnectionPoint.point.plusXY( 80, 60 );
+        var distance = newPoint.distance( proposedBodyCenter );
+        console.log( 'distance', distance );
+        if ( distance < 30 ) {
+
+          //Close enough for connection.
+          console.log( 'close' );
+
+          trnaNode.setBodyCenter( newPoint );
+          snapped = true;
+        }
+      }
+      if ( !snapped ) {
+        var initScale = trnaNode.getScaleVector().x;
+        new TWEEN.Tween( { x: trnaNode.x, y: trnaNode.y, scale: initScale} )
+          .to( { x: trnaNode.initialX, y: trnaNode.initialY, scale: 0.2}, 700 )
+          .easing( TWEEN.Easing.Cubic.InOut )
+          .onUpdate( function() {
+            trnaNode.setScaleMagnitude( this.scale );
+            trnaNode.setTranslation( this.x, this.y );
+          } )
+          .onComplete( function() {
+            trnaNode.detach();
+          } )
+          .start();
+      }
     }
   } );
 } );

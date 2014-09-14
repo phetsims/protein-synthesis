@@ -62,11 +62,14 @@ define( function( require ) {
                 createdNode = screenView.createTRNANode( string );
                 screenView.addChild( createdNode );
                 createdNode.start( event, trail );
+                createdNode.initialX = createdNode.x;
+                createdNode.initialY = createdNode.y;
               },
               drag: function( event, trail ) {
                 createdNode.drag( event, trail );
               },
               end: function( event, trail ) {
+                createdNode.end( event, trail );
               }
             } ) );
           })( string );
