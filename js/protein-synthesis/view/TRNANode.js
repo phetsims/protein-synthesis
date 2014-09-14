@@ -96,14 +96,16 @@ define( function( require ) {
       var scaleMag = this.getScaleVector();
       return scaleMag.x;
     },
+
+    //Set the location of the tRNA.  Must be relative to top/left so that different widths & heights will translate the same
     setBodyCenter: function( bodyCenter ) {
       var scale = this.getTRNANodeScale();
-      this.centerX = bodyCenter.x - 10 * scale;
-      this.bottom = bodyCenter.y + 15 * scale;
+      this.top = bodyCenter.y - 340 * scale;
+      this.left = bodyCenter.x - 160 * scale;
     },
     getBodyCenter: function() {
       var scale = this.getTRNANodeScale();
-      return new Vector2( this.centerX + 10 * scale, this.bottom - 15 * scale );
+      return new Vector2( this.left + 160 * scale, this.top + 340 * scale );
     },
     start: function( event, trail ) {
       this.drag( event, trail );
@@ -119,7 +121,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 80 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
+        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 65 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
@@ -148,7 +150,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 80 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
+        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 65 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
