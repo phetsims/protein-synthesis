@@ -156,6 +156,7 @@ define( function( require ) {
 
           trnaNode.setBodyCenter( newPoint );
           snapped = true;
+          screenView.trnaAttached( trnaNode, closestConnectionPoint );
         }
       }
       if ( !snapped ) {

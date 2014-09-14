@@ -350,6 +350,34 @@ define( function( require ) {
                  null;
       assert && assert( base !== null );
       return new BaseNode( base, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty, true, false );
+    },
+
+    trnaAttached: function( trnaNode, closestConnectionPoint ) {
+      //Move the tRNA and mRNA to the left by the length of one codon
+      new TWEEN.Tween( { x: trnaNode.x} )
+        .to( { x: trnaNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize}, 1000 )
+        .easing( TWEEN.Easing.Cubic.InOut )
+        .onUpdate( function() {
+          trnaNode.x = this.x;
+        } )
+        .onComplete( function() {
+        } )
+        .start();
+
+      var bottomBaseNodes = this.connectionModel.bottomBaseNodes;
+      bottomBaseNodes.forEach( function( baseNode ) {
+        //Move the tRNA and mRNA to the left by the length of one codon
+        new TWEEN.Tween( { x: baseNode.x} )
+          .to( { x: baseNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize}, 1000 )
+          .easing( TWEEN.Easing.Cubic.InOut )
+          .onUpdate( function() {
+            baseNode.x = this.x;
+          } )
+          .onComplete( function() {
+          } )
+          .start();
+
+      } );
     }
   } );
 } );
