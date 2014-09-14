@@ -58,14 +58,15 @@ define( function( require ) {
 
     //TODO: While dragging, show a drop shadow
 
-    this.addChild( new ResetAllButton( {
+    var resetAllButton = new ResetAllButton( {
       right: this.layoutBounds.maxX - 10,
       bottom: this.layoutBounds.maxY - 10,
       listener: function() {
         model.reset();
         proteinSynthesisScreenView.viewProperties.reset();
       }
-    } ) );
+    } );
+    this.addChild( resetAllButton );
 
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
@@ -189,7 +190,7 @@ define( function( require ) {
       }
     } );
 
-    var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: this.layoutBounds.bottom - 70} );
+    var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: resetAllButton.top - 4} );
     this.addChild( structureCheckBox );
 
     var ribosomeNode = new RibosomeNode();
