@@ -72,9 +72,11 @@ define( function( require ) {
       labelsVisible: true,
       nucleusToCytoplasm: 0,
       state: 'dna',//[dna,transcription/translation]
-      location: 'nucleus' // [nucleus/cytoplasm]
+      location: 'nucleus', // [nucleus/cytoplasm]
+      numAminoAcids: 0
     } );
 
+    this.attachedTRNANodes = [];
     //Put the dotted line to the top left so students will build left to right and things will fit into the ribosome (which is on the left side of the screen)
     this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 4 + 30} );
     this.addChild( this.dottedLine );
@@ -353,16 +355,24 @@ define( function( require ) {
     },
 
     trnaAttached: function( trnaNode, closestConnectionPoint ) {
-      //Move the tRNA and mRNA to the left by the length of one codon
-      new TWEEN.Tween( { x: trnaNode.x} )
-        .to( { x: trnaNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize}, 1000 )
-        .easing( TWEEN.Easing.Cubic.InOut )
-        .onUpdate( function() {
-          trnaNode.x = this.x;
-        } )
-        .onComplete( function() {
-        } )
-        .start();
+      var proteinSynthesisScreenView = this;
+
+      this.attachedTRNANodes.push( trnaNode );
+
+      this.attachedTRNANodes.forEach( function( trnaNode ) {
+        //Move the tRNA and mRNA to the left by the length of one codon
+        new TWEEN.Tween( { x: trnaNode.x} )
+          .to( { x: trnaNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize}, 1000 )
+          .easing( TWEEN.Easing.Cubic.InOut )
+          .onUpdate( function() {
+            trnaNode.x = this.x;
+          } )
+          .onComplete( function() {
+            proteinSynthesisScreenView.viewProperties.numAminoAcids = proteinSynthesisScreenView.viewProperties.numAminoAcids + 1;
+          } )
+          .start();
+
+      } );
 
       var bottomBaseNodes = this.connectionModel.bottomBaseNodes;
       bottomBaseNodes.forEach( function( baseNode ) {

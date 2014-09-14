@@ -21,6 +21,8 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var Shape = require( 'KITE/Shape' );
+  var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
+
 
   /**
    * Constructor for the TRNANode
@@ -117,7 +119,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 80, 60 );
+        var newPoint = closestConnectionPoint.point.plusXY( 80 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
@@ -146,7 +148,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 80, 60 );
+        var newPoint = closestConnectionPoint.point.plusXY( 80 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
