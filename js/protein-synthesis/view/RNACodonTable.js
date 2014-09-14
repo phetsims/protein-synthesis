@@ -64,8 +64,7 @@ define( function( require ) {
                 this.drag( event, trail );
               },
               drag: function( event, trail ) {
-                var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-                createdNode.center = proposedBodyCenter;
+                createdNode.drag( event, trail );
               },
               end: function( event, trail ) {
               }

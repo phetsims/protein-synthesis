@@ -28,6 +28,7 @@ define( function( require ) {
    */
   function TRNANode( triplet, screenView, baseLabelsVisibleProperty, labelsVisibleProperty ) {
 
+    this.screenView = screenView;
 //    debugger;
 
     var trnaNode = this;
@@ -79,28 +80,7 @@ define( function( require ) {
       start: function( event, trail ) {
       },
       drag: function( event, trail ) {
-        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-
-        var updatedLocation = false;
-        //TODO: make sure types are compatible (AT, GC)
-        var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
-        if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-          var distance = closestConnectionPoint.point.distance( proposedBodyCenter );
-          console.log( 'distance', distance );
-          if ( distance < 30 ) {
-
-            //Close enough for connection.
-            console.log( 'close' );
-
-            trnaNode.setBodyCenter( closestConnectionPoint.point );
-            updatedLocation = true;
-          }
-        }
-        if ( !updatedLocation ) {
-          trnaNode.setBodyCenter( proposedBodyCenter );
-        }
-
+        this.drag( event, trail );
       },
       end: function( event, trail ) {
       }
@@ -120,6 +100,33 @@ define( function( require ) {
     getBodyCenter: function() {
       var scale = this.getTRNANodeScale();
       return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
+    },
+    drag: function( event, trail ) {
+      var trnaNode = this;
+      var screenView = this.screenView;
+
+      var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+
+      var updatedLocation = false;
+      //TODO: make sure types are compatible (AT, GC)
+      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
+      if ( connectionPoints.length > 0 ) {
+        var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
+        var distance = closestConnectionPoint.point.distance( proposedBodyCenter );
+        console.log( 'distance', distance );
+        if ( distance < 30 ) {
+
+          //Close enough for connection.
+          console.log( 'close' );
+
+          trnaNode.setBodyCenter( closestConnectionPoint.point );
+          updatedLocation = true;
+        }
+      }
+      if ( !updatedLocation ) {
+        trnaNode.setBodyCenter( proposedBodyCenter );
+      }
+
     }
   } );
 } );
