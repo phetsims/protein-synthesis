@@ -9,6 +9,8 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var TestTRNAConnectionPoints = require( 'PROTEIN_SYNTHESIS/protein-synthesis/tests/TestTRNAConnectionPoints' );
+  var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var inherit = require( 'PHET_CORE/inherit' );
   var ScreenView = require( 'JOIST/ScreenView' );
   var ResetAllButton = require( 'SCENERY_PHET/ResetAllButton' );
@@ -321,6 +323,10 @@ define( function( require ) {
         }
       })();
     }
+
+    if ( window.phetcommon.getQueryParameter( 'test' ) ) {
+      new TestTRNAConnectionPoints( this );
+    }
   }
 
   return inherit( ScreenView, ProteinSynthesisView, {
@@ -328,6 +334,22 @@ define( function( require ) {
     //TODO: What if the user is dragging a fragment (2+ pieces) to connect with another fragment (2+ pieces)?
     getConnectionPoints: function( baseNode ) {
       return this.connectionModel.getConnectionPoints( baseNode );
+    },
+
+    //Convenience constructor since several ProteinSynthesisScreenView properties are used
+    createTRNANode: function( string ) {
+      return new TRNANode( string, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty );
+    },
+
+    //Convenience method for creating AUGC
+    createMRNABaseNode: function( abbreviation ) {
+      var base = abbreviation === 'A' ? new Adenine( 'ribose' ) :
+                 abbreviation === 'U' ? new Uracil( 'ribose' ) :
+                 abbreviation === 'G' ? new Guanine( 'ribose' ) :
+                 abbreviation === 'C' ? new Cytosine( 'ribose' ) :
+                 null;
+      assert && assert( base !== null );
+      return new BaseNode( base, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty, true, false );
     }
   } );
 } );

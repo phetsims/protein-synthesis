@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -60,7 +59,7 @@ define( function( require ) {
             textNode.addInputListener( new SimpleDragHandler( {
               start: function( event, trail ) {
 
-                createdNode = new TRNANode( string, screenView, screenView.viewProperties.baseLabelsVisibleProperty, screenView.viewProperties.labelsVisibleProperty );
+                createdNode = screenView.createTRNANode( string );
                 screenView.addChild( createdNode );
                 this.drag( event, trail );
               },

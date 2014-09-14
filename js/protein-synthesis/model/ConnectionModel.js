@@ -188,6 +188,7 @@ define( function( require ) {
 
                 (function( i ) {
 
+                  //TODO: Remove deltaI
                   var deltaI = 0;
                   var di = i + deltaI - CENTER_INDEX;
                   var x = connectionModel.x + di * 84;
@@ -214,7 +215,40 @@ define( function( require ) {
       }
 
       return connectionPoints;
-    }
+    },
 
+    //TODO: This function needs work.  Possibly delegate to above?
+    getConnectionPointsForTRNA: function( tRNANode ) {
+      var baseNodes = tRNANode.baseNodes;
+      var connectionModel = this;
+
+      var connectionPoints = [];
+      for ( var i = 0; i < this.bottom.length - 2; i++ ) {
+        (function( i ) {
+
+          var a = connectionModel.bottom[i];
+          var b = connectionModel.bottom[i + 1];
+          var c = connectionModel.bottom[i + 2];
+          if ( (a !== null && b !== null && c !== null) && (
+            a.base.canHydrogenBond( baseNodes[0].base ) &&
+            b.base.canHydrogenBond( baseNodes[1].base ) &&
+            c.base.canHydrogenBond( baseNodes[2].base )
+            ) ) {
+            var di = i - CENTER_INDEX;
+            var x = connectionModel.x + di * 84;
+            connectionPoints.push( new ConnectionPoint( x, connectionModel.y, true,
+              function() {
+                connectionModel.add( i - 1, 0, baseNodes[0] );
+                connectionModel.add( i, 0, baseNodes[1] );
+                connectionModel.add( i + 1, 0, baseNodes[2] );
+              } ) );
+          }
+
+        })( i );
+      }
+      return connectionPoints;
+    }
+  }, {
+    CENTER_INDEX: CENTER_INDEX
   } );
 } );

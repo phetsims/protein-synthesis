@@ -17,9 +17,9 @@ define( function( require ) {
   var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
+  var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
-  var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
   var Shape = require( 'KITE/Shape' );
 
   /**
@@ -44,6 +44,7 @@ define( function( require ) {
     aminoAcidNode.centerX = trnaBody.centerX;
     aminoAcidNode.bottom = trnaBody.top;
 
+    this.baseNodes = [];
     for ( var i = 0; i < triplet.length; i++ ) {
       var char = triplet.charAt( i );
       var baseNode = new BaseNode( char === 'A' ? new Adenine( 'ribose' ) :
@@ -57,6 +58,7 @@ define( function( require ) {
       baseNode.setScaleMagnitude( BaseNode.fullSize );
       baseNode.translate( 140 * i - 43, 43 );
       children.push( baseNode );
+      this.baseNodes.push( baseNode );
     }
 
     children.push( new Text( 'tRNA', {center: trnaBody.center} ) );
@@ -78,7 +80,27 @@ define( function( require ) {
       },
       drag: function( event, trail ) {
         var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-        trnaNode.center = proposedBodyCenter;
+
+        var updatedLocation = false;
+        //TODO: make sure types are compatible (AT, GC)
+        var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
+        if ( connectionPoints.length > 0 ) {
+          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
+          var distance = closestConnectionPoint.point.distance( proposedBodyCenter );
+          console.log( 'distance', distance );
+          if ( distance < 30 ) {
+
+            //Close enough for connection.
+            console.log( 'close' );
+
+            trnaNode.setBodyCenter( closestConnectionPoint.point );
+            updatedLocation = true;
+          }
+        }
+        if ( !updatedLocation ) {
+          trnaNode.setBodyCenter( proposedBodyCenter );
+        }
+
       },
       end: function( event, trail ) {
       }
@@ -86,33 +108,18 @@ define( function( require ) {
   }
 
   return inherit( Path, TRNANode, {
-    setPointingUp: function( pointingUp ) {
-      this.pointingUp = pointingUp;
-      this.base.angle = this.pointingUp ? 0 : Math.PI;
-    },
     getTRNANodeScale: function() {
       var scaleMag = this.getScaleVector();
       return scaleMag.x;
     },
     setBodyCenter: function( bodyCenter ) {
       var scale = this.getTRNANodeScale();
-      if ( this.pointingUp ) {
-        this.left = bodyCenter.x - 70 * scale;//half body width, TODO magic
-        this.bottom = bodyCenter.y + 50 * scale;//half body height
-      }
-      else {
-        this.right = bodyCenter.x + 70 * scale;
-        this.top = bodyCenter.y - 50 * scale;
-      }
+      this.right = bodyCenter.x + 70 * scale;
+      this.top = bodyCenter.y - 50 * scale;
     },
     getBodyCenter: function() {
       var scale = this.getTRNANodeScale();
-      if ( this.pointingUp ) {
-        return new Vector2( this.left + 70 * scale, this.bottom - 50 * scale );
-      }
-      else {
-        return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
-      }
+      return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
     }
   } );
 } );
