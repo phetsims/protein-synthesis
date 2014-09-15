@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Util = require( 'DOT/Util' );
   var TestTRNAConnectionPoints = require( 'PROTEIN_SYNTHESIS/protein-synthesis/tests/TestTRNAConnectionPoints' );
   var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -39,10 +40,6 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
 
-  var isCloseTo = function( x, y, delta ) {
-    return Math.abs( x - y ) <= delta;
-  };
-
   /**
    * Constructor for the ProteinSynthesisScreenView
    * @constructor
@@ -72,6 +69,7 @@ define( function( require ) {
 
       //Everything that should translate with the camera
       var worldNode = new Node();
+      this.worldNode = worldNode;
 
       this.addChild( worldNode );
       var nucleusShape = new Circle( 1000, {fill: '#E2E9F7', stroke: 'black', lineWidth: 4, centerX: this.layoutBounds.centerX, centerY: this.layoutBounds.centerY} );
@@ -212,7 +210,12 @@ define( function( require ) {
       worldNode.addChild( ribosomeNode );
 
       this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
-        worldNode.x = -nucleusToCytoplasm * 2000;
+        var scale = Util.linear( 0, 1, 1, 0.6, nucleusToCytoplasm );
+        worldNode.x = -nucleusToCytoplasm * 2000 * scale;
+
+        //bring any mRNA out of the nucleus to the cytoplasm.
+
+        worldNode.setScaleMagnitude( scale );
       } );
 
       var nonCodingStrand = [];

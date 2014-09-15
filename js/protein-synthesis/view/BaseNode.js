@@ -57,7 +57,7 @@ define( function( require ) {
           //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
           baseNode.detach();
           baseNode.setScaleMagnitude( fullSize );
-          screenView.addChild( baseNode );
+          screenView.worldNode.addChild( baseNode );
           this.drag( event, trail );
         },
         drag: function( event, trail ) {
