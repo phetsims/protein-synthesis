@@ -218,9 +218,10 @@ define( function( require ) {
 
           //TODO: Leftmost mRNA node should be parked directly in the ribosome
           var mrnaNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
+          proteinSynthesisScreenView.distanceMRNATranslated = 2000 + 414.2696199129823;
           mrnaNodes.forEach( function( baseNode ) {
             new TWEEN.Tween( { x: baseNode.x} )
-              .to( { x: baseNode.x + 2000 + 414.2696199129823}, 3800 )
+              .to( { x: baseNode.x + proteinSynthesisScreenView.distanceMRNATranslated}, 3800 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 baseNode.x = this.x;

@@ -28,7 +28,7 @@ define( function( require ) {
     connectionModel.add( ConnectionModel.CENTER_INDEX + 2, 1, screenView.createMRNABaseNode( 'G' ) );
 
     var tRNA = screenView.createTRNANode( 'UAC' );
-    var result = connectionModel.getConnectionPointsForTRNA( tRNA );
+    var result = connectionModel.getConnectionPointsForTRNA( screenView, tRNA );
     console.log( result );
   }
 

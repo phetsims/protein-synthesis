@@ -218,7 +218,7 @@ define( function( require ) {
     },
 
     //TODO: This function needs work.  Possibly delegate to above?
-    getConnectionPointsForTRNA: function( tRNANode ) {
+    getConnectionPointsForTRNA: function( proteinSynthesisScreenView, tRNANode ) {
       var baseNodes = tRNANode.baseNodes;
       var connectionModel = this;
 
@@ -235,7 +235,7 @@ define( function( require ) {
             c.base.canHydrogenBond( baseNodes[2].base )
             ) ) {
             var di = i - CENTER_INDEX;
-            var x = connectionModel.x + di * 84;
+            var x = connectionModel.x + di * 84 + proteinSynthesisScreenView.distanceMRNATranslated;
             connectionPoints.push( new ConnectionPoint( x, connectionModel.y, true,
               function() {
                 connectionModel.add( i - 1, 0, baseNodes[0] );

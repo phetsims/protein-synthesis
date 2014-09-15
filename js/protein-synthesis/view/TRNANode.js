@@ -117,7 +117,7 @@ define( function( require ) {
 
       var snapped = false;
       //TODO: make sure types are compatible (AT, GC)
-      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
+      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
         var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 65 );
@@ -142,11 +142,11 @@ define( function( require ) {
       var trnaNode = this;
       var screenView = this.screenView;
 
-      var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+      var proposedBodyCenter = screenView.worldNode.globalToLocalPoint( event.pointer.point );
 
       var snapped = false;
       //TODO: make sure types are compatible (AT, GC)
-      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( trnaNode );
+      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
         var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 65 );
