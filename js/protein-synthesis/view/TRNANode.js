@@ -31,7 +31,6 @@ define( function( require ) {
   function TRNANode( triplet, screenView, baseLabelsVisibleProperty, labelsVisibleProperty ) {
 
     this.screenView = screenView;
-//    debugger;
 
     var trnaNode = this;
     var children = [];
@@ -114,7 +113,7 @@ define( function( require ) {
       var trnaNode = this;
       var screenView = this.screenView;
 
-      var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+      var proposedBodyCenter = screenView.worldNode.globalToLocalPoint( event.pointer.point );
 
       var snapped = false;
       //TODO: make sure types are compatible (AT, GC)

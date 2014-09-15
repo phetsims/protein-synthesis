@@ -60,7 +60,7 @@ define( function( require ) {
               start: function( event, trail ) {
 
                 createdNode = screenView.createTRNANode( string );
-                screenView.addChild( createdNode );
+                screenView.worldNode.addChild( createdNode );
                 createdNode.start( event, trail );
                 createdNode.initialX = createdNode.x;
                 createdNode.initialY = createdNode.y;
