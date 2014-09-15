@@ -70,8 +70,12 @@ define( function( require ) {
 
       var proteinSynthesisScreenView = this;
 
+      //Everything that should translate with the camera
+      var worldNode = new Node();
+
+      this.addChild( worldNode );
       var nucleusShape = new Circle( 1000, {fill: '#E2E9F7', stroke: 'black', lineWidth: 4, centerX: this.layoutBounds.centerX, centerY: this.layoutBounds.centerY} );
-      this.addChild( nucleusShape );
+      worldNode.addChild( nucleusShape );
 
       //TODO: While dragging, show a drop shadow
 
@@ -90,10 +94,10 @@ define( function( require ) {
       this.attachedTRNANodes = [];
       //Put the dotted line to the top left so students will build left to right and things will fit into the ribosome (which is on the left side of the screen)
       this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 4 + 30} );
-      this.addChild( this.dottedLine );
+      worldNode.addChild( this.dottedLine );
       var codingStrandLabel = new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.top - 10} );
       this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
-      this.addChild( codingStrandLabel );
+      worldNode.addChild( codingStrandLabel );
 
       this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
       this.connectionModel.on( 'changed', function() {
@@ -129,14 +133,14 @@ define( function( require ) {
 
       var dnaToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {fill: 'white', lineWidth: 1, stroke: 'black', centerX: this.layoutBounds.centerX, bottom: sceneSelectionPanel.top - 10} );
       dnaToolbox.addChild( new Text( 'DNA', {centerX: 450 / 2, bottom: 100 - 2} ) );
-      this.addChild( dnaToolbox );
+      worldNode.addChild( dnaToolbox );
 
       var dnaBases = [];
       var mRNABases = [];
       for ( var i = 0; i < dnaStacks.length; i++ ) {
         var dnaStack = dnaStacks[i];
         for ( var j = 0; j < dnaStack.length; j++ ) {
-          this.addChild( dnaStack[j] );
+          worldNode.addChild( dnaStack[j] );
           dnaBases.push( dnaStack[j] );
         }
       }
@@ -150,14 +154,14 @@ define( function( require ) {
 
       var mRNAToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {fill: 'white', lineWidth: 1, stroke: 'black', centerX: this.layoutBounds.centerX, bottom: sceneSelectionPanel.top - 10} );
       mRNAToolbox.addChild( new Text( 'mRNA', {centerX: 450 / 2, bottom: 100 - 2} ) );
-      this.addChild( mRNAToolbox );
+      worldNode.addChild( mRNAToolbox );
 
       for ( i = 0; i < mRNAStacks.length; i++ ) {
         var mRNAStack = mRNAStacks[i];
         for ( j = 0; j < mRNAStack.length; j++ ) {
           var mRNABase = mRNAStack[j];
           mRNABases.push( mRNABase );
-          this.addChild( mRNABase );
+          worldNode.addChild( mRNABase );
         }
       }
 
@@ -200,20 +204,15 @@ define( function( require ) {
         }
       } );
 
-      var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: resetAllButton.top - 4} );
-      this.addChild( structureCheckBox );
+      var labelsCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: resetAllButton.top - 4} );
+      this.addChild( labelsCheckBox );
 
       var ribosomeNode = new RibosomeNode( this.viewProperties.labelsVisibleProperty );
-      this.addChild( ribosomeNode );
+      ribosomeNode.left = 2000 + 120;
+      worldNode.addChild( ribosomeNode );
 
       this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
-        nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-        dnaToolbox.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-        mRNAToolbox.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
-        if ( proteinSynthesisScreenView.codonTableAccordionBox ) {
-          proteinSynthesisScreenView.codonTableAccordionBox.right = proteinSynthesisScreenView.layoutBounds.right - nucleusToCytoplasm * 2000 + 2000;
-        }
-        ribosomeNode.left = -nucleusToCytoplasm * 2000 + 2000 + 120;
+        worldNode.x = -nucleusToCytoplasm * 2000;
       } );
 
       var nonCodingStrand = [];
@@ -243,7 +242,6 @@ define( function( require ) {
               } )
               .onComplete( function() {
                 nonCodingStrand.push( baseNode );
-//              proteinSynthesisScreenView.removeChild( baseNode )
               } )
               .start();
           } );
@@ -256,10 +254,10 @@ define( function( require ) {
           //Create the RNACodonTable lazily so it will have the right highlighting
           proteinSynthesisScreenView.codonTableAccordionBox = new AccordionBox( new RNACodonTable( proteinSynthesisScreenView, {} ), {
             titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
-            right: proteinSynthesisScreenView.layoutBounds.right,
+            right: proteinSynthesisScreenView.layoutBounds.right + 2000,
             top: proteinSynthesisScreenView.layoutBounds.top
           } );
-          proteinSynthesisScreenView.addChild( proteinSynthesisScreenView.codonTableAccordionBox );
+          worldNode.addChild( proteinSynthesisScreenView.codonTableAccordionBox );
 
           //find all the base nodes on the top, move to the back and animate them south.
           var topBaseNodes = proteinSynthesisScreenView.connectionModel.topBaseNodes;
@@ -331,7 +329,7 @@ define( function( require ) {
             baseNode.setPointingUp( cp[element].up );
             baseNode.setBodyCenter( cp[element].point );
             cp[element].connect();
-            proteinSynthesisScreenView.addChild( baseNode );
+            worldNode.addChild( baseNode );
           }
         })();
       }
