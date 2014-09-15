@@ -193,9 +193,8 @@ define( function( require ) {
     var structureCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: resetAllButton.top - 4} );
     this.addChild( structureCheckBox );
 
-    var ribosomeNode = new RibosomeNode();
+    var ribosomeNode = new RibosomeNode( this.viewProperties.labelsVisibleProperty );
     this.addChild( ribosomeNode );
-
 
     this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
       nucleusShape.centerX = proteinSynthesisScreenView.layoutBounds.centerX - nucleusToCytoplasm * 2000;
