@@ -192,12 +192,12 @@ define( function( require ) {
 
       var labelsCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {
         left: this.layoutBounds.left + 5,
-        bottom: this.layoutBounds.bottom - 5
+        centerY: sceneSelectionPanel.centerY
       } );
       this.addChild( labelsCheckBox );
 
       var ribosomeNode = new RibosomeNode( this.viewProperties.labelsVisibleProperty );
-      ribosomeNode.left = 2000 + 120;
+      ribosomeNode.centerX = 2725;
       worldNode.addChild( ribosomeNode );
 
       this.viewProperties.stateProperty.link( function( state, oldState ) {
@@ -215,10 +215,12 @@ define( function( require ) {
             } )
             .start();
 
+
+          //TODO: Leftmost mRNA node should be parked directly in the ribosome
           var mrnaNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
           mrnaNodes.forEach( function( baseNode ) {
             new TWEEN.Tween( { x: baseNode.x} )
-              .to( { x: baseNode.x + 2000 }, 3800 )
+              .to( { x: baseNode.x + 2000 + 414.2696199129823}, 3800 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 baseNode.x = this.x;
@@ -272,7 +274,6 @@ define( function( require ) {
             left: 15 + 2000//todo magic numbers
           } );
           worldNode.addChild( proteinSynthesisScreenView.codonTableAccordionBox );
-          window.rnaCodonTable = proteinSynthesisScreenView.codonTableAccordionBox;
 
           //Move back the non-coding strand
           nonCodingStrand.forEach( function( baseNode ) {
@@ -301,7 +302,7 @@ define( function( require ) {
         }
       } );
 
-      //Start in the cytoplasm, for debuggnig
+      //Start in the cytoplasm, for debugging
       if ( window.phetcommon.getQueryParameter( 'translation' ) ) {
         this.viewProperties.state = 'translation';
         this.viewProperties.location = 'cytoplasm';
