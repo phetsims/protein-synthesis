@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var VBox = require( 'SCENERY/nodes/VBox' );
   var Util = require( 'DOT/Util' );
   var TestTRNAConnectionPoints = require( 'PROTEIN_SYNTHESIS/protein-synthesis/tests/TestTRNAConnectionPoints' );
   var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
@@ -40,6 +41,9 @@ define( function( require ) {
   var Vector2 = require( 'DOT/Vector2' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
 
+  //constants
+  var translationScaleFactor = 0.75;
+
   /**
    * Constructor for the ProteinSynthesisScreenView
    * @constructor
@@ -51,7 +55,6 @@ define( function( require ) {
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
       labelsVisible: true,
-      nucleusToCytoplasm: 0,
       state: 'dna',//[dna,transcription/translation]
       location: 'nucleus', // [nucleus/cytoplasm]
       numAminoAcids: 0
@@ -78,8 +81,8 @@ define( function( require ) {
       //TODO: While dragging, show a drop shadow
 
       var resetAllButton = new ResetAllButton( {
-        right: this.layoutBounds.maxX - 10,
-        bottom: this.layoutBounds.maxY - 10,
+        right: this.layoutBounds.maxX - 5,
+        bottom: this.layoutBounds.maxY - 5,
         listener: function() {
           proteinSynthesisScreenView.model.reset();
           proteinSynthesisScreenView.viewProperties.reset();
@@ -187,35 +190,42 @@ define( function( require ) {
         }
       } );
 
-      this.viewProperties.locationProperty.link( function( location ) {
-        var cytoplasm = (location === 'cytoplasm');
-        if ( cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 1 || !cytoplasm && proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm !== 0 ) {
-
-          //TODO: var tween and cancel?
-          new TWEEN.Tween( { x: proteinSynthesisScreenView.viewProperties.nucleusToCytoplasm} )
-            .to( { x: cytoplasm ? 1 : 0 }, 4000 )
-            .easing( TWEEN.Easing.Cubic.InOut )
-            .onUpdate( function() {
-              proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.set( this.x );
-            } )
-            .start();
-        }
+      var labelsCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {
+        left: this.layoutBounds.left + 5,
+        bottom: this.layoutBounds.bottom - 5
       } );
-
-      var labelsCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {right: this.layoutBounds.right - 10, bottom: resetAllButton.top - 4} );
       this.addChild( labelsCheckBox );
 
       var ribosomeNode = new RibosomeNode( this.viewProperties.labelsVisibleProperty );
       ribosomeNode.left = 2000 + 120;
       worldNode.addChild( ribosomeNode );
 
-      this.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
-        var scale = Util.linear( 0, 1, 1, 0.6, nucleusToCytoplasm );
-        worldNode.x = -nucleusToCytoplasm * 2000 * scale;
+      this.viewProperties.stateProperty.link( function( state, oldState ) {
+        if ( state === 'translation' && oldState === 'transcription' ) {
 
-        //bring any mRNA out of the nucleus to the cytoplasm.
+          new TWEEN.Tween( { progress: 0, x: 0} )
+            .to( { progress: 1, x: 2000 }, 4000 )
+            .easing( TWEEN.Easing.Cubic.InOut )
+            .onUpdate( function() {
+              proteinSynthesisScreenView.worldNode.x = this.x;
+              var scale = Util.linear( 0, 1, 1, translationScaleFactor, this.progress );
+              worldNode.x = -this.progress * 2000 * scale;
+              //bring any mRNA out of the nucleus to the cytoplasm.
+              worldNode.setScaleMagnitude( scale );
+            } )
+            .start();
 
-        worldNode.setScaleMagnitude( scale );
+          var mrnaNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
+          mrnaNodes.forEach( function( baseNode ) {
+            new TWEEN.Tween( { x: baseNode.x} )
+              .to( { x: baseNode.x + 2000 }, 3800 )
+              .easing( TWEEN.Easing.Cubic.InOut )
+              .onUpdate( function() {
+                baseNode.x = this.x;
+              } )
+              .start();
+          } );
+        }
       } );
 
       var nonCodingStrand = [];
@@ -230,8 +240,8 @@ define( function( require ) {
 
             baseNode.originalY = baseNode.y;
             //TODO: Move these baseNodes behind the control panels
-            proteinSynthesisScreenView.removeChild( baseNode );
-            proteinSynthesisScreenView.insertChild( proteinSynthesisScreenView.indexOfChild( nucleusShape ) + 1, baseNode );
+            worldNode.removeChild( baseNode );
+            worldNode.insertChild( worldNode.indexOfChild( nucleusShape ) + 1, baseNode );
 
             proteinSynthesisScreenView.connectionModel.remove( baseNode );
 
@@ -255,21 +265,20 @@ define( function( require ) {
           console.log( 'moving to translation' );
 
           //Create the RNACodonTable lazily so it will have the right highlighting
-          proteinSynthesisScreenView.codonTableAccordionBox = new AccordionBox( new RNACodonTable( proteinSynthesisScreenView, {} ), {
-            titleNode: new Text( 'RNA codon table', new PhetFont( 18 ) ),
-            right: proteinSynthesisScreenView.layoutBounds.right + 2000,
-            top: proteinSynthesisScreenView.layoutBounds.top
+          var rnaCodonTable = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {} );
+          var title = new Text( 'RNA codon table', new PhetFont( 24 ) );
+          proteinSynthesisScreenView.codonTableAccordionBox = new Panel( new VBox( {spacing: 10, children: [rnaCodonTable, title]} ), {
+            bottom: sceneSelectionPanel.top - 10 + 139,
+            left: 15 + 2000//todo magic numbers
           } );
           worldNode.addChild( proteinSynthesisScreenView.codonTableAccordionBox );
-
-          //find all the base nodes on the top, move to the back and animate them south.
-          var topBaseNodes = proteinSynthesisScreenView.connectionModel.topBaseNodes;
+          window.rnaCodonTable = proteinSynthesisScreenView.codonTableAccordionBox;
 
           //Move back the non-coding strand
           nonCodingStrand.forEach( function( baseNode ) {
             //TODO: Move these baseNodes behind the control panels
-            proteinSynthesisScreenView.removeChild( baseNode );
-            proteinSynthesisScreenView.insertChild( proteinSynthesisScreenView.indexOfChild( nucleusShape ) + 1, baseNode );
+            worldNode.removeChild( baseNode );
+            worldNode.insertChild( worldNode.indexOfChild( nucleusShape ) + 1, baseNode );
 
             //Move away the non-coding strand when translation starts
             //TODO: var tween and cancel?
@@ -285,23 +294,6 @@ define( function( require ) {
           } );
 
           proteinSynthesisScreenView.viewProperties.location = 'cytoplasm';
-
-          //Rejoin the stands and move them to the left (as the camera pans right)
-          topBaseNodes.forEach( function( baseNode ) {
-            baseNode.originalX = baseNode.centerX;
-          } );
-          nonCodingStrand.forEach( function( baseNode ) {
-            baseNode.originalX = baseNode.centerX
-          } );
-          proteinSynthesisScreenView.viewProperties.nucleusToCytoplasmProperty.link( function( nucleusToCytoplasm ) {
-            topBaseNodes.forEach( function( baseNode ) {
-              baseNode.centerX = baseNode.originalX - nucleusToCytoplasm * 2000;
-            } );
-            nonCodingStrand.forEach( function( baseNode ) {
-              baseNode.centerX = baseNode.originalX - nucleusToCytoplasm * 2000;
-            } );
-          } );
-
           proteinSynthesisScreenView.codonTableAccordionBox.moveToFront();//move in front of mRNA strands.
         }
         else if ( oldState === 'translation' && state === 'dna' ) {
@@ -339,6 +331,12 @@ define( function( require ) {
 
       if ( window.phetcommon.getQueryParameter( 'test' ) ) {
         new TestTRNAConnectionPoints( this );
+      }
+
+      if ( window.phetcommon.getQueryParameter( 'testCodonTable' ) ) {
+
+        var c = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {scale: translationScaleFactor} );
+        this.addChild( c );
       }
     },
     //Determine where the baseNode can connect.  Must account for bound types, and things that are already bonded.

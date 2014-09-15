@@ -19,11 +19,12 @@ define( function( require ) {
 
   /**
    * Constructor for the RNACodonTable
+   * NOTE: this will be scaled by the eventual view scale for translation
    * @constructor
    */
-  function RNACodonTable( screenView, options ) {
+  function RNACodonTable( screenView, translationScaleFactor, options ) {
 
-    var font = new PhetFont( 18 );
+    var font = new PhetFont( 25 );
     var choices = ['U', 'C', 'A', 'G'];
     var index = 0;
     var children = [];
@@ -52,7 +53,6 @@ define( function( require ) {
           var string = choice1 + choice2 + choice3;
           var textNode = new Text( string, {font: font, left: x, top: y, fill: highlighted.indexOf( string ) >= 0 ? 'black' : '#bbbbbb'} );
           children.push( textNode );
-          y += textNode.height + 2;
 
           (function( string ) {
             var createdNode = null;
@@ -76,13 +76,15 @@ define( function( require ) {
 
           previous = textNode;
 
+          x += 65;
+
           if ( (index + 1) % 4 === 0 ) {
-            y += 8;
+            x += 13;
           }
 
           if ( (index + 1) % 16 === 0 ) {
-            x = x + 48;
-            y = 0;
+            x = 0;
+            y += textNode.height;
           }
 
           index++;
@@ -95,10 +97,6 @@ define( function( require ) {
   }
 
   return inherit( Path, RNACodonTable, {
-    setPointingUp: function( pointingUp ) {
-      this.pointingUp = pointingUp;
-      this.base.angle = this.pointingUp ? 0 : Math.PI;
-    },
     getRNACodonTableScale: function() {
       var scaleMag = this.getScaleVector();
       return scaleMag.x;
