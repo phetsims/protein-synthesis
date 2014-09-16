@@ -23,10 +23,7 @@ define( function( require ) {
   var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
-  var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
   var Panel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/Panel' );
-  var HydrogenBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/HydrogenBond' );
-  var BackboneBond = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BackboneBond' );
   var Node = require( 'SCENERY/nodes/Node' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var PropertySet = require( 'AXON/PropertySet' );
@@ -35,10 +32,8 @@ define( function( require ) {
   var Circle = require( 'SCENERY/nodes/Circle' );
   var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
   var SceneSelectionPanel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/SceneSelectionPanel' );
-  var AccordionBox = require( 'SUN/AccordionBox' );
   var RibosomeNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RibosomeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
-  var Vector2 = require( 'DOT/Vector2' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
 
   //constants
@@ -140,9 +135,11 @@ define( function( require ) {
 
       var dnaBases = [];
       var mRNABases = [];
-      for ( var i = 0; i < dnaStacks.length; i++ ) {
+      var i = 0;
+      var j = 0;
+      for ( i = 0; i < dnaStacks.length; i++ ) {
         var dnaStack = dnaStacks[i];
-        for ( var j = 0; j < dnaStack.length; j++ ) {
+        for ( j = 0; j < dnaStack.length; j++ ) {
           worldNode.addChild( dnaStack[j] );
           dnaBases.push( dnaStack[j] );
         }
@@ -325,8 +322,8 @@ define( function( require ) {
       if ( window.phetcommon.getQueryParameter( 'randomStrand' ) ) {
         (function() {
           var a = function() {return new Adenine( 'deoxyribose' );};
-          var t = function() {return new Thymine( 'deoxyribose' )};
-          var g = function() {return new Guanine( 'deoxyribose' )};
+          var t = function() {return new Thymine( 'deoxyribose' );};
+          var g = function() {return new Guanine( 'deoxyribose' );};
           var c = function() {return new Cytosine( 'deoxyribose' );};
 
           var stack = [a, t, g, c];
@@ -344,7 +341,7 @@ define( function( require ) {
       }
 
       if ( window.phetcommon.getQueryParameter( 'test' ) ) {
-        new TestTRNAConnectionPoints( this );
+        new TestTRNAConnectionPoints( this ).test();
       }
 
       if ( window.phetcommon.getQueryParameter( 'testCodonTable' ) ) {

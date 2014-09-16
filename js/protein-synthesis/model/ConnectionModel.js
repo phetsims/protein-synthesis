@@ -78,7 +78,7 @@ define( function( require ) {
       return this.size === 0;
     },
     add: function( i, j, baseNode ) {
-      if ( j == 0 ) {
+      if ( j === 0 ) {
         this.top[i] = baseNode;
       }
       else {

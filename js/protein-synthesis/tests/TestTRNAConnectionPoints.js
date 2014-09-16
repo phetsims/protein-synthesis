@@ -11,11 +11,6 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
-  var Adenine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Adenine' );
-  var Guanine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Guanine' );
-  var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
-  var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
-
 
   /**
    *
@@ -32,5 +27,9 @@ define( function( require ) {
     console.log( result );
   }
 
-  return inherit( Object, TestTRNAConnectionPoints );
+  return inherit( Object, TestTRNAConnectionPoints, {
+
+    //To satisfy jshint
+    test: function() {}
+  } );
 } );
