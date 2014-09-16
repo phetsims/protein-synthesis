@@ -66,6 +66,8 @@ define( function( require ) {
 
   return inherit( ScreenView, ProteinSynthesisScreenView, {
 
+    //Normally all of this would be in the constructor.  However, to cope with impending deadlinens resetAll has been implemented
+    //by reinitializing the model + view
     initChildren: function() {
 
       var proteinSynthesisScreenView = this;
