@@ -35,6 +35,7 @@ define( function( require ) {
   var RibosomeNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RibosomeNode' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
+  var AminoAcidNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/AminoAcidNode' );
 
   //constants
   var translationScaleFactor = 0.75;
@@ -348,6 +349,11 @@ define( function( require ) {
 
         var c = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {scale: translationScaleFactor} );
         this.addChild( c );
+      }
+
+      if ( window.phetcommon.getQueryParameter( 'aminoAcids' ) ) {
+        var aaTable = new Node( {children: [new AminoAcidNode()], top: 10, left: 10} );
+        this.addChild( aaTable );
       }
     },
     //Determine where the baseNode can connect.  Must account for bound types, and things that are already bonded.
