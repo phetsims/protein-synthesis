@@ -143,16 +143,16 @@ define( function( require ) {
     this.addChild( baseLabelNode );
     base.angleProperty.link( function( angle ) {
       if ( angle === 0 ) {
-        baseLabelNode.centerX = -BaseShape.NECK_WIDTH / 2 - 15;
+        baseLabelNode.centerX = -BaseShape.NECK_WIDTH / 2 - 15 + 4;
         baseLabelNode.centerY = -10;
       }
       else {
-        baseLabelNode.centerX = BaseShape.NECK_WIDTH / 2 + 15;
-        baseLabelNode.centerY = 10;
+        baseLabelNode.centerX = BaseShape.NECK_WIDTH / 2 + 15 - 4;
+        baseLabelNode.centerY = 12;
       }
     } );
 
-    var sugarLabelNode = new Text( base.backboneType, { font: new PhetFont( 18 ), pickable: false } );
+    var sugarLabelNode = new Text( base.backboneType, { font: new PhetFont( 16 ), pickable: false } );
     this.labelsVisibleProperty.linkAttribute( sugarLabelNode, 'visible' );
     this.addChild( sugarLabelNode );
     base.angleProperty.link( function( angle ) {
@@ -166,16 +166,16 @@ define( function( require ) {
       }
     } );
 
-    var phosphateLabelNode = new Text( 'phosphate', { font: new PhetFont( 18 ), pickable: false } );
+    var phosphateLabelNode = new Text( 'phosphate', { font: new PhetFont( 16 ), pickable: false } );
     this.labelsVisibleProperty.linkAttribute( phosphateLabelNode, 'visible' );
     this.addChild( phosphateLabelNode );
     base.angleProperty.link( function( angle ) {
       if ( angle === 0 ) {
-        phosphateLabelNode.centerX = -17 + 70;
-        phosphateLabelNode.bottom = BaseShape.BODY_HEIGHT - 40;
+        phosphateLabelNode.centerX = -17 + 70 + 8;
+        phosphateLabelNode.bottom = BaseShape.BODY_HEIGHT - 42;
       }
       else {
-        phosphateLabelNode.centerX = +15 - 70;
+        phosphateLabelNode.centerX = +15 - 70 - 8 + 3;
         phosphateLabelNode.centerY = -BaseShape.BODY_HEIGHT + 14 + 40 - 7;
       }
     } );

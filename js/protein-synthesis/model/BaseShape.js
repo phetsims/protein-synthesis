@@ -12,7 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
 
-  var neckWidth = 8;
+  var neckWidth = 8 + 8;
   var topConnectorHeight = 50;
   var bodyHeight = 100;
   var bodyWidth = 140;
@@ -41,8 +41,8 @@ define( function( require ) {
     //TODO: Make this smooth, as in the mockup.  Perhaps arc?  Or curveTo?
     this.horizontalLineToRelative( neck );
     this.smoothQuadraticCurveToRelative( 20, -15 );
-    this.smoothQuadraticCurveToRelative( 20, 20 );
-    this.smoothQuadraticCurveToRelative( -20, 20 );
+    this.smoothQuadraticCurveToRelative( 20, 20 + 4 );
+    this.smoothQuadraticCurveToRelative( -20, 20 + 4 );
     this.smoothQuadraticCurveToRelative( -20, -15 );
     this.horizontalLineToRelative( -neck );
 
@@ -62,8 +62,8 @@ define( function( require ) {
     //Innie on the left
     this.horizontalLineToRelative( neck );
     this.smoothQuadraticCurveToRelative( 20, 15 );
-    this.smoothQuadraticCurveToRelative( 20, -20 );
-    this.smoothQuadraticCurveToRelative( -20, -20 );
+    this.smoothQuadraticCurveToRelative( 20, -20 - 4 );
+    this.smoothQuadraticCurveToRelative( -20, -20 - 4 );
     this.smoothQuadraticCurveToRelative( -20, 15 );
     this.horizontalLineToRelative( -neck );
 
