@@ -305,6 +305,16 @@ define( function( require ) {
         }
       } );
 
+      // Add the nucleus label
+      var nucleusLabel = new Text( 'Nucleus', {font: new PhetFont( 18 ), top: 10, right: this.layoutBounds.right - 10} );
+      this.viewProperties.labelsVisibleProperty.linkAttribute( nucleusLabel, 'visible' );
+      worldNode.addChild( nucleusLabel );
+
+      // Add the nucleus label
+      var cytoplasmLabel = new Text( 'Cytoplasm', {font: new PhetFont( 18 / translationScaleFactor ), top: 10, left: 2014.974609375} );
+      this.viewProperties.labelsVisibleProperty.linkAttribute( cytoplasmLabel, 'visible' );
+      worldNode.addChild( cytoplasmLabel );
+
       //Start in the cytoplasm, for debugging
       if ( window.phetcommon.getQueryParameter( 'translation' ) ) {
         this.viewProperties.state = 'translation';
