@@ -49,7 +49,7 @@ define( function( require ) {
 
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
-      labelsVisible: true,
+      labelsVisible: false,
       state: 'dna',//[dna,transcription/translation]
       location: 'nucleus', // [nucleus/cytoplasm]
       numAminoAcids: 0
