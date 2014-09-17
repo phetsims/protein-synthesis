@@ -356,7 +356,7 @@ define( function( require ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
           console.log( element, table[element] );
-          return new AminoAcidNode( table[element] ).mutate( {scale: 0.25} );
+          return new AminoAcidNode( table[element], proteinSynthesisScreenView.viewProperties.labelsVisibleProperty ).mutate( {scale: 0.25} );
         } );
         var hbox = new HBox( {children: children, top: 100, align: 'bottom'} );
         this.addChild( hbox );

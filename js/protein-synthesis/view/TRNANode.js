@@ -36,7 +36,7 @@ define( function( require ) {
     var trnaNode = this;
     var children = [];
 
-    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[triplet] );
+    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[triplet], labelsVisibleProperty );
 
     children.push( aminoAcidNode );
     var orange = '#f9b664';
