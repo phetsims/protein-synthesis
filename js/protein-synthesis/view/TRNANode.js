@@ -23,6 +23,7 @@ define( function( require ) {
   var Shape = require( 'KITE/Shape' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var AminoAcidNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/AminoAcidNode' );
+  var RNACodonTable = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/RNACodonTable' );
 
   /**
    * Constructor for the TRNANode
@@ -35,7 +36,7 @@ define( function( require ) {
     var trnaNode = this;
     var children = [];
 
-    var aminoAcidNode = new AminoAcidNode();
+    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[triplet] );
 
     children.push( aminoAcidNode );
     var orange = '#f9b664';

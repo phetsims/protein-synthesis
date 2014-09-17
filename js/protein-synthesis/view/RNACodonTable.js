@@ -17,6 +17,76 @@ define( function( require ) {
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Node = require( 'SCENERY/nodes/Node' );
 
+  var table = {
+    UUU: 'phe',
+    UUC: 'phe',
+    UUA: 'leu',
+    UUG: 'leu',
+    CUU: 'leu',
+    CUC: 'leu',
+    CUA: 'leu',
+    CUG: 'leu',
+    AUU: 'ile',
+    AUC: 'ile',
+    AUA: 'ile',
+    AUG: 'met',
+    GUU: 'val',
+    GUC: 'val',
+    GUA: 'val',
+    GUG: 'val',
+
+    UCU: 'ser',
+    UCC: 'ser',
+    UCA: 'ser',
+    UCG: 'ser',
+    CCU: 'pro',
+    CCC: 'pro',
+    CCA: 'pro',
+    CCG: 'pro',
+    ACU: 'thr',
+    ACC: 'thr',
+    ACA: 'thr',
+    ACG: 'thr',
+    GCU: 'ala',
+    GCC: 'ala',
+    GCA: 'ala',
+    GCG: 'ala',
+
+    UAU: 'tyr',
+    UAC: 'tyr',
+    UAA: 'stop',
+    UAG: 'stop',
+    CAU: 'his',
+    CAC: 'his',
+    CAA: 'gln',
+    CAG: 'gln',
+    AAU: 'asn',
+    AAC: 'asn',
+    AAA: 'lys',
+    AAG: 'lys',
+    GAU: 'asp',
+    GAC: 'asp',
+    GAA: 'glu',
+    GAG: 'glu',
+
+    UGU: 'cys',
+    UGC: 'cys',
+    UGA: 'stop',
+    UGG: 'trp',
+    CGU: 'arg',
+    CGC: 'arg',
+    CGA: 'arg',
+    CGG: 'arg',
+    AGU: 'ser',
+    AGC: 'ser',
+    AGA: 'arg',
+    AGG: 'arg',
+    GGU: 'gly',
+    GGC: 'gly',
+    GGA: 'gly',
+    GGG: 'gly'
+  };
+
   /**
    * Constructor for the RNACodonTable
    * NOTE: this will be scaled by the eventual view scale for translation
@@ -121,5 +191,7 @@ define( function( require ) {
         return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
       }
     }
+  }, {
+    table: table
   } );
 } );
