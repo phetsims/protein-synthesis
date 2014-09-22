@@ -37,6 +37,7 @@ define( function( require ) {
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
   var AminoAcidNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/AminoAcidNode' );
   var HBox = require( 'SCENERY/nodes/HBox' );
+  var Bounds2 = require( 'DOT/Bounds2' );
 
   //constants
   var translationScaleFactor = 0.75;
@@ -47,7 +48,7 @@ define( function( require ) {
    */
   function ProteinSynthesisScreenView( model ) {
     this.model = model;
-    ScreenView.call( this, {renderer: 'svg', layoutBounds: ScreenView.UPDATED_LAYOUT_BOUNDS.copy()} );
+    ScreenView.call( this, {renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 834, 504 )} );
 
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
