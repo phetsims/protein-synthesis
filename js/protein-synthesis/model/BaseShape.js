@@ -11,6 +11,8 @@ define( function( require ) {
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
+  var Vector2 = require( 'DOT/Vector2' );
+  var Segment = require( 'KITE/segments/Segment' );
 
   var neckWidth = 8 + 8;
   var topConnectorHeight = 50;
@@ -22,6 +24,9 @@ define( function( require ) {
    * @constructor
    */
   function BaseShape( topConnector ) {
+
+    var baseShape = this;
+
     Shape.call( this );
     var curveLength = 8;
     var neck = 15;
@@ -39,11 +44,29 @@ define( function( require ) {
 
     //Outie puzzle piece on the right
     //TODO: Make this smooth, as in the mockup.  Perhaps arc?  Or curveTo?
+
+    function v( x, y ) { return new Vector2( x, y ); } // TODO: use this version in general, it makes more sense and is easier to type
+
+    // This layout code relied on the smooth curve bug in scenery, so I've backported the bug here.
+    // TODO: Rewrite using lineto
+    var smoothQuadraticCurveToRelative = function( x, y ) {
+      return baseShape.quadraticCurveToPoint( getSmoothQuadraticControlPoint(), v( x, y ).plus( baseShape.getRelativePoint() ) );
+    };
+
+    var getSmoothQuadraticControlPoint = function() {
+      var lastPoint = baseShape.getLastPoint();
+
+      var segment = baseShape.getLastSegment();
+      if ( !segment || !( segment instanceof Segment.Quadratic ) ) { return lastPoint; }
+
+      return lastPoint.plus( lastPoint.minus( segment.control ) );
+    };
+
     this.horizontalLineToRelative( neck );
-    this.smoothQuadraticCurveToRelative( 20, -15 );
-    this.smoothQuadraticCurveToRelative( 20, 20 + 4 );
-    this.smoothQuadraticCurveToRelative( -20, 20 + 4 );
-    this.smoothQuadraticCurveToRelative( -20, -15 );
+    smoothQuadraticCurveToRelative( 20, -15 );
+    smoothQuadraticCurveToRelative( 20, 20 + 4 );
+    smoothQuadraticCurveToRelative( -20, 20 + 4 );
+    smoothQuadraticCurveToRelative( -20, -15 );
     this.horizontalLineToRelative( -neck );
 
     //Bottom Right Corner
@@ -61,10 +84,10 @@ define( function( require ) {
 
     //Innie on the left
     this.horizontalLineToRelative( neck );
-    this.smoothQuadraticCurveToRelative( 20, 15 );
-    this.smoothQuadraticCurveToRelative( 20, -20 - 4 );
-    this.smoothQuadraticCurveToRelative( -20, -20 - 4 );
-    this.smoothQuadraticCurveToRelative( -20, 15 );
+    smoothQuadraticCurveToRelative( 20, 15 );
+    smoothQuadraticCurveToRelative( 20, -20 - 4 );
+    smoothQuadraticCurveToRelative( -20, -20 - 4 );
+    smoothQuadraticCurveToRelative( -20, 15 );
     this.horizontalLineToRelative( -neck );
 
     //Left top
