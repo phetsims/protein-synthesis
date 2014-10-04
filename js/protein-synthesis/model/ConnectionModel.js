@@ -119,9 +119,15 @@ define( function( require ) {
         }
       }
     },
-    get isReadyForTranslation() {
+
+    get isReadyForTranscription() {
       //needs to have 3+ DNA bases in the coding strand and no gaps.
       return this.sizeTop >= 3 && this.topBoundaryCount === 2;
+    },
+
+    get isReadyForTranslation() {
+      //needs to have 3+ DNA bases in the coding strand and no gaps.
+      return this.sizeBottom >= 3 && this.bottomBoundaryCount === 2;
     },
 
     //Count the number of fragment starts + stops, to count contiguous segments.
@@ -130,6 +136,19 @@ define( function( require ) {
       var on = this.top[0] !== null;
       for ( var i = 1; i < LENGTH; i++ ) {
         var isOn = this.top[i] !== null;
+        if ( on !== isOn ) {
+          on = isOn;
+          changes++;
+        }
+      }
+      return changes;
+    },
+
+    get bottomBoundaryCount() {
+      var changes = 0;
+      var on = this.bottom[0] !== null;
+      for ( var i = 1; i < LENGTH; i++ ) {
+        var isOn = this.bottom[i] !== null;
         if ( on !== isOn ) {
           on = isOn;
           changes++;

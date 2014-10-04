@@ -32,9 +32,9 @@ define( function( require ) {
       dnaButtonStateProperty.value = state === 'dna' ? 'selected' :
                                      'disabled';
       transcriptionButtonStateProperty.value = state === 'transcription' ? 'selected' :
-                                               (state === 'dna' && connectionModel.isReadyForTranslation) ? 'enabled' :
+                                               (state === 'dna' && connectionModel.isReadyForTranscription) ? 'enabled' :
                                                "disabled";
-      translationButtonStateProperty.value = state === 'transcription' ? 'enabled' :
+      translationButtonStateProperty.value = state === 'transcription' && connectionModel.isReadyForTranslation ? 'enabled' :
                                              state === 'translation' ? 'selected' :
                                              'disabled';
     };
