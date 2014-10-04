@@ -100,6 +100,13 @@ define( function( require ) {
       this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
       worldNode.addChild( codingStrandLabel );
 
+      //Label the complementary strand, only visible in the "dna" mode
+      var complementaryStrandLabel = new Text( 'Complementary Strand', {font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.bottom + 150} );
+      this.viewProperties.multilink( ['labelsVisible', 'state'], function( labelsVisible, state ) {
+        complementaryStrandLabel.visible = labelsVisible && state === 'dna';
+      } );
+      worldNode.addChild( complementaryStrandLabel );
+
       this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
       this.connectionModel.on( 'changed', function() {
         //If something connected, stop showing the initial target
