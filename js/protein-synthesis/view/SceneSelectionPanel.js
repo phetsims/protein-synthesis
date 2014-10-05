@@ -49,27 +49,27 @@ define( function( require ) {
       updateButtonStates();
     } );
 
-    var syncButton = function( buttonStateProperty, text, panel ) {
+    var syncButton = function( buttonStateProperty, text, panel, panelFill ) {
       buttonStateProperty.link( function( buttonState ) {
-        text.fill = buttonState === 'selected' ? 'white' :
-                    buttonState === 'enabled' ? 'black' :
+        text.fill = buttonState === 'selected' ? 'black' :
+                    buttonState === 'enabled' ? 'white' :
                     'gray';
-        panel.stroke = buttonState === 'selected' ? 'black' :
+        panel.stroke = buttonState === 'selected' ? null :
                        buttonState === 'enabled' ? 'black' :
                        'gray';
-        panel.fill = buttonState === 'selected' ? '#1c4ec1' :
-                     buttonState === 'enabled' ? 'white' :
+        panel.fill = buttonState === 'selected' ? null :
+                     buttonState === 'enabled' ? panelFill :
                      null;
-        panel.lineWidth = buttonState === 'selected' ? 2 :
+        panel.lineWidth = buttonState === 'selected' ? 0 :
                           buttonState === 'enabled' ? 1 :
                           0;
 
         panel.pickable = buttonState === 'enabled';
       } );
     };
-    syncButton( dnaButtonStateProperty, dnaText, dnaPanel );
-    syncButton( transcriptionButtonStateProperty, transcriptionText, transcriptionPanel );
-    syncButton( translationButtonStateProperty, translationText, translationPanel );
+    syncButton( dnaButtonStateProperty, dnaText, dnaPanel, 'white' );
+    syncButton( transcriptionButtonStateProperty, transcriptionText, transcriptionPanel, '#aee6c8' );
+    syncButton( translationButtonStateProperty, translationText, translationPanel, '#5D1A88' );
 
     dnaPanel.addInputListener( {down: function() {
       stateProperty.value = 'dna';
