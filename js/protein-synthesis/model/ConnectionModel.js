@@ -31,6 +31,11 @@ define( function( require ) {
       this.top.push( null );
       this.bottom.push( null );
     }
+
+    //the number of times it has been moved left through the ribosome, for purposes of only allowing tRNA bonding to the
+    //leftmost mRNA
+    //number of tRNA that have been bound, corresponds to 3 base pairs (one codon)
+    this.numberOfTranslationSteps = 0;
   }
 
   return inherit( PropertySet, ConnectionModel, {
@@ -236,13 +241,32 @@ define( function( require ) {
       return connectionPoints;
     },
 
+    getMRNACodonStartIndex: function() {
+      var connectionModel = this;
+      for ( var i = 0; i < this.bottom.length - 2; i++ ) {
+        var a = connectionModel.bottom[i];
+        var b = connectionModel.bottom[i + 1];
+        var c = connectionModel.bottom[i + 2];
+        if ( a !== null && b !== null && c !== null ) {
+          return i;
+        }
+      }
+      return -1;
+    },
+
     //TODO: This function needs work.  Possibly delegate to above?
     getConnectionPointsForTRNA: function( proteinSynthesisScreenView, tRNANode ) {
       var baseNodes = tRNANode.baseNodes;
       var connectionModel = this;
 
       var connectionPoints = [];
-      for ( var i = 0; i < this.bottom.length - 2; i++ ) {
+
+      //Only allow the (only) codon within the ribosome to connect to tRNA
+      var startIndex = this.getMRNACodonStartIndex() + this.numberOfTranslationSteps * 3;
+
+      //Just step once
+      //TODO: Rewrite this loop as not a loop, now that we just allow the 1st codon to match in the ribosome
+      for ( var i = startIndex; i < startIndex + 1; i++ ) {
         (function( i ) {
 
           var a = connectionModel.bottom[i];
