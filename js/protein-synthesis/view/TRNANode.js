@@ -100,10 +100,6 @@ define( function( require ) {
       this.top = bodyCenter.y - 340 * scale;
       this.left = bodyCenter.x - 160 * scale;
     },
-    getBodyCenter: function() {
-      var scale = this.getTRNANodeScale();
-      return new Vector2( this.left + 160 * scale, this.top + 340 * scale );
-    },
     start: function( event, trail ) {
       this.drag( event, trail );
     },

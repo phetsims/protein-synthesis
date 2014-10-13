@@ -182,15 +182,6 @@ define( function( require ) {
         this.top = bodyCenter.y - 50 * scale;
       }
     },
-    getBodyCenter: function() {
-      var scale = this.getRNACodonTableScale();
-      if ( this.pointingUp ) {
-        return new Vector2( this.left + 70 * scale, this.bottom - 50 * scale );
-      }
-      else {
-        return new Vector2( this.right - 70 * scale, this.top + 50 * scale );
-      }
-    }
   }, {
     table: table
   } );
