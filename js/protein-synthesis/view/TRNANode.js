@@ -97,8 +97,10 @@ define( function( require ) {
     //Set the location of the tRNA.  Must be relative to top/left so that different widths & heights will translate the same
     setBodyCenter: function( bodyCenter ) {
       var scale = this.getTRNANodeScale();
-      this.top = bodyCenter.y - 340 * scale;
-      this.left = bodyCenter.x - 160 * scale;
+
+      //Have to set x/y here instead of top/left/bottom/right because each tRNA has different dimensions.
+      this.x = bodyCenter.x - 71 * scale;
+      this.y = bodyCenter.y - 55 * scale;
     },
     start: function( event, trail ) {
       this.drag( event, trail );
@@ -114,7 +116,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, -trnaNode.height + 414 );
+        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
@@ -143,7 +145,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, trnaNode );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, -trnaNode.height + 414 );
+        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {
