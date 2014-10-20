@@ -38,7 +38,7 @@ define( function( require ) {
 
     var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[triplet], labelsVisibleProperty );
 
-    children.push( aminoAcidNode );
+//    children.push( aminoAcidNode );
     var orange = '#f9b664';
     var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: orange, stroke: 'black', lineWidth: 1, rotation: Math.PI, left: -30 + 3} );
     children.push( trnaBody );
@@ -64,8 +64,9 @@ define( function( require ) {
 
     children.push( new Text( 'tRNA', {center: trnaBody.center} ) );
 
+    this.detachableComponents = new Node( {children: children} );
     Node.call( this, {
-      children: children,
+      children: [aminoAcidNode, this.detachableComponents ],
       scale: 1,
       pickable: true,
       cursor: 'pointer'
@@ -172,6 +173,22 @@ define( function( require ) {
           } )
           .start();
       }
+    },
+
+    // After moving out of the ribosome, the tRNA body should float away
+    detachTRNAFromAminoAcid: function() {
+
+      var detachableComponents = this.detachableComponents;
+      new TWEEN.Tween( { x: detachableComponents.x, y: detachableComponents.y} )
+        .to( { x: detachableComponents.x, y: detachableComponents.y + 2000}, 700 )
+        .easing( TWEEN.Easing.Cubic.InOut )
+        .onUpdate( function() {
+          detachableComponents.setTranslation( this.x, this.y );
+        } )
+        .onComplete( function() {
+          detachableComponents.detach();
+        } )
+        .start();
     }
   } );
 } );

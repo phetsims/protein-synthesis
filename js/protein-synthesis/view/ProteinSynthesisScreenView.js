@@ -394,10 +394,33 @@ define( function( require ) {
       return new BaseNode( base, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty, true, false );
     },
 
+    //After the tRNAs have been translated out of the ribosome, detach any that can be detached
+    detachTRNAs: function() {
+      //The rule for whether it can be detached from the AA:
+      //For each tRNA: If its AA has connected to something to the right, or no more codons coming => detach
+
+      var numCompleteCodons = Math.floor( this.connectionModel.sizeBottom / 3 );
+
+      for ( var i = 0; i < this.attachedTRNANodes.length; i++ ) {
+        var trnaNode = this.attachedTRNANodes[i];
+
+        var aaConnectedToTheRight = i < this.viewProperties.numAminoAcids - 1;
+        var lastCodon = i === numCompleteCodons - 1;
+
+        debugger;
+        if ( aaConnectedToTheRight || lastCodon ) {
+          trnaNode.detachTRNAFromAminoAcid();//TODO: This gets called multiple times, but shouldn't
+        }
+      }
+    },
+
     trnaAttached: function( trnaNode, closestConnectionPoint ) {
       var proteinSynthesisScreenView = this;
 
       this.attachedTRNANodes.push( trnaNode );
+
+      var numToTranslate = this.attachedTRNANodes.length;
+      var numTranslated = 0;
 
       this.attachedTRNANodes.forEach( function( trnaNode ) {
 
@@ -411,10 +434,13 @@ define( function( require ) {
             trnaNode.x = this.x;
           } )
           .onComplete( function() {
-            proteinSynthesisScreenView.viewProperties.numAminoAcids = proteinSynthesisScreenView.viewProperties.numAminoAcids + 1;
+            numTranslated++;
+            if ( numTranslated === numToTranslate ) {
+              proteinSynthesisScreenView.viewProperties.numAminoAcids = proteinSynthesisScreenView.viewProperties.numAminoAcids + 1;
+              proteinSynthesisScreenView.detachTRNAs();
+            }
           } )
           .start();
-
       } );
 
       var bottomBaseNodes = this.connectionModel.bottomBaseNodes;
