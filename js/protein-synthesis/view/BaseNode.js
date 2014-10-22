@@ -13,7 +13,6 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
-  var Vector2 = require( 'DOT/Vector2' );
   var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );

@@ -407,7 +407,6 @@ define( function( require ) {
         var aaConnectedToTheRight = i < this.viewProperties.numAminoAcids - 1;
         var lastCodon = i === numCompleteCodons - 1;
 
-        debugger;
         if ( aaConnectedToTheRight || lastCodon ) {
           trnaNode.detachTRNAFromAminoAcid();//TODO: This gets called multiple times, but shouldn't
         }
