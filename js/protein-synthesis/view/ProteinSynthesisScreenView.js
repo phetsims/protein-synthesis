@@ -440,6 +440,9 @@ define( function( require ) {
     },
 
     trnaAttached: function( trnaNode, closestConnectionPoint ) {
+
+      // When a tRNA is attached to the peptide chain, it should no longer be individually draggable, see #7
+      trnaNode.pickable = false;
       var proteinSynthesisScreenView = this;
 
       this.attachedTRNANodes.push( trnaNode );
