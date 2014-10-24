@@ -93,8 +93,16 @@ define( function( require ) {
       this.addChild( resetAllButton );
 
       this.attachedTRNANodes = [];
+
       //Put the dotted line to the top left so students will build left to right and things will fit into the ribosome (which is on the left side of the screen)
-      this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {scale: 0.6, stroke: 'red', lineWidth: 3, lineDash: [6, 4], centerY: 150, centerX: this.layoutBounds.width / 4 + 30} );
+      this.dottedLine = new Rectangle( 0, 0, BaseShape.BODY_WIDTH, BaseShape.BODY_HEIGHT, 5, 5, {
+        scale: 0.6,
+        stroke: 'red',
+        lineWidth: 3,
+        lineDash: [6, 4],
+        centerY: 150,
+        left: 50
+      } );
       worldNode.addChild( this.dottedLine );
       var codingStrandLabel = new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.top - 10} );
       this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
