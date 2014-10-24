@@ -213,6 +213,14 @@ define( function( require ) {
               dnaBases[i].visible = false;
             }
           }
+
+          // When in translation, make the mRNA undraggable, fixes #6
+          if ( state === 'translation' ) {
+            for ( i = 0; i < mRNABases.length; i++ ) {
+              base = mRNABases[i];
+              base.pickable = false;
+            }
+          }
         }
       } );
 
