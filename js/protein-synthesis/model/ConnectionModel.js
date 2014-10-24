@@ -238,7 +238,21 @@ define( function( require ) {
         connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() { connectionModel.add( CENTER_INDEX, 0, baseNode ); } ) );
       }
 
-      return connectionPoints;
+      // Shouldn't be able to put mRNA on the top, see #13
+      // TODO: Perhaps in the future this logic should be above?
+      var filtered = [];
+      for ( var i = 0; i < connectionPoints.length; i++ ) {
+        var connectionPoint = connectionPoints[i];
+
+        // Check to see that this is on the top
+        var skip = ( connectionPoint.up === false && baseNode.base.backboneType === 'ribose')
+
+        if ( !skip ) {
+          filtered.push( connectionPoint );
+        }
+      }
+
+      return filtered;
     },
 
     getMRNACodonStartIndex: function() {
