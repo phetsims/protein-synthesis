@@ -190,6 +190,8 @@ define( function( require ) {
         var i = 0;
         var base = null;
 
+        console.log( state );
+
         //Any mRNA/DNA not in the connection model must be hidden too.
         if ( state === 'dna' ) {
           for ( i = 0; i < mRNABases.length; i++ ) {
@@ -203,6 +205,13 @@ define( function( require ) {
           for ( i = 0; i < mRNABases.length; i++ ) {
             base = mRNABases[i];
             base.visible = true;
+          }
+
+          // When switching away from dna mode, hide any of the DNA nucleotides that are not connected in the play area, see #4
+          for ( i = 0; i < dnaBases.length; i++ ) {
+            if ( !proteinSynthesisScreenView.connectionModel.contains( dnaBases[i] ) ) {
+              dnaBases[i].visible = false;
+            }
           }
         }
       } );
