@@ -450,9 +450,9 @@ define( function( require ) {
       var numToTranslate = this.attachedTRNANodes.length;
       var numTranslated = 0;
 
-      this.attachedTRNANodes.forEach( function( trnaNode ) {
+      proteinSynthesisScreenView.connectionModel.numberOfTranslationSteps++;
 
-        proteinSynthesisScreenView.connectionModel.numberOfTranslationSteps++;
+      this.attachedTRNANodes.forEach( function( trnaNode ) {
 
         //Move the tRNA and mRNA to the left by the length of one codon
         new TWEEN.Tween( { x: trnaNode.x} )
