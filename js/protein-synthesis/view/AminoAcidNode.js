@@ -14,6 +14,7 @@ define( function( require ) {
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
   var Shape = require( 'KITE/Shape' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
 
   var ala = 'M546.27,442.615H408.586c12.796-14.395,20.581-33.342,20.581-54.115c0-45.012-36.489-81.5-81.5-81.5s-81.5,36.488-81.5,81.5c0,20.773,7.785,39.721,20.581,54.115H177.269l-28.205,28.205l28.205,28.205h369l-28.205-28.205L546.27,442.615z';
   var arg = 'M364.836,442.615c15.49-11.729,26.476-29.072,29.962-49c25.861-9.594,45.274-32.425,50.047-60.263c30.096-10.986,51.581-39.863,51.581-73.761c0-25.269-11.952-47.733-30.497-62.092h80.34L478.875,80.77l-42.586,73.761l-18.362-31.804l-16.594,28.741L360.516,80.77L293.121,197.5h76.803c-15.203,11.771-25.958,28.99-29.343,48.739c-25.97,9.48-45.506,32.291-50.38,60.146C260.307,317.476,239,346.246,239,380c0,25.573,12.235,48.283,31.164,62.615h-92.895l-28.205,28.205l28.205,28.205h369l-28.205-28.205l28.205-28.205H364.836z';
@@ -55,7 +56,12 @@ define( function( require ) {
     else {
       path = new Path( shapes[abbreviation], {fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.68} );
     }
-    var text = new Text( names[abbreviation], {center: path.centerBottom.plusXY( 0, -20 )} );
+
+    // Show the text like "Amino Acid: proline" or "stop"
+    var text = new Text( abbreviation === 'stop' ? names[abbreviation] : 'Amino Acid: ' + names[abbreviation], {
+      center: path.centerBottom.plusXY( 0, -20 ),
+      font: new PhetFont( 18 )
+    } );
     labelsVisibleProperty.linkAttribute( text, 'visible' );
     Node.call( this, {children: [
       path,
