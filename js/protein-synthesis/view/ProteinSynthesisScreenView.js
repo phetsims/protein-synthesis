@@ -379,8 +379,9 @@ define( function( require ) {
     },
 
     //Convenience constructor since several ProteinSynthesisScreenView properties are used
-    createTRNANode: function( string ) {
-      return new TRNANode( string, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty );
+    //@param {string} string - the mRNA codon triplet
+    createTRNANode: function( tRNATriplet, mRNATriplet ) {
+      return new TRNANode( tRNATriplet, mRNATriplet, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty );
     },
 
     //Convenience method for creating AUGC

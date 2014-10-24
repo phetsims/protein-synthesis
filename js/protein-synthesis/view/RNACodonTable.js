@@ -109,26 +109,44 @@ define( function( require ) {
       var b = screenView.connectionModel.bottom[i + 1];
       var c = screenView.connectionModel.bottom[i + 2];
       if ( a !== null && b !== null && c !== null ) {
-        highlighted.push( '' + a.base.partnerAbbreviation + b.base.partnerAbbreviation + c.base.partnerAbbreviation );
+
+        //The RNA codon table refers to what is in the mRNA, not what is in the pairing tRNA
+        highlighted.push( '' + a.base.abbreviation + b.base.abbreviation + c.base.abbreviation );
       }
     }
-    console.log( 'highlighted', highlighted );
+
+    // Copied from Base.js
+    // TODO: Factor out
+    var opposite = function( a ) {
+      var result = a === 'A' ? 'U' :
+                   a === 'U' ? 'A' :
+                   a === 'C' ? 'G' :
+                   a === 'G' ? 'C' : null;
+      assert && assert( result !== null );
+      return result;
+    };
+
     for ( i = 0; i < choices.length; i++ ) {
       var choice1 = choices[i];
       for ( var j = 0; j < choices.length; j++ ) {
         var choice2 = choices[j];
         for ( var k = 0; k < choices.length; k++ ) {
           var choice3 = choices[k];
-          var string = choice1 + choice2 + choice3;
-          var textNode = new Text( string, {font: font, left: x, top: y, fill: highlighted.indexOf( string ) >= 0 ? 'black' : '#bbbbbb'} );
+
+          // These will be the nucleotides in the tRNA
+          var tRNATriplet = choice1 + choice2 + choice3;
+
+          // This is the codon triplet, for the codon table
+          var mRNATriplet = opposite( choice1 ) + opposite( choice2 ) + opposite( choice3 );
+          var textNode = new Text( tRNATriplet, {font: font, left: x, top: y, fill: highlighted.indexOf( tRNATriplet ) >= 0 ? 'black' : '#bbbbbb'} );
           children.push( textNode );
 
-          (function( string ) {
+          (function( tRNATriplet, mRNATriplet ) {
             var createdNode = null;
             textNode.addInputListener( new SimpleDragHandler( {
               start: function( event, trail ) {
 
-                createdNode = screenView.createTRNANode( string );
+                createdNode = screenView.createTRNANode( tRNATriplet, mRNATriplet );
                 screenView.worldNode.addChild( createdNode );
                 createdNode.start( event, trail );
                 createdNode.initialX = createdNode.x;
@@ -141,7 +159,7 @@ define( function( require ) {
                 createdNode.end( event, trail );
               }
             } ) );
-          })( string );
+          })( tRNATriplet, mRNATriplet );
 
           previous = textNode;
 

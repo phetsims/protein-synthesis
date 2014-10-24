@@ -28,14 +28,14 @@ define( function( require ) {
    * Constructor for the TRNANode
    * @constructor
    */
-  function TRNANode( triplet, screenView, baseLabelsVisibleProperty, labelsVisibleProperty ) {
+  function TRNANode( tRNATriplet, mRNATriplet, screenView, baseLabelsVisibleProperty, labelsVisibleProperty ) {
 
     this.screenView = screenView;
 
     var trnaNode = this;
     var children = [];
 
-    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[triplet], labelsVisibleProperty );
+    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[tRNATriplet], labelsVisibleProperty );
 
 //    children.push( aminoAcidNode );
     var orange = '#f9b664';
@@ -45,8 +45,8 @@ define( function( require ) {
     aminoAcidNode.bottom = trnaBody.top;
 
     this.baseNodes = [];
-    for ( var i = 0; i < triplet.length; i++ ) {
-      var char = triplet.charAt( i );
+    for ( var i = 0; i < mRNATriplet.length; i++ ) {
+      var char = mRNATriplet.charAt( i );
       var baseNode = new BaseNode( char === 'A' ? new Adenine( 'ribose' ) :
                                    char === 'U' ? new Uracil( 'ribose' ) :
                                    char === 'G' ? new Guanine( 'ribose' ) :
