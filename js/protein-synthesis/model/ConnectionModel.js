@@ -245,7 +245,7 @@ define( function( require ) {
         var connectionPoint = connectionPoints[i];
 
         // Check to see that this is on the top
-        var skip = ( connectionPoint.up === false && baseNode.base.backboneType === 'ribose')
+        var skip = ( connectionPoint.up === false && baseNode.base.backboneType === 'ribose');
 
         if ( !skip ) {
           filtered.push( connectionPoint );
