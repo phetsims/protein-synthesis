@@ -22,8 +22,7 @@ define( function( require ) {
       // all credits fields are optional
       leadDesign: 'Sam & Ingrid Reid',
       softwareDevelopment: 'Sam Reid',
-      designTeam: 'Sam & Ingrid Reid, Amy Spirk',
-      interviews: 'Ingrid Reid'
+      team: 'Amy Spirk, Shane Freehling, Gina Martin, Kathy Perkins'
     }
   };
 
