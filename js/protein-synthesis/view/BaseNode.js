@@ -32,6 +32,9 @@ define( function( require ) {
     this.labelsVisibleProperty = labelsVisibleProperty;
     this.base = base;
 
+    // Leave the dna nucleotide visible if it was bubbled out for transcription, see #16
+    this.bubbledOutForTranscription = false;
+
     var fill = tRNA ? '#f9b664' :
                base.backboneType === 'deoxyribose' ? 'white' : '#aee6c8';
 

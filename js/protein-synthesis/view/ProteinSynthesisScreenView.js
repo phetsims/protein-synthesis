@@ -209,7 +209,10 @@ define( function( require ) {
 
           // When switching away from dna mode, hide any of the DNA nucleotides that are not connected in the play area, see #4
           for ( i = 0; i < dnaBases.length; i++ ) {
-            if ( !proteinSynthesisScreenView.connectionModel.contains( dnaBases[i] ) ) {
+            var missingFromConnectionModel = !proteinSynthesisScreenView.connectionModel.contains( dnaBases[i] );
+
+            // Also, leave the dna nucleotide visible if it was bubbled out for transcription, see #16
+            if ( missingFromConnectionModel && !dnaBases[i].bubbledOutForTranscription ) {
               dnaBases[i].visible = false;
             }
           }
@@ -283,6 +286,9 @@ define( function( require ) {
             worldNode.insertChild( worldNode.indexOfChild( nucleusShape ) + 1, baseNode );
 
             proteinSynthesisScreenView.connectionModel.remove( baseNode );
+
+            // Mark the node so it will return before going to transcription
+            baseNode.bubbledOutForTranscription = true;
 
             //Move away the non-coding strand when translation starts
             //TODO: var tween and cancel?
