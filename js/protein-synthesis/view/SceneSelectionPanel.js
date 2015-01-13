@@ -19,13 +19,19 @@ define( function( require ) {
     var transcriptionButtonStateProperty = new Property( 'disabled' );
     var translationButtonStateProperty = new Property( 'disabled' );
 
-    var dnaText = new Text( 'DNA', {pickable: false, font: font, fill: 'white'} );
-    var transcriptionText = new Text( 'Transcription', {pickable: false, font: font, fill: 'gray'} );
-    var translationText = new Text( 'Translation', {pickable: false, font: font, fill: 'gray'} );
+    var dnaText = new Text( 'DNA', { pickable: false, font: font, fill: 'white' } );
+    var transcriptionText = new Text( 'Transcription', { pickable: false, font: font, fill: 'gray' } );
+    var translationText = new Text( 'Translation', { pickable: false, font: font, fill: 'gray' } );
 
-    var dnaPanel = new Panel( dnaText, {lineWidth: 2, fill: '#1c4ec1', backgroundPickable: true, cursor: 'pointer'} );
-    var transcriptionPanel = new Panel( transcriptionText, {lineWidth: 1, stroke: 'gray', fill: null, backgroundPickable: true, cursor: 'pointer'} );
-    var translationPanel = new Panel( translationText, {lineWidth: 1, stroke: 'gray', fill: null, backgroundPickable: true, cursor: 'pointer'} );
+    var dnaPanel = new Panel( dnaText, { lineWidth: 2, fill: '#1c4ec1', backgroundPickable: true, cursor: 'pointer' } );
+    var transcriptionPanel = new Panel( transcriptionText, {
+      lineWidth: 1,
+      stroke: 'gray',
+      fill: null,
+      backgroundPickable: true,
+      cursor: 'pointer'
+    } );
+    var translationPanel = new Panel( translationText, { lineWidth: 1, stroke: 'gray', fill: null, backgroundPickable: true, cursor: 'pointer' } );
 
     var updateButtonStates = function() {
       var state = stateProperty.value;
@@ -71,25 +77,33 @@ define( function( require ) {
     syncButton( transcriptionButtonStateProperty, transcriptionText, transcriptionPanel, '#aee6c8' );
     syncButton( translationButtonStateProperty, translationText, translationPanel, '#5D1A88' );
 
-    dnaPanel.addInputListener( {down: function() {
-      stateProperty.value = 'dna';
-    }} );
+    dnaPanel.addInputListener( {
+      down: function() {
+        stateProperty.value = 'dna';
+      }
+    } );
 
-    transcriptionPanel.addInputListener( {down: function() {
-      stateProperty.value = 'transcription';
-    }} );
+    transcriptionPanel.addInputListener( {
+      down: function() {
+        stateProperty.value = 'transcription';
+      }
+    } );
 
-    translationPanel.addInputListener( {down: function() {
-      stateProperty.value = 'translation';
-    }} );
+    translationPanel.addInputListener( {
+      down: function() {
+        stateProperty.value = 'translation';
+      }
+    } );
 
-    HBox.call( this, {resize: false, spacing: 10, children: [
-      dnaPanel,
-      new ArrowNode( 0, 0, 20, 0 ),
-      transcriptionPanel,
-      new ArrowNode( 0, 0, 20, 0 ),
-      translationPanel
-    ]} );
+    HBox.call( this, {
+      resize: false, spacing: 10, children: [
+        dnaPanel,
+        new ArrowNode( 0, 0, 20, 0 ),
+        transcriptionPanel,
+        new ArrowNode( 0, 0, 20, 0 ),
+        translationPanel
+      ]
+    } );
     this.mutate( options );
   }
 

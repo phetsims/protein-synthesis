@@ -94,7 +94,7 @@ define( function( require ) {
   function RNACodonTable( screenView, translationScaleFactor, options ) {
 
     var font = new PhetFont( 25 );
-    var choices = ['U', 'C', 'A', 'G'];
+    var choices = [ 'U', 'C', 'A', 'G' ];
     var index = 0;
     var children = [];
     var previous = null;
@@ -105,9 +105,9 @@ define( function( require ) {
     //Highlight the nodes corresponding to what is in the ribosome, or generally, start to the left of the connection model (or search for a start codon?)
     var highlighted = [];
     for ( i = 0; i < screenView.connectionModel.bottom.length - 2; i++ ) {
-      var a = screenView.connectionModel.bottom[i];
-      var b = screenView.connectionModel.bottom[i + 1];
-      var c = screenView.connectionModel.bottom[i + 2];
+      var a = screenView.connectionModel.bottom[ i ];
+      var b = screenView.connectionModel.bottom[ i + 1 ];
+      var c = screenView.connectionModel.bottom[ i + 2 ];
       if ( a !== null && b !== null && c !== null ) {
 
         //The RNA codon table refers to what is in the mRNA, not what is in the pairing tRNA
@@ -127,18 +127,23 @@ define( function( require ) {
     };
 
     for ( i = 0; i < choices.length; i++ ) {
-      var choice1 = choices[i];
+      var choice1 = choices[ i ];
       for ( var j = 0; j < choices.length; j++ ) {
-        var choice2 = choices[j];
+        var choice2 = choices[ j ];
         for ( var k = 0; k < choices.length; k++ ) {
-          var choice3 = choices[k];
+          var choice3 = choices[ k ];
 
           // These will be the nucleotides in the tRNA
           var tRNATriplet = choice1 + choice2 + choice3;
 
           // This is the codon triplet, for the codon table
           var mRNATriplet = opposite( choice1 ) + opposite( choice2 ) + opposite( choice3 );
-          var textNode = new Text( tRNATriplet, {font: font, left: x, top: y, fill: highlighted.indexOf( tRNATriplet ) >= 0 ? 'black' : '#bbbbbb'} );
+          var textNode = new Text( tRNATriplet, {
+            font: font,
+            left: x,
+            top: y,
+            fill: highlighted.indexOf( tRNATriplet ) >= 0 ? 'black' : '#bbbbbb'
+          } );
           children.push( textNode );
 
           (function( tRNATriplet, mRNATriplet ) {
@@ -179,7 +184,7 @@ define( function( require ) {
       }
     }
 
-    Node.call( this, {children: children} );
+    Node.call( this, { children: children } );
     this.mutate( options );
   }
 

@@ -48,7 +48,7 @@ define( function( require ) {
    */
   function ProteinSynthesisScreenView( model ) {
     this.model = model;
-    ScreenView.call( this, {renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 834, 504 )} );
+    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 834, 504 ) } );
 
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
@@ -75,7 +75,13 @@ define( function( require ) {
       this.worldNode = worldNode;
 
       this.addChild( worldNode );
-      var nucleusShape = new Circle( 1000, {fill: '#E2E9F7', stroke: 'black', lineWidth: 4, centerX: this.layoutBounds.centerX, centerY: this.layoutBounds.centerY} );
+      var nucleusShape = new Circle( 1000, {
+        fill: '#E2E9F7',
+        stroke: 'black',
+        lineWidth: 4,
+        centerX: this.layoutBounds.centerX,
+        centerY: this.layoutBounds.centerY
+      } );
       worldNode.addChild( nucleusShape );
 
       //TODO: While dragging, show a drop shadow
@@ -99,18 +105,22 @@ define( function( require ) {
         scale: 0.6,
         stroke: 'red',
         lineWidth: 3,
-        lineDash: [6, 4],
+        lineDash: [ 6, 4 ],
         centerY: 150,
         left: 50
       } );
       worldNode.addChild( this.dottedLine );
-      var codingStrandLabel = new Text( 'Coding Strand', {font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.top - 10} );
+      var codingStrandLabel = new Text( 'Coding Strand', { font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.top - 10 } );
       this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
       worldNode.addChild( codingStrandLabel );
 
       //Label the complementary strand, only visible in the "dna" mode
-      var complementaryStrandLabel = new Text( 'Complementary Strand', {font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.bottom + 150} );
-      this.viewProperties.multilink( ['labelsVisible', 'state'], function( labelsVisible, state ) {
+      var complementaryStrandLabel = new Text( 'Complementary Strand', {
+        font: new PhetFont( 18 ),
+        left: this.dottedLine.left,
+        bottom: this.dottedLine.bottom + 150
+      } );
+      this.viewProperties.multilink( [ 'labelsVisible', 'state' ], function( labelsVisible, state ) {
         complementaryStrandLabel.visible = labelsVisible && state === 'dna';
       } );
       worldNode.addChild( complementaryStrandLabel );
@@ -137,7 +147,10 @@ define( function( require ) {
         return children;
       };
 
-      var sceneSelectionPanel = new SceneSelectionPanel( this.connectionModel, this.viewProperties.stateProperty, {centerX: this.layoutBounds.centerX, bottom: this.layoutBounds.bottom - 4} );
+      var sceneSelectionPanel = new SceneSelectionPanel( this.connectionModel, this.viewProperties.stateProperty, {
+        centerX: this.layoutBounds.centerX,
+        bottom: this.layoutBounds.bottom - 4
+      } );
       this.addChild( sceneSelectionPanel );
 
       var dnaStacks = [
@@ -147,8 +160,14 @@ define( function( require ) {
         createBaseNodeStack( 3, function() {return new Cytosine( 'deoxyribose' );} )
       ];
 
-      var dnaToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {fill: 'white', lineWidth: 1, stroke: 'black', centerX: this.layoutBounds.centerX, bottom: sceneSelectionPanel.top - 10} );
-      dnaToolbox.addChild( new Text( 'DNA', {centerX: 450 / 2, bottom: 100 - 2} ) );
+      var dnaToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {
+        fill: 'white',
+        lineWidth: 1,
+        stroke: 'black',
+        centerX: this.layoutBounds.centerX,
+        bottom: sceneSelectionPanel.top - 10
+      } );
+      dnaToolbox.addChild( new Text( 'DNA', { centerX: 450 / 2, bottom: 100 - 2 } ) );
       worldNode.addChild( dnaToolbox );
 
       var dnaBases = [];
@@ -156,10 +175,10 @@ define( function( require ) {
       var i = 0;
       var j = 0;
       for ( i = 0; i < dnaStacks.length; i++ ) {
-        var dnaStack = dnaStacks[i];
+        var dnaStack = dnaStacks[ i ];
         for ( j = 0; j < dnaStack.length; j++ ) {
-          worldNode.addChild( dnaStack[j] );
-          dnaBases.push( dnaStack[j] );
+          worldNode.addChild( dnaStack[ j ] );
+          dnaBases.push( dnaStack[ j ] );
         }
       }
 
@@ -170,14 +189,20 @@ define( function( require ) {
         createBaseNodeStack( 3, function() {return new Cytosine( 'ribose' );} )
       ];
 
-      var mRNAToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {fill: 'white', lineWidth: 1, stroke: 'black', centerX: this.layoutBounds.centerX, bottom: sceneSelectionPanel.top - 10} );
-      mRNAToolbox.addChild( new Text( 'mRNA', {centerX: 450 / 2, bottom: 100 - 2} ) );
+      var mRNAToolbox = new Rectangle( 0, 0, 450, 100, 10, 10, {
+        fill: 'white',
+        lineWidth: 1,
+        stroke: 'black',
+        centerX: this.layoutBounds.centerX,
+        bottom: sceneSelectionPanel.top - 10
+      } );
+      mRNAToolbox.addChild( new Text( 'mRNA', { centerX: 450 / 2, bottom: 100 - 2 } ) );
       worldNode.addChild( mRNAToolbox );
 
       for ( i = 0; i < mRNAStacks.length; i++ ) {
-        var mRNAStack = mRNAStacks[i];
+        var mRNAStack = mRNAStacks[ i ];
         for ( j = 0; j < mRNAStack.length; j++ ) {
-          var mRNABase = mRNAStack[j];
+          var mRNABase = mRNAStack[ j ];
           mRNABases.push( mRNABase );
           worldNode.addChild( mRNABase );
         }
@@ -195,7 +220,7 @@ define( function( require ) {
         //Any mRNA/DNA not in the connection model must be hidden too.
         if ( state === 'dna' ) {
           for ( i = 0; i < mRNABases.length; i++ ) {
-            base = mRNABases[i];
+            base = mRNABases[ i ];
             if ( !proteinSynthesisScreenView.connectionModel.contains( base ) ) {
               base.visible = false;
             }
@@ -203,24 +228,24 @@ define( function( require ) {
         }
         else {
           for ( i = 0; i < mRNABases.length; i++ ) {
-            base = mRNABases[i];
+            base = mRNABases[ i ];
             base.visible = true;
           }
 
           // When switching away from dna mode, hide any of the DNA nucleotides that are not connected in the play area, see #4
           for ( i = 0; i < dnaBases.length; i++ ) {
-            var missingFromConnectionModel = !proteinSynthesisScreenView.connectionModel.contains( dnaBases[i] );
+            var missingFromConnectionModel = !proteinSynthesisScreenView.connectionModel.contains( dnaBases[ i ] );
 
             // Also, leave the dna nucleotide visible if it was bubbled out for transcription, see #16
-            if ( missingFromConnectionModel && !dnaBases[i].bubbledOutForTranscription ) {
-              dnaBases[i].visible = false;
+            if ( missingFromConnectionModel && !dnaBases[ i ].bubbledOutForTranscription ) {
+              dnaBases[ i ].visible = false;
             }
           }
 
           // When in translation, make the mRNA undraggable, fixes #6
           if ( state === 'translation' ) {
             for ( i = 0; i < mRNABases.length; i++ ) {
-              base = mRNABases[i];
+              base = mRNABases[ i ];
               base.pickable = false;
             }
           }
@@ -240,7 +265,7 @@ define( function( require ) {
       this.viewProperties.stateProperty.link( function( state, oldState ) {
         if ( state === 'translation' && oldState === 'transcription' ) {
 
-          new TWEEN.Tween( { progress: 0, x: 0} )
+          new TWEEN.Tween( { progress: 0, x: 0 } )
             .to( { progress: 1, x: 2000 }, 4000 )
             .easing( TWEEN.Easing.Cubic.InOut )
             .onUpdate( function() {
@@ -259,8 +284,8 @@ define( function( require ) {
           proteinSynthesisScreenView.distanceMRNATranslated = 2000 + 414.2696199129823 - leftmostMRNANodeX + 250.8; //TODO: So much magics
 
           mrnaNodes.forEach( function( baseNode ) {
-            new TWEEN.Tween( { x: baseNode.x} )
-              .to( { x: baseNode.x + proteinSynthesisScreenView.distanceMRNATranslated}, 3800 )
+            new TWEEN.Tween( { x: baseNode.x } )
+              .to( { x: baseNode.x + proteinSynthesisScreenView.distanceMRNATranslated }, 3800 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 baseNode.x = this.x;
@@ -292,8 +317,8 @@ define( function( require ) {
 
             //Move away the non-coding strand when translation starts
             //TODO: var tween and cancel?
-            new TWEEN.Tween( { y: baseNode.y} )
-              .to( { y: baseNode.y + 500}, 1000 )
+            new TWEEN.Tween( { y: baseNode.y } )
+              .to( { y: baseNode.y + 500 }, 1000 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 baseNode.y = this.y;
@@ -312,7 +337,7 @@ define( function( require ) {
           //Create the RNACodonTable lazily so it will have the right highlighting
           var rnaCodonTable = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {} );
           var title = new Text( 'RNA codon table', new PhetFont( 24 ) );
-          proteinSynthesisScreenView.codonTableAccordionBox = new Panel( new VBox( {spacing: 10, children: [rnaCodonTable, title]} ), {
+          proteinSynthesisScreenView.codonTableAccordionBox = new Panel( new VBox( { spacing: 10, children: [ rnaCodonTable, title ] } ), {
             bottom: sceneSelectionPanel.top - 10 + 139,
             left: 15 + 2000//todo magic numbers
           } );
@@ -326,8 +351,8 @@ define( function( require ) {
 
             //Move away the non-coding strand when translation starts
             //TODO: var tween and cancel?
-            new TWEEN.Tween( { y: baseNode.y} )
-              .to( { y: baseNode.originalY}, 1000 )
+            new TWEEN.Tween( { y: baseNode.y } )
+              .to( { y: baseNode.originalY }, 1000 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 baseNode.y = this.y;
@@ -346,12 +371,12 @@ define( function( require ) {
       } );
 
       // Add the nucleus label
-      var nucleusLabel = new Text( 'Nucleus', {font: new PhetFont( 18 ), top: 10, right: this.layoutBounds.right - 10} );
+      var nucleusLabel = new Text( 'Nucleus', { font: new PhetFont( 18 ), top: 10, right: this.layoutBounds.right - 10 } );
       this.viewProperties.labelsVisibleProperty.linkAttribute( nucleusLabel, 'visible' );
       worldNode.addChild( nucleusLabel );
 
       // Add the nucleus label
-      var cytoplasmLabel = new Text( 'Cytoplasm', {font: new PhetFont( 18 / translationScaleFactor ), top: 10, left: 2014.974609375} );
+      var cytoplasmLabel = new Text( 'Cytoplasm', { font: new PhetFont( 18 / translationScaleFactor ), top: 10, left: 2014.974609375 } );
       this.viewProperties.labelsVisibleProperty.linkAttribute( cytoplasmLabel, 'visible' );
       worldNode.addChild( cytoplasmLabel );
 
@@ -369,15 +394,15 @@ define( function( require ) {
           var g = function() {return new Guanine( 'deoxyribose' );};
           var c = function() {return new Cytosine( 'deoxyribose' );};
 
-          var stack = [a, t, g, c];
+          var stack = [ a, t, g, c ];
           for ( var k = 0; k < 60; k++ ) {
-            var baseNode = toBaseNode( stack[k % stack.length]() );
+            var baseNode = toBaseNode( stack[ k % stack.length ]() );
             baseNode.setScaleMagnitude( 0.6 );
             var cp = proteinSynthesisScreenView.connectionModel.getConnectionPoints( baseNode );
             var element = Math.floor( Math.random() * cp.length );
-            baseNode.setPointingUp( cp[element].up );
-            baseNode.setBodyCenter( cp[element].point );
-            cp[element].connect();
+            baseNode.setPointingUp( cp[ element ].up );
+            baseNode.setBodyCenter( cp[ element ].point );
+            cp[ element ].connect();
             worldNode.addChild( baseNode );
           }
         })();
@@ -389,17 +414,17 @@ define( function( require ) {
 
       if ( window.phetcommon.getQueryParameter( 'testCodonTable' ) ) {
 
-        var c = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {scale: translationScaleFactor} );
+        var c = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, { scale: translationScaleFactor } );
         this.addChild( c );
       }
 
       if ( window.phetcommon.getQueryParameter( 'aminoAcids' ) ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
-          console.log( element, table[element] );
-          return new AminoAcidNode( table[element], proteinSynthesisScreenView.viewProperties.labelsVisibleProperty ).mutate( {scale: 0.25} );
+          console.log( element, table[ element ] );
+          return new AminoAcidNode( table[ element ], proteinSynthesisScreenView.viewProperties.labelsVisibleProperty ).mutate( { scale: 0.25 } );
         } );
-        var hbox = new HBox( {children: children, top: 100, align: 'bottom'} );
+        var hbox = new HBox( { children: children, top: 100, align: 'bottom' } );
         this.addChild( hbox );
       }
     },
@@ -434,7 +459,7 @@ define( function( require ) {
       var numCompleteCodons = Math.floor( this.connectionModel.sizeBottom / 3 );
 
       for ( var i = 0; i < this.attachedTRNANodes.length; i++ ) {
-        var trnaNode = this.attachedTRNANodes[i];
+        var trnaNode = this.attachedTRNANodes[ i ];
 
         var aaConnectedToTheRight = i < this.viewProperties.numAminoAcids - 1;
         var lastCodon = i === numCompleteCodons - 1;
@@ -461,8 +486,8 @@ define( function( require ) {
       this.attachedTRNANodes.forEach( function( trnaNode ) {
 
         //Move the tRNA and mRNA to the left by the length of one codon
-        new TWEEN.Tween( { x: trnaNode.x} )
-          .to( { x: trnaNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize}, 1000 )
+        new TWEEN.Tween( { x: trnaNode.x } )
+          .to( { x: trnaNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize }, 1000 )
           .easing( TWEEN.Easing.Cubic.InOut )
           .onUpdate( function() {
             trnaNode.x = this.x;
@@ -480,8 +505,8 @@ define( function( require ) {
       var bottomBaseNodes = this.connectionModel.bottomBaseNodes;
       bottomBaseNodes.forEach( function( baseNode ) {
         //Move the tRNA and mRNA to the left by the length of one codon
-        new TWEEN.Tween( { x: baseNode.x} )
-          .to( { x: baseNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize}, 1000 )
+        new TWEEN.Tween( { x: baseNode.x } )
+          .to( { x: baseNode.x - BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize }, 1000 )
           .easing( TWEEN.Easing.Cubic.InOut )
           .onUpdate( function() {
             baseNode.x = this.x;

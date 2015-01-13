@@ -37,9 +37,51 @@ define( function( require ) {
   var val = 'M546.27,442.615H418.422c11.091-13.788,18.052-31.039,18.97-49.884c1.94,0.13,3.893,0.22,5.866,0.22c47.772,0,86.501-38.727,86.501-86.5c0-47.771-38.729-86.5-86.501-86.5c-46.337,0-84.16,36.437-86.391,82.22c-1.941-0.13-3.893-0.22-5.867-0.22c-5.144,0-10.174,0.475-15.071,1.335c-1.437-46.513-39.57-83.787-86.432-83.787c-47.772,0-86.5,38.728-86.5,86.5c0,47.773,38.728,86.5,86.5,86.5c5.144,0,10.174-0.475,15.072-1.336c0.601,19.453,7.612,37.283,19.009,51.451H177.269l-28.205,28.205l28.205,28.205h369l-28.205-28.205L546.27,442.615z';
 
   //Scenery did not handle points converted with the pen tool
-  var shapes = {ala: ala, arg: arg, asn: asn, asp: asp, cys: cys, gln: gln, glu: glu, gly: gly, his: his, ile: ile, leu: leu, lys: lys, met: met, phe: phe, ser: ser, thr: thr, trp: trp, tyr: tyr, val: val};
+  var shapes = {
+    ala: ala,
+    arg: arg,
+    asn: asn,
+    asp: asp,
+    cys: cys,
+    gln: gln,
+    glu: glu,
+    gly: gly,
+    his: his,
+    ile: ile,
+    leu: leu,
+    lys: lys,
+    met: met,
+    phe: phe,
+    ser: ser,
+    thr: thr,
+    trp: trp,
+    tyr: tyr,
+    val: val
+  };
 
-  var names = {ala: 'Alanine', arg: 'Arginine', asn: 'Asparagine', asp: 'Aspartic Acid', cys: 'Cysteine', gln: 'Glutamine', glu: 'Glutamic Acid', gly: 'Glycine', his: 'Histidine', ile: 'Isoleucine', leu: 'Leucine', lys: 'Lysine', met: 'Methionine', phe: 'Phenylalanine', ser: 'Serine', thr: 'Threonine', trp: 'Tryptophan', tyr: 'Tyrosine', val: 'Valine', pro: 'Proline', stop: 'Stop'};
+  var names = {
+    ala: 'Alanine',
+    arg: 'Arginine',
+    asn: 'Asparagine',
+    asp: 'Aspartic Acid',
+    cys: 'Cysteine',
+    gln: 'Glutamine',
+    glu: 'Glutamic Acid',
+    gly: 'Glycine',
+    his: 'Histidine',
+    ile: 'Isoleucine',
+    leu: 'Leucine',
+    lys: 'Lysine',
+    met: 'Methionine',
+    phe: 'Phenylalanine',
+    ser: 'Serine',
+    thr: 'Threonine',
+    trp: 'Tryptophan',
+    tyr: 'Tyrosine',
+    val: 'Valine',
+    pro: 'Proline',
+    stop: 'Stop'
+  };
 
   /**
    *
@@ -48,25 +90,41 @@ define( function( require ) {
   function AminoAcidNode( abbreviation, labelsVisibleProperty ) {
     var path = null;
     if ( abbreviation === 'pro' ) {
-      path = new Path( new Shape().moveTo( 546.27, 442.615 ).lineTo( 384.033, 442.615 ).lineTo( 430.583, 299.35 ).lineTo( 308.714, 210.807 ).lineTo( 186.845, 299.35 ).lineTo( 233.395, 442.615 ).lineTo( 177.269, 442.615 ).lineTo( 149.064, 470.82 ).lineTo( 177.269, 499.025 ).lineTo( 546.27, 499.025 ).lineTo( 518.064, 470.82 ).close(), {fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.68} );
+      path = new Path( new Shape().moveTo( 546.27, 442.615 ).lineTo( 384.033, 442.615 ).lineTo( 430.583, 299.35 ).lineTo( 308.714, 210.807 ).lineTo( 186.845, 299.35 ).lineTo( 233.395, 442.615 ).lineTo( 177.269, 442.615 ).lineTo( 149.064, 470.82 ).lineTo( 177.269, 499.025 ).lineTo( 546.27, 499.025 ).lineTo( 518.064, 470.82 ).close(), {
+        fill: 'pink',
+        lineWidth: 2,
+        stroke: 'black',
+        centerX: 0,
+        centerY: 0,
+        scale: 0.68
+      } );
     }
     else if ( abbreviation === 'stop' ) {
-      path = new Path( new Shape().moveTo( 347.667, 442.615 ).lineTo( 177.269, 442.615 ).lineTo( 149.064, 470.82 ).lineTo( 177.269, 499.025 ).lineTo( 347.667, 499.025 ).close(), {fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.68} );
+      path = new Path( new Shape().moveTo( 347.667, 442.615 ).lineTo( 177.269, 442.615 ).lineTo( 149.064, 470.82 ).lineTo( 177.269, 499.025 ).lineTo( 347.667, 499.025 ).close(), {
+        fill: 'pink',
+        lineWidth: 2,
+        stroke: 'black',
+        centerX: 0,
+        centerY: 0,
+        scale: 0.68
+      } );
     }
     else {
-      path = new Path( shapes[abbreviation], {fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.68} );
+      path = new Path( shapes[ abbreviation ], { fill: 'pink', lineWidth: 2, stroke: 'black', centerX: 0, centerY: 0, scale: 0.68 } );
     }
 
     // Show the text like "Amino Acid: proline" or "stop"
-    var text = new Text( abbreviation === 'stop' ? names[abbreviation] : 'Amino Acid: ' + names[abbreviation], {
+    var text = new Text( abbreviation === 'stop' ? names[ abbreviation ] : 'Amino Acid: ' + names[ abbreviation ], {
       center: path.centerBottom.plusXY( 0, -20 ),
       font: new PhetFont( 18 )
     } );
     labelsVisibleProperty.linkAttribute( text, 'visible' );
-    Node.call( this, {children: [
-      path,
-      text
-    ]} );
+    Node.call( this, {
+      children: [
+        path,
+        text
+      ]
+    } );
   }
 
   return inherit( Node, AminoAcidNode );

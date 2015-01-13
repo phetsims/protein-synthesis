@@ -35,11 +35,17 @@ define( function( require ) {
     var trnaNode = this;
     var children = [];
 
-    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[tRNATriplet], labelsVisibleProperty );
+    var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[ tRNATriplet ], labelsVisibleProperty );
 
 //    children.push( aminoAcidNode );
     var orange = '#f9b664';
-    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {fill: orange, stroke: 'black', lineWidth: 1, rotation: Math.PI, left: -30 + 3} );
+    var trnaBody = new Path( new Shape().moveTo( -40, 35 ).lineToRelative( 15, 40 ).lineToRelative( 150, 0 ).lineToRelative( 15, -40 ).close(), {
+      fill: orange,
+      stroke: 'black',
+      lineWidth: 1,
+      rotation: Math.PI,
+      left: -30 + 3
+    } );
     children.push( trnaBody );
     aminoAcidNode.centerX = trnaBody.centerX;
     aminoAcidNode.bottom = trnaBody.top;
@@ -61,11 +67,11 @@ define( function( require ) {
       this.baseNodes.push( baseNode );
     }
 
-    children.push( new Text( 'tRNA', {center: trnaBody.center} ) );
+    children.push( new Text( 'tRNA', { center: trnaBody.center } ) );
 
-    this.detachableComponents = new Node( {children: children} );
+    this.detachableComponents = new Node( { children: children } );
     Node.call( this, {
-      children: [aminoAcidNode, this.detachableComponents ],
+      children: [ aminoAcidNode, this.detachableComponents ],
       scale: 1,
       pickable: true,
       cursor: 'pointer'
@@ -160,8 +166,8 @@ define( function( require ) {
       }
       if ( !snapped ) {
         var initScale = trnaNode.getScaleVector().x;
-        new TWEEN.Tween( { x: trnaNode.x, y: trnaNode.y, scale: initScale} )
-          .to( { x: trnaNode.initialX, y: trnaNode.initialY, scale: 0.2}, 700 )
+        new TWEEN.Tween( { x: trnaNode.x, y: trnaNode.y, scale: initScale } )
+          .to( { x: trnaNode.initialX, y: trnaNode.initialY, scale: 0.2 }, 700 )
           .easing( TWEEN.Easing.Cubic.InOut )
           .onUpdate( function() {
             trnaNode.setScaleMagnitude( this.scale );
@@ -178,8 +184,8 @@ define( function( require ) {
     detachTRNAFromAminoAcid: function() {
 
       var detachableComponents = this.detachableComponents;
-      new TWEEN.Tween( { x: detachableComponents.x, y: detachableComponents.y} )
-        .to( { x: detachableComponents.x, y: detachableComponents.y + 2000}, 700 )
+      new TWEEN.Tween( { x: detachableComponents.x, y: detachableComponents.y } )
+        .to( { x: detachableComponents.x, y: detachableComponents.y + 2000 }, 700 )
         .easing( TWEEN.Easing.Cubic.InOut )
         .onUpdate( function() {
           detachableComponents.setTranslation( this.x, this.y );

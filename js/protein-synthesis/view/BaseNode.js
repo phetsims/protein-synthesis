@@ -38,7 +38,7 @@ define( function( require ) {
     var fill = tRNA ? '#f9b664' :
                base.backboneType === 'deoxyribose' ? 'white' : '#aee6c8';
 
-    var pathNode = new Path( base.shape, {fill: fill, stroke: 'black', cursor: 'pointer'} );
+    var pathNode = new Path( base.shape, { fill: fill, stroke: 'black', cursor: 'pointer' } );
     Node.call( this, {
       children: [
         pathNode
@@ -115,8 +115,8 @@ define( function( require ) {
           if ( !updatedLocation ) {
 
             var initScale = baseNode.getScaleVector().x;
-            new TWEEN.Tween( { x: baseNode.x, y: baseNode.y, scale: initScale} )
-              .to( { x: baseNode.initialX, y: baseNode.initialY, scale: 0.4}, 700 )
+            new TWEEN.Tween( { x: baseNode.x, y: baseNode.y, scale: initScale } )
+              .to( { x: baseNode.initialX, y: baseNode.initialY, scale: 0.4 }, 700 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 if ( this.y > Y_THRESHOLD_FOR_UPSIDE_UP ) {

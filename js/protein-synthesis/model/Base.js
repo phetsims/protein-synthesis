@@ -17,7 +17,7 @@ define( function( require ) {
    * @constructor
    */
   function Base( shape, abbreviation, backboneType ) {
-    PropertySet.call( this, {angle: 0} );
+    PropertySet.call( this, { angle: 0 } );
     this.shape = shape;
     this.abbreviation = abbreviation;
     this.backboneType = backboneType;
