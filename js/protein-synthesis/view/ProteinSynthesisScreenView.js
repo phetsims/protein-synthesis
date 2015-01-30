@@ -381,13 +381,13 @@ define( function( require ) {
       worldNode.addChild( cytoplasmLabel );
 
       //Start in the cytoplasm, for debugging
-      if ( window.phetcommon.getQueryParameter( 'translation' ) ) {
+      if ( phet.phetcommon.getQueryParameter( 'translation' ) ) {
         this.viewProperties.state = 'translation';
         this.viewProperties.location = 'cytoplasm';
       }
 
       //Create random strands
-      if ( window.phetcommon.getQueryParameter( 'randomStrand' ) ) {
+      if ( phet.phetcommon.getQueryParameter( 'randomStrand' ) ) {
         (function() {
           var a = function() {return new Adenine( 'deoxyribose' );};
           var t = function() {return new Thymine( 'deoxyribose' );};
@@ -408,17 +408,17 @@ define( function( require ) {
         })();
       }
 
-      if ( window.phetcommon.getQueryParameter( 'test' ) ) {
+      if ( phet.phetcommon.getQueryParameter( 'test' ) ) {
         new TestTRNAConnectionPoints( this ).test();
       }
 
-      if ( window.phetcommon.getQueryParameter( 'testCodonTable' ) ) {
+      if ( phet.phetcommon.getQueryParameter( 'testCodonTable' ) ) {
 
         var c = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, { scale: translationScaleFactor } );
         this.addChild( c );
       }
 
-      if ( window.phetcommon.getQueryParameter( 'aminoAcids' ) ) {
+      if ( phet.phetcommon.getQueryParameter( 'aminoAcids' ) ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
           console.log( element, table[ element ] );
