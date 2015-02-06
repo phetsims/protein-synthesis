@@ -183,7 +183,7 @@ define( function( require ) {
     } );
   }
 
-  return inherit( Path, BaseNode, {
+  return inherit( Node, BaseNode, {
     setPointingUp: function( pointingUp ) {
       this.pointingUp = pointingUp;
       this.base.angle = this.pointingUp ? 0 : Math.PI;

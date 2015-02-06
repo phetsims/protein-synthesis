@@ -94,7 +94,7 @@ define( function( require ) {
     } ) );
   }
 
-  return inherit( Path, TRNANode, {
+  return inherit( Node, TRNANode, {
     getTRNANodeScale: function() {
       var scaleMag = this.getScaleVector();
       return scaleMag.x;

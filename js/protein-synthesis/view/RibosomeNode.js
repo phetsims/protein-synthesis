@@ -27,5 +27,5 @@ define( function( require ) {
     } );
   }
 
-  return inherit( Path, RibosomeNode );
+  return inherit( Node, RibosomeNode );
 } );

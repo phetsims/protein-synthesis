@@ -188,7 +188,7 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  return inherit( Path, RNACodonTable, {
+  return inherit( Node, RNACodonTable, {
     getRNACodonTableScale: function() {
       var scaleMag = this.getScaleVector();
       return scaleMag.x;
