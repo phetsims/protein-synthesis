@@ -48,7 +48,7 @@ define( function( require ) {
    */
   function ProteinSynthesisScreenView( model ) {
     this.model = model;
-    ScreenView.call( this, { renderer: 'svg', layoutBounds: new Bounds2( 0, 0, 834, 504 ) } );
+    ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 834, 504 ) } );
 
     this.viewProperties = new PropertySet( {
       baseLabelsVisible: true,
