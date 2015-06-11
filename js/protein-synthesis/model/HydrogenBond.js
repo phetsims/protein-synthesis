@@ -27,13 +27,9 @@ define( function( require ) {
     contains: function( baseNode ) {
       return this.topBaseNode === baseNode || this.bottomBaseNode === baseNode;
     },
+    
     // Resets all model elements
     reset: function() {
-    },
-
-    // Called by the animation loop. Optional, so if your model has no animation, you can omit this.
-    step: function() {
-      // Handle model animation here.
     }
   } );
 } );
