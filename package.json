@@ -2,6 +2,7 @@
   "name": "protein-synthesis",
   "version": "1.0.0-dev.7",
   "license": "GPLv3",
+  "requirejsNamespace": "PROTEIN_SYNTHESIS",
   "simTitleStringKey": "PROTEIN_SYNTHESIS/protein-synthesis.name",
   "phetLibs": [
     "protein-synthesis"
