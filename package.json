@@ -15,7 +15,6 @@
   },
   "phet": {
     "requirejsNamespace": "PROTEIN_SYNTHESIS",
-    "simTitleStringKey": "PROTEIN_SYNTHESIS/protein-synthesis.name",
     "preload": [
       "../sherpa/lib/Tween-r12.js"
     ]
