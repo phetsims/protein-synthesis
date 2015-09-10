@@ -15,7 +15,7 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var ProteinSynthesisSimString = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.name' );
+  var ProteinSynthesisSimString = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.title' );
 
   /**
    * Creates the model and view for the ProteinSynthesisScreen
