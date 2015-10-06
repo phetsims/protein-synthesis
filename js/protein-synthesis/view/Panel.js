@@ -87,7 +87,7 @@ define( function( require ) {
 
     set fill( a ) {this.background.fill = a;},
 
-    get fill() {return this.background.fill;},
+    get fill() {return this.background.fill;}
   } );
 
   return Panel;
