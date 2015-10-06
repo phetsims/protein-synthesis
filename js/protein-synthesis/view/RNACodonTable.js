@@ -96,7 +96,6 @@ define( function( require ) {
     var choices = [ 'U', 'C', 'A', 'G' ];
     var index = 0;
     var children = [];
-    var previous = null;
     var x = 0;
     var y = 0;
     var i = 0;
@@ -165,8 +164,6 @@ define( function( require ) {
             } ) );
           })( tRNATriplet, mRNATriplet );
 
-          previous = textNode;
-
           x += 65;
 
           if ( (index + 1) % 4 === 0 ) {
@@ -202,7 +199,7 @@ define( function( require ) {
         this.right = bodyCenter.x + 70 * scale;
         this.top = bodyCenter.y - 50 * scale;
       }
-    },
+    }
   }, {
     table: table
   } );
