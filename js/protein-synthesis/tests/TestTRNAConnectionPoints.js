@@ -29,7 +29,6 @@ define( function( require ) {
 
   return inherit( Object, TestTRNAConnectionPoints, {
 
-    //To satisfy jshint
     test: function() {}
   } );
 } );
