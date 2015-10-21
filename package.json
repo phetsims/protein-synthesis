@@ -1,7 +1,7 @@
 {
   "name": "protein-synthesis",
   "version": "1.0.0-dev.7",
-  "license": "GPLv3",
+  "license": "GPL-3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/phetsims/protein-synthesis.git"
