@@ -12,7 +12,7 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Segment = require( 'KITE/segments/Segment' );
+  var Quadratic = require( 'KITE/segments/Quadratic' );
 
   var neckWidth = 8 + 8;
   var topConnectorHeight = 50;
@@ -57,7 +57,7 @@ define( function( require ) {
       var lastPoint = baseShape.getLastPoint();
 
       var segment = baseShape.getLastSegment();
-      if ( !segment || !( segment instanceof Segment.Quadratic ) ) { return lastPoint; }
+      if ( !segment || !( segment instanceof Quadratic ) ) { return lastPoint; }
 
       return lastPoint.plus( lastPoint.minus( segment.control ) );
     };
