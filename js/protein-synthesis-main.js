@@ -14,7 +14,7 @@ define( function( require ) {
   var SimLauncher = require( 'JOIST/SimLauncher' );
 
   // strings
-  var simTitle = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.title' );
+  var proteinSynthesisTitleString = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.title' );
 
   var simOptions = {
     credits: {
@@ -34,7 +34,7 @@ define( function( require ) {
   }
 
   SimLauncher.launch( function() {
-    var sim = new Sim( simTitle, [ new ProteinSynthesisScreen() ], simOptions );
+    var sim = new Sim( proteinSynthesisTitleString, [ new ProteinSynthesisScreen() ], simOptions );
     sim.start();
   } );
 } );

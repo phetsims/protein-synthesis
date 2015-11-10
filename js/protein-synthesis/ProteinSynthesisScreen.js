@@ -15,14 +15,14 @@ define( function( require ) {
   var Screen = require( 'JOIST/Screen' );
 
   // strings
-  var ProteinSynthesisSimString = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.title' );
+  var proteinSynthesisTitleString = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.title' );
 
   /**
    * Creates the model and view for the ProteinSynthesisScreen
    * @constructor
    */
   function ProteinSynthesisScreen() {
-    Screen.call( this, ProteinSynthesisSimString, null /* no icon, single-screen sim */,
+    Screen.call( this, proteinSynthesisTitleString, null /* no icon, single-screen sim */,
       function() { return new ProteinSynthesisModel(); },
       function( model ) { return new ProteinSynthesisScreenView( model ); },
       {
