@@ -51,6 +51,37 @@ define( function( require ) {
 
     //TODO: Use MovableDragHandler to constrain bounds?
     if ( individuallyDraggable ) {
+      function dragBase( event, trail ) {
+        var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
+        if ( proposedBodyCenter.y < Y_THRESHOLD_FOR_UPSIDE_UP ) {
+          baseNode.setPointingUp( false );
+          baseNode.setBodyCenter( proposedBodyCenter );
+        }
+        else {
+          baseNode.setPointingUp( true );
+          baseNode.setBodyCenter( proposedBodyCenter );
+        }
+
+        var updatedLocation = false;
+        //TODO: make sure types are compatible (AT, GC)
+        var connectionPoints = screenView.getConnectionPoints( baseNode );
+        if ( connectionPoints.length > 0 ) {
+          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
+          if ( closestConnectionPoint.point.distance( proposedBodyCenter ) < 30 ) {
+
+            //Close enough for connection.
+            console.log( 'close' );
+
+            baseNode.setPointingUp( closestConnectionPoint.up );
+            baseNode.setBodyCenter( closestConnectionPoint.point );
+            updatedLocation = true;
+          }
+        }
+        if ( !updatedLocation ) {
+          baseNode.setBodyCenter( proposedBodyCenter );
+        }
+      }
+
       baseNode.addInputListener( new SimpleDragHandler( {
         start: function( event, trail ) {
 
@@ -60,38 +91,9 @@ define( function( require ) {
           baseNode.detach();
           baseNode.setScaleMagnitude( fullSize );
           screenView.worldNode.addChild( baseNode );
-          this.drag( event, trail );
+          dragBase( event, trail );
         },
-        drag: function( event, trail ) {
-          var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
-          if ( proposedBodyCenter.y < Y_THRESHOLD_FOR_UPSIDE_UP ) {
-            baseNode.setPointingUp( false );
-            baseNode.setBodyCenter( proposedBodyCenter );
-          }
-          else {
-            baseNode.setPointingUp( true );
-            baseNode.setBodyCenter( proposedBodyCenter );
-          }
-
-          var updatedLocation = false;
-          //TODO: make sure types are compatible (AT, GC)
-          var connectionPoints = screenView.getConnectionPoints( baseNode );
-          if ( connectionPoints.length > 0 ) {
-            var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-            if ( closestConnectionPoint.point.distance( proposedBodyCenter ) < 30 ) {
-
-              //Close enough for connection.
-              console.log( 'close' );
-
-              baseNode.setPointingUp( closestConnectionPoint.up );
-              baseNode.setBodyCenter( closestConnectionPoint.point );
-              updatedLocation = true;
-            }
-          }
-          if ( !updatedLocation ) {
-            baseNode.setBodyCenter( proposedBodyCenter );
-          }
-        },
+        drag: dragBase,
         end: function( event, trail ) {
           var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
 
