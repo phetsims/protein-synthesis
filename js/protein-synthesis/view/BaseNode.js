@@ -51,7 +51,7 @@ define( function( require ) {
 
     //TODO: Use MovableDragHandler to constrain bounds?
     if ( individuallyDraggable ) {
-      function dragBase( event, trail ) {
+      var dragBase = function( event, trail ) {
         var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
         if ( proposedBodyCenter.y < Y_THRESHOLD_FOR_UPSIDE_UP ) {
           baseNode.setPointingUp( false );
@@ -80,7 +80,7 @@ define( function( require ) {
         if ( !updatedLocation ) {
           baseNode.setBodyCenter( proposedBodyCenter );
         }
-      }
+      };
 
       baseNode.addInputListener( new SimpleDragHandler( {
         start: function( event, trail ) {
