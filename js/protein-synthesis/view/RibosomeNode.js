@@ -3,6 +3,7 @@
 define( function( require ) {
   'use strict';
 
+  // modules
   var Path = require( 'SCENERY/nodes/Path' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
