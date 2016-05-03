@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var ProteinSynthesisModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ProteinSynthesisModel' );
   var ProteinSynthesisScreenView = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ProteinSynthesisScreenView' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -33,5 +34,7 @@ define( function( require ) {
     );
   }
 
+  proteinSynthesis.register( 'ProteinSynthesisScreen', ProteinSynthesisScreen );
+  
   return inherit( Screen, ProteinSynthesisScreen );
 } );

@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
@@ -184,6 +185,8 @@ define( function( require ) {
     this.mutate( options );
   }
 
+  proteinSynthesis.register( 'RNACodonTable', RNACodonTable );
+  
   return inherit( Node, RNACodonTable, {
     getRNACodonTableScale: function() {
       var scaleMag = this.getScaleVector();

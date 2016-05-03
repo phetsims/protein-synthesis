@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
@@ -24,6 +25,8 @@ define( function( require ) {
     } ), 'C', backboneType );
   }
 
+  proteinSynthesis.register( 'Cytosine', Cytosine );
+  
   return inherit( Base, Cytosine, {
 
     // Resets all model elements

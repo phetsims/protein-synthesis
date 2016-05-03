@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -185,6 +186,8 @@ define( function( require ) {
     } );
   }
 
+  proteinSynthesis.register( 'BaseNode', BaseNode );
+  
   return inherit( Node, BaseNode, {
     setPointingUp: function( pointingUp ) {
       this.pointingUp = pointingUp;

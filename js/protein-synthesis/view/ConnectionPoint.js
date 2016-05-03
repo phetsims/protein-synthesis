@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Vector2 = require( 'DOT/Vector2' );
 
@@ -23,6 +24,8 @@ define( function( require ) {
     this.connect = connect;
   }
 
+  proteinSynthesis.register( 'ConnectionPoint', ConnectionPoint );
+  
   return inherit( Object, ConnectionPoint, {
     get point() {
       return new Vector2( this.x, this.y );

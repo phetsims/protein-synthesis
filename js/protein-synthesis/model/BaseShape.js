@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
@@ -109,6 +110,8 @@ define( function( require ) {
     this.verticalLineToRelative( topConnectorHeight );
   }
 
+  proteinSynthesis.register( 'BaseShape', BaseShape );
+  
   return inherit( Shape, BaseShape, {
 
     // Resets all model elements

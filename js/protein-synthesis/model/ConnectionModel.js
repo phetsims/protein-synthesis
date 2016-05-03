@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
@@ -38,6 +39,8 @@ define( function( require ) {
     this.numberOfTranslationSteps = 0;
   }
 
+  proteinSynthesis.register( 'ConnectionModel', ConnectionModel );
+  
   return inherit( PropertySet, ConnectionModel, {
     get size() {
       return this.sizeTop + this.sizeBottom;

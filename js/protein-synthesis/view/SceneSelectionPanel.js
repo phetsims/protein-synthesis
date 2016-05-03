@@ -4,6 +4,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var HBox = require( 'SCENERY/nodes/HBox' );
@@ -45,8 +46,6 @@ define( function( require ) {
                                              state === 'translation' ? 'selected' :
                                              'disabled';
     };
-
-    transcriptionButtonStateProperty.debug( 'transcriptionButtonState' );
 
     stateProperty.link( updateButtonStates );
 
@@ -107,6 +106,8 @@ define( function( require ) {
     } );
     this.mutate( options );
   }
+
+  proteinSynthesis.register( 'SceneSelectionPanel', SceneSelectionPanel );
 
   return inherit( HBox, SceneSelectionPanel );
 } );

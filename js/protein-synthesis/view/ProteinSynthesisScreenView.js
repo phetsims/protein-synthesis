@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var VBox = require( 'SCENERY/nodes/VBox' );
   var Util = require( 'DOT/Util' );
   var TestTRNAConnectionPoints = require( 'PROTEIN_SYNTHESIS/protein-synthesis/tests/TestTRNAConnectionPoints' );
@@ -62,6 +63,8 @@ define( function( require ) {
     this.initChildren();
   }
 
+  proteinSynthesis.register( 'ProteinSynthesisScreenView', ProteinSynthesisScreenView );
+  
   return inherit( ScreenView, ProteinSynthesisScreenView, {
 
     //Normally all of this would be in the constructor.  However, to cope with impending deadlinens resetAll has been implemented
@@ -140,7 +143,6 @@ define( function( require ) {
         var y = 387;
         for ( var i = 0; i < 5; i++ ) {
           var baseNode = toBaseNode( constructor() );
-          console.log( index );
           baseNode.setInitialPosition( x + i * 2 + index * 100, y + i * 2 );
           children.push( baseNode );
         }
@@ -214,8 +216,6 @@ define( function( require ) {
 
         var i = 0;
         var base = null;
-
-        console.log( state );
 
         //Any mRNA/DNA not in the connection model must be hidden too.
         if ( state === 'dna' ) {
@@ -298,7 +298,6 @@ define( function( require ) {
       var nonCodingStrand = [];
       this.viewProperties.stateProperty.link( function( state, oldState ) {
         if ( oldState === 'dna' && state === 'transcription' ) {
-          console.log( 'imagine the strands separating' );
           nonCodingStrand.length = 0;
 
           //find all the base nodes on the bottom, move to the back and animate them south.
@@ -332,7 +331,6 @@ define( function( require ) {
 
         //TODO: Much duplicated code with the above
         else if ( oldState === 'transcription' && state === 'translation' ) {
-          console.log( 'moving to translation' );
 
           //Create the RNACodonTable lazily so it will have the right highlighting
           var rnaCodonTable = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {} );
@@ -421,7 +419,6 @@ define( function( require ) {
       if ( phet.chipper.getQueryParameter( 'aminoAcids' ) ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
-          console.log( element, table[ element ] );
           return new AminoAcidNode( table[ element ], proteinSynthesisScreenView.viewProperties.labelsVisibleProperty ).mutate( { scale: 0.25 } );
         } );
         var hbox = new HBox( { children: children, top: 100, align: 'bottom' } );

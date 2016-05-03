@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
 
   /**
@@ -18,6 +19,8 @@ define( function( require ) {
   function ProteinSynthesisModel() {
   }
 
+  proteinSynthesis.register( 'ProteinSynthesisModel', ProteinSynthesisModel );
+  
   return inherit( Object, ProteinSynthesisModel, {
 
     // Resets all model elements

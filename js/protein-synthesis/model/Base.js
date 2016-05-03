@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -23,6 +24,8 @@ define( function( require ) {
     this.backboneType = backboneType;
   }
 
+  proteinSynthesis.register( 'Base', Base );
+  
   return inherit( PropertySet, Base, {
 
     //For making tRNA in the codon table, show the pairing partners

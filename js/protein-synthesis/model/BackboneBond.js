@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
 
@@ -22,6 +23,8 @@ define( function( require ) {
     this.rightBaseNode = rightBaseNode;
   }
 
+  proteinSynthesis.register( 'BackboneBond', BackboneBond );
+  
   return inherit( PropertySet, BackboneBond, {
 
     contains: function( baseNode ) {

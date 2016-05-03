@@ -4,6 +4,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var Path = require( 'SCENERY/nodes/Path' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
@@ -28,5 +29,7 @@ define( function( require ) {
     } );
   }
 
+  proteinSynthesis.register( 'RibosomeNode', RibosomeNode );
+  
   return inherit( Node, RibosomeNode );
 } );

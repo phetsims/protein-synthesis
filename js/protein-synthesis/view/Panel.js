@@ -14,6 +14,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
@@ -73,7 +74,9 @@ define( function( require ) {
     this.mutate( options );
   }
 
-  inherit( Node, Panel, {
+  proteinSynthesis.register( 'Panel', Panel );
+  
+  return inherit( Node, Panel, {
 
     //Setters for the background rectangle stroke
     set stroke( s ) { this.background.stroke = s; },
@@ -89,6 +92,4 @@ define( function( require ) {
 
     get fill() {return this.background.fill;}
   } );
-
-  return Panel;
 } );

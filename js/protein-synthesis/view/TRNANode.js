@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Text = require( 'SCENERY/nodes/Text' );
   var Path = require( 'SCENERY/nodes/Path' );
@@ -94,6 +95,8 @@ define( function( require ) {
     } ) );
   }
 
+  proteinSynthesis.register( 'TRNANode', TRNANode );
+
   return inherit( Node, TRNANode, {
     getTRNANodeScale: function() {
       var scaleMag = this.getScaleVector();
@@ -124,7 +127,6 @@ define( function( require ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
         var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
-        console.log( 'distance', distance );
         if ( distance < 30 ) {
 
           //Close enough for connection.
