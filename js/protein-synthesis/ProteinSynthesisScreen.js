@@ -15,22 +15,15 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
 
-  // strings
-  var proteinSynthesisTitleString = require( 'string!PROTEIN_SYNTHESIS/protein-synthesis.title' );
-
   /**
    * Creates the model and view for the ProteinSynthesisScreen
    * @constructor
    */
   function ProteinSynthesisScreen() {
-    Screen.call( this, proteinSynthesisTitleString, null /* no icon, single-screen sim */,
+    Screen.call( this,
       function() { return new ProteinSynthesisModel(); },
       function( model ) { return new ProteinSynthesisScreenView( model ); },
-      {
-
-        //The background is pale yellow (cytoplasm)
-        backgroundColor: '#f6f3bd'
-      }
+      { backgroundColor: '#f6f3bd' /* pale yellow (cytoplasm)*/ }
     );
   }
 
