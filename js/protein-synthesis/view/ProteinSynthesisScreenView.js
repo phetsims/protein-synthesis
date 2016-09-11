@@ -64,7 +64,7 @@ define( function( require ) {
   }
 
   proteinSynthesis.register( 'ProteinSynthesisScreenView', ProteinSynthesisScreenView );
-  
+
   return inherit( ScreenView, ProteinSynthesisScreenView, {
 
     //Normally all of this would be in the constructor.  However, to cope with impending deadlinens resetAll has been implemented
@@ -113,7 +113,11 @@ define( function( require ) {
         left: 50
       } );
       worldNode.addChild( this.dottedLine );
-      var codingStrandLabel = new Text( 'Coding Strand', { font: new PhetFont( 18 ), left: this.dottedLine.left, bottom: this.dottedLine.top - 10 } );
+      var codingStrandLabel = new Text( 'Coding Strand', {
+        font: new PhetFont( 18 ),
+        left: this.dottedLine.left,
+        bottom: this.dottedLine.top - 10
+      } );
       this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
       worldNode.addChild( codingStrandLabel );
 
@@ -275,7 +279,7 @@ define( function( require ) {
               //bring any mRNA out of the nucleus to the cytoplasm.
               worldNode.setScaleMagnitude( scale );
             } )
-            .start();
+            .start( phet.joist.elapsedTime );
 
           var mrnaNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
 
@@ -290,7 +294,7 @@ define( function( require ) {
               .onUpdate( function() {
                 baseNode.x = this.x;
               } )
-              .start();
+              .start( phet.joist.elapsedTime );
           } );
         }
       } );
@@ -325,7 +329,7 @@ define( function( require ) {
               .onComplete( function() {
                 nonCodingStrand.push( baseNode );
               } )
-              .start();
+              .start( phet.joist.elapsedTime );
           } );
         }
 
@@ -335,7 +339,10 @@ define( function( require ) {
           //Create the RNACodonTable lazily so it will have the right highlighting
           var rnaCodonTable = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {} );
           var title = new Text( 'RNA codon table', new PhetFont( 24 ) );
-          proteinSynthesisScreenView.codonTableAccordionBox = new Panel( new VBox( { spacing: 10, children: [ rnaCodonTable, title ] } ), {
+          proteinSynthesisScreenView.codonTableAccordionBox = new Panel( new VBox( {
+            spacing: 10,
+            children: [ rnaCodonTable, title ]
+          } ), {
             bottom: sceneSelectionPanel.top - 10 + 139,
             left: 15 + 2000//todo magic numbers
           } );
@@ -357,7 +364,7 @@ define( function( require ) {
               } )
               .onComplete( function() {
               } )
-              .start();
+              .start( phet.joist.elapsedTime );
           } );
 
           proteinSynthesisScreenView.viewProperties.location = 'cytoplasm';
@@ -369,12 +376,20 @@ define( function( require ) {
       } );
 
       // Add the nucleus label
-      var nucleusLabel = new Text( 'Nucleus', { font: new PhetFont( 18 ), top: 10, right: this.layoutBounds.right - 10 } );
+      var nucleusLabel = new Text( 'Nucleus', {
+        font: new PhetFont( 18 ),
+        top: 10,
+        right: this.layoutBounds.right - 10
+      } );
       this.viewProperties.labelsVisibleProperty.linkAttribute( nucleusLabel, 'visible' );
       worldNode.addChild( nucleusLabel );
 
       // Add the nucleus label
-      var cytoplasmLabel = new Text( 'Cytoplasm', { font: new PhetFont( 18 / translationScaleFactor ), top: 10, left: 2014.974609375 } );
+      var cytoplasmLabel = new Text( 'Cytoplasm', {
+        font: new PhetFont( 18 / translationScaleFactor ),
+        top: 10,
+        left: 2014.974609375
+      } );
       this.viewProperties.labelsVisibleProperty.linkAttribute( cytoplasmLabel, 'visible' );
       worldNode.addChild( cytoplasmLabel );
 
@@ -496,7 +511,7 @@ define( function( require ) {
               proteinSynthesisScreenView.detachTRNAs();
             }
           } )
-          .start();
+          .start( phet.joist.elapsedTime );
       } );
 
       var bottomBaseNodes = this.connectionModel.bottomBaseNodes;
@@ -510,8 +525,7 @@ define( function( require ) {
           } )
           .onComplete( function() {
           } )
-          .start();
-
+          .start( phet.joist.elapsedTime );
       } );
     }
   } );

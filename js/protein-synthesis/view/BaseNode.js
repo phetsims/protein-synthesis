@@ -128,7 +128,7 @@ define( function( require ) {
                 baseNode.setScaleMagnitude( this.scale );
                 baseNode.setTranslation( this.x, this.y );
               } )
-              .start();
+              .start( phet.joist.elapsedTime );
           }
         }
       } ) );
@@ -187,7 +187,7 @@ define( function( require ) {
   }
 
   proteinSynthesis.register( 'BaseNode', BaseNode );
-  
+
   return inherit( Node, BaseNode, {
     setPointingUp: function( pointingUp ) {
       this.pointingUp = pointingUp;

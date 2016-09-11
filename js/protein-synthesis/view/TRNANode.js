@@ -178,7 +178,7 @@ define( function( require ) {
           .onComplete( function() {
             trnaNode.detach();
           } )
-          .start();
+          .start( phet.joist.elapsedTime );
       }
     },
 
@@ -195,7 +195,7 @@ define( function( require ) {
         .onComplete( function() {
           detachableComponents.detach();
         } )
-        .start();
+        .start( phet.joist.elapsedTime );
     }
   } );
 } );
