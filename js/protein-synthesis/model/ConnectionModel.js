@@ -166,14 +166,14 @@ define( function( require ) {
     },
 
     getConnectionPoints: function( baseNode ) {
-      var connectionModel = this;
+      var self = this;
       var connectionPoints = [];
 
       //for every filled cell, if its left/right neighbor is empty, that is a valid connection point.
       //top to the left
       var adjacent = function( array, deltaI ) {
-        var isTop = (array === connectionModel.top);
-        var otherArray = isTop ? connectionModel.bottom : connectionModel.top;
+        var isTop = (array === self.top);
+        var otherArray = isTop ? self.bottom : self.top;
         for ( var i = 1; i < LENGTH - 1; i++ ) {
           if ( array[ i ] !== null ) {
             if ( array[ i + deltaI ] === null ) {
@@ -190,21 +190,21 @@ define( function( require ) {
               if ( okToBond ) {
                 (function( i ) {
                   var di = i + deltaI - CENTER_INDEX;
-                  var x = connectionModel.x + di * 84;
-                  connectionPoints.push( new ConnectionPoint( x, connectionModel.y + (isTop ? 0 : 123), !isTop, function() { connectionModel.add( i + deltaI, isTop ? 0 : 1, baseNode ); } ) );
+                  var x = self.x + di * 84;
+                  connectionPoints.push( new ConnectionPoint( x, self.y + (isTop ? 0 : 123), !isTop, function() { self.add( i + deltaI, isTop ? 0 : 1, baseNode ); } ) );
                 })( i );
               }
             }
           }
         }
       };
-      adjacent( connectionModel.top, -1 );
-      adjacent( connectionModel.top, +1 );
-      adjacent( connectionModel.bottom, -1 );
-      adjacent( connectionModel.bottom, +1 );
+      adjacent( self.top, -1 );
+      adjacent( self.top, +1 );
+      adjacent( self.bottom, -1 );
+      adjacent( self.bottom, +1 );
 
       var across = function( sourceArray, targetArray ) {
-        var targetIsBottom = targetArray === connectionModel.bottom;
+        var targetIsBottom = targetArray === self.bottom;
 
         for ( var i = 0; i < LENGTH; i++ ) {
           if ( sourceArray[ i ] !== null ) {
@@ -218,14 +218,14 @@ define( function( require ) {
                   //TODO: Remove deltaI
                   var deltaI = 0;
                   var di = i + deltaI - CENTER_INDEX;
-                  var x = connectionModel.x + di * 84;
+                  var x = self.x + di * 84;
 
                   var cp = new ConnectionPoint(
                     x,
-                    ( connectionModel.y + (targetIsBottom ? 123 : 0)),
+                    ( self.y + (targetIsBottom ? 123 : 0)),
                     targetIsBottom,
                     function() {
-                      connectionModel.add( i + deltaI, targetIsBottom ? 1 : 0, baseNode );
+                      self.add( i + deltaI, targetIsBottom ? 1 : 0, baseNode );
                     } );
                   connectionPoints.push( cp );
                 })( i );
@@ -234,11 +234,11 @@ define( function( require ) {
           }
         }
       };
-      across( connectionModel.top, connectionModel.bottom );
-      across( connectionModel.bottom, connectionModel.top );
+      across( self.top, self.bottom );
+      across( self.bottom, self.top );
 
       if ( connectionPoints.length === 0 ) {
-        connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() { connectionModel.add( CENTER_INDEX, 0, baseNode ); } ) );
+        connectionPoints.push( new ConnectionPoint( this.x, this.y, false, function() { self.add( CENTER_INDEX, 0, baseNode ); } ) );
       }
 
       // Shouldn't be able to put mRNA on the top, see #13
@@ -259,11 +259,11 @@ define( function( require ) {
     },
 
     getMRNACodonStartIndex: function() {
-      var connectionModel = this;
+      var self = this;
       for ( var i = 0; i < this.bottom.length - 2; i++ ) {
-        var a = connectionModel.bottom[ i ];
-        var b = connectionModel.bottom[ i + 1 ];
-        var c = connectionModel.bottom[ i + 2 ];
+        var a = self.bottom[ i ];
+        var b = self.bottom[ i + 1 ];
+        var c = self.bottom[ i + 2 ];
         if ( a !== null && b !== null && c !== null ) {
           return i;
         }
@@ -274,7 +274,7 @@ define( function( require ) {
     //TODO: This function needs work.  Possibly delegate to above?
     getConnectionPointsForTRNA: function( proteinSynthesisScreenView, tRNANode ) {
       var baseNodes = tRNANode.baseNodes;
-      var connectionModel = this;
+      var self = this;
 
       var connectionPoints = [];
 
@@ -286,21 +286,21 @@ define( function( require ) {
       for ( var i = startIndex; i < startIndex + 1; i++ ) {
         (function( i ) {
 
-          var a = connectionModel.bottom[ i ];
-          var b = connectionModel.bottom[ i + 1 ];
-          var c = connectionModel.bottom[ i + 2 ];
+          var a = self.bottom[ i ];
+          var b = self.bottom[ i + 1 ];
+          var c = self.bottom[ i + 2 ];
           if ( (a !== null && b !== null && c !== null) && (
             a.base.canHydrogenBond( baseNodes[ 0 ].base ) &&
             b.base.canHydrogenBond( baseNodes[ 1 ].base ) &&
             c.base.canHydrogenBond( baseNodes[ 2 ].base )
             ) ) {
             var di = i - CENTER_INDEX;
-            var x = connectionModel.x + di * 84 + proteinSynthesisScreenView.distanceMRNATranslated;
-            connectionPoints.push( new ConnectionPoint( x, connectionModel.y, true,
+            var x = self.x + di * 84 + proteinSynthesisScreenView.distanceMRNATranslated;
+            connectionPoints.push( new ConnectionPoint( x, self.y, true,
               function() {
-                connectionModel.add( i - 1, 0, baseNodes[ 0 ] );
-                connectionModel.add( i, 0, baseNodes[ 1 ] );
-                connectionModel.add( i + 1, 0, baseNodes[ 2 ] );
+                self.add( i - 1, 0, baseNodes[ 0 ] );
+                self.add( i, 0, baseNodes[ 1 ] );
+                self.add( i + 1, 0, baseNodes[ 2 ] );
               } ) );
           }
 

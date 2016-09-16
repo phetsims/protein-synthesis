@@ -26,7 +26,7 @@ define( function( require ) {
    */
   function BaseShape( topConnector ) {
 
-    var baseShape = this;
+    var self = this;
 
     Shape.call( this );
     var curveLength = 8;
@@ -51,13 +51,13 @@ define( function( require ) {
     // This layout code relied on the smooth curve bug in scenery, so I've backported the bug here.
     // TODO: Rewrite using lineto
     var smoothQuadraticCurveToRelative = function( x, y ) {
-      return baseShape.quadraticCurveToPoint( getSmoothQuadraticControlPoint(), v( x, y ).plus( baseShape.getRelativePoint() ) );
+      return self.quadraticCurveToPoint( getSmoothQuadraticControlPoint(), v( x, y ).plus( self.getRelativePoint() ) );
     };
 
     var getSmoothQuadraticControlPoint = function() {
-      var lastPoint = baseShape.getLastPoint();
+      var lastPoint = self.getLastPoint();
 
-      var segment = baseShape.getLastSegment();
+      var segment = self.getLastSegment();
       if ( !segment || !( segment instanceof Quadratic ) ) { return lastPoint; }
 
       return lastPoint.plus( lastPoint.minus( segment.control ) );

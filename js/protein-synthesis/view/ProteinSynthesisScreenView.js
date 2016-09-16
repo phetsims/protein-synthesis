@@ -71,7 +71,7 @@ define( function( require ) {
     //by reinitializing the model + view
     initChildren: function() {
 
-      var proteinSynthesisScreenView = this;
+      var self = this;
 
       //Everything that should translate with the camera
       var worldNode = new Node();
@@ -93,10 +93,10 @@ define( function( require ) {
         right: this.layoutBounds.maxX - 5,
         bottom: this.layoutBounds.maxY - 5,
         listener: function() {
-          proteinSynthesisScreenView.model.reset();
-          proteinSynthesisScreenView.viewProperties.reset();
-          proteinSynthesisScreenView.removeAllChildren();
-          proteinSynthesisScreenView.initChildren();
+          self.model.reset();
+          self.viewProperties.reset();
+          self.removeAllChildren();
+          self.initChildren();
         }
       } );
       this.addChild( resetAllButton );
@@ -135,11 +135,11 @@ define( function( require ) {
       this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
       this.connectionModel.on( 'changed', function() {
         //If something connected, stop showing the initial target
-        proteinSynthesisScreenView.dottedLine.visible = proteinSynthesisScreenView.connectionModel.isEmpty;
+        self.dottedLine.visible = self.connectionModel.isEmpty;
       } );
 
       var toBaseNode = function( base ) {
-        return new BaseNode( base, proteinSynthesisScreenView, proteinSynthesisScreenView.viewProperties.baseLabelsVisibleProperty, proteinSynthesisScreenView.viewProperties.labelsVisibleProperty, true, false );
+        return new BaseNode( base, self, self.viewProperties.baseLabelsVisibleProperty, self.viewProperties.labelsVisibleProperty, true, false );
       };
       var createBaseNodeStack = function( index, constructor ) {
         var children = [];
@@ -225,7 +225,7 @@ define( function( require ) {
         if ( state === 'dna' ) {
           for ( i = 0; i < mRNABases.length; i++ ) {
             base = mRNABases[ i ];
-            if ( !proteinSynthesisScreenView.connectionModel.contains( base ) ) {
+            if ( !self.connectionModel.contains( base ) ) {
               base.visible = false;
             }
           }
@@ -238,7 +238,7 @@ define( function( require ) {
 
           // When switching away from dna mode, hide any of the DNA nucleotides that are not connected in the play area, see #4
           for ( i = 0; i < dnaBases.length; i++ ) {
-            var missingFromConnectionModel = !proteinSynthesisScreenView.connectionModel.contains( dnaBases[ i ] );
+            var missingFromConnectionModel = !self.connectionModel.contains( dnaBases[ i ] );
 
             // Also, leave the dna nucleotide visible if it was bubbled out for transcription, see #16
             if ( missingFromConnectionModel && !dnaBases[ i ].bubbledOutForTranscription ) {
@@ -273,7 +273,7 @@ define( function( require ) {
             .to( { progress: 1, x: 2000 }, 4000 )
             .easing( TWEEN.Easing.Cubic.InOut )
             .onUpdate( function() {
-              proteinSynthesisScreenView.worldNode.x = this.x;
+              self.worldNode.x = this.x;
               var scale = Util.linear( 0, 1, 1, translationScaleFactor, this.progress );
               worldNode.x = -this.progress * 2000 * scale;
               //bring any mRNA out of the nucleus to the cytoplasm.
@@ -281,15 +281,15 @@ define( function( require ) {
             } )
             .start( phet.joist.elapsedTime );
 
-          var mrnaNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
+          var mrnaNodes = self.connectionModel.bottomBaseNodes;
 
           //Leftmost mRNA node should be parked directly in the ribosome
           var leftmostMRNANodeX = _.min( mrnaNodes, function( mrnaNode ) {return mrnaNode.left;} ).x;
-          proteinSynthesisScreenView.distanceMRNATranslated = 2000 + 414.2696199129823 - leftmostMRNANodeX + 250.8; //TODO: So much magics
+          self.distanceMRNATranslated = 2000 + 414.2696199129823 - leftmostMRNANodeX + 250.8; //TODO: So much magics
 
           mrnaNodes.forEach( function( baseNode ) {
             new TWEEN.Tween( { x: baseNode.x } )
-              .to( { x: baseNode.x + proteinSynthesisScreenView.distanceMRNATranslated }, 3800 )
+              .to( { x: baseNode.x + self.distanceMRNATranslated }, 3800 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 baseNode.x = this.x;
@@ -305,7 +305,7 @@ define( function( require ) {
           nonCodingStrand.length = 0;
 
           //find all the base nodes on the bottom, move to the back and animate them south.
-          var bottomBaseNodes = proteinSynthesisScreenView.connectionModel.bottomBaseNodes;
+          var bottomBaseNodes = self.connectionModel.bottomBaseNodes;
           bottomBaseNodes.forEach( function( baseNode ) {
 
             baseNode.originalY = baseNode.y;
@@ -313,7 +313,7 @@ define( function( require ) {
             worldNode.removeChild( baseNode );
             worldNode.insertChild( worldNode.indexOfChild( nucleusShape ) + 1, baseNode );
 
-            proteinSynthesisScreenView.connectionModel.remove( baseNode );
+            self.connectionModel.remove( baseNode );
 
             // Mark the node so it will return before going to transcription
             baseNode.bubbledOutForTranscription = true;
@@ -337,16 +337,16 @@ define( function( require ) {
         else if ( oldState === 'transcription' && state === 'translation' ) {
 
           //Create the RNACodonTable lazily so it will have the right highlighting
-          var rnaCodonTable = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, {} );
+          var rnaCodonTable = new RNACodonTable( self, translationScaleFactor, {} );
           var title = new Text( 'RNA codon table', new PhetFont( 24 ) );
-          proteinSynthesisScreenView.codonTableAccordionBox = new Panel( new VBox( {
+          self.codonTableAccordionBox = new Panel( new VBox( {
             spacing: 10,
             children: [ rnaCodonTable, title ]
           } ), {
             bottom: sceneSelectionPanel.top - 10 + 139,
             left: 15 + 2000//todo magic numbers
           } );
-          worldNode.addChild( proteinSynthesisScreenView.codonTableAccordionBox );
+          worldNode.addChild( self.codonTableAccordionBox );
 
           //Move back the non-coding strand
           nonCodingStrand.forEach( function( baseNode ) {
@@ -367,11 +367,11 @@ define( function( require ) {
               .start( phet.joist.elapsedTime );
           } );
 
-          proteinSynthesisScreenView.viewProperties.location = 'cytoplasm';
-          proteinSynthesisScreenView.codonTableAccordionBox.moveToFront();//move in front of mRNA strands.
+          self.viewProperties.location = 'cytoplasm';
+          self.codonTableAccordionBox.moveToFront();//move in front of mRNA strands.
         }
         else if ( oldState === 'translation' && state === 'dna' ) {
-          proteinSynthesisScreenView.viewProperties.location = 'nucleus';
+          self.viewProperties.location = 'nucleus';
         }
       } );
 
@@ -411,7 +411,7 @@ define( function( require ) {
           for ( var k = 0; k < 60; k++ ) {
             var baseNode = toBaseNode( stack[ k % stack.length ]() );
             baseNode.setScaleMagnitude( 0.6 );
-            var cp = proteinSynthesisScreenView.connectionModel.getConnectionPoints( baseNode );
+            var cp = self.connectionModel.getConnectionPoints( baseNode );
             var element = Math.floor( Math.random() * cp.length );
             baseNode.setPointingUp( cp[ element ].up );
             baseNode.setBodyCenter( cp[ element ].point );
@@ -427,14 +427,14 @@ define( function( require ) {
 
       if ( phet.chipper.getQueryParameter( 'testCodonTable' ) ) {
 
-        var c = new RNACodonTable( proteinSynthesisScreenView, translationScaleFactor, { scale: translationScaleFactor } );
+        var c = new RNACodonTable( self, translationScaleFactor, { scale: translationScaleFactor } );
         this.addChild( c );
       }
 
       if ( phet.chipper.getQueryParameter( 'aminoAcids' ) ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
-          return new AminoAcidNode( table[ element ], proteinSynthesisScreenView.viewProperties.labelsVisibleProperty ).mutate( { scale: 0.25 } );
+          return new AminoAcidNode( table[ element ], self.viewProperties.labelsVisibleProperty ).mutate( { scale: 0.25 } );
         } );
         var hbox = new HBox( { children: children, top: 100, align: 'bottom' } );
         this.addChild( hbox );
@@ -486,14 +486,14 @@ define( function( require ) {
 
       // When a tRNA is attached to the peptide chain, it should no longer be individually draggable, see #7
       trnaNode.pickable = false;
-      var proteinSynthesisScreenView = this;
+      var self = this;
 
       this.attachedTRNANodes.push( trnaNode );
 
       var numToTranslate = this.attachedTRNANodes.length;
       var numTranslated = 0;
 
-      proteinSynthesisScreenView.connectionModel.numberOfTranslationSteps++;
+      self.connectionModel.numberOfTranslationSteps++;
 
       this.attachedTRNANodes.forEach( function( trnaNode ) {
 
@@ -507,8 +507,8 @@ define( function( require ) {
           .onComplete( function() {
             numTranslated++;
             if ( numTranslated === numToTranslate ) {
-              proteinSynthesisScreenView.viewProperties.numAminoAcids = proteinSynthesisScreenView.viewProperties.numAminoAcids + 1;
-              proteinSynthesisScreenView.detachTRNAs();
+              self.viewProperties.numAminoAcids = self.viewProperties.numAminoAcids + 1;
+              self.detachTRNAs();
             }
           } )
           .start( phet.joist.elapsedTime );

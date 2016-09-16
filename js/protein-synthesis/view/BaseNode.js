@@ -46,7 +46,7 @@ define( function( require ) {
       ],
       scale: 0.4
     } );
-    var baseNode = this;
+    var self = this;
     this.inCarousel = true;
     this.pointingUp = true;
 
@@ -55,17 +55,17 @@ define( function( require ) {
       var dragBase = function( event, trail ) {
         var proposedBodyCenter = screenView.globalToLocalPoint( event.pointer.point );
         if ( proposedBodyCenter.y < Y_THRESHOLD_FOR_UPSIDE_UP ) {
-          baseNode.setPointingUp( false );
-          baseNode.setBodyCenter( proposedBodyCenter );
+          self.setPointingUp( false );
+          self.setBodyCenter( proposedBodyCenter );
         }
         else {
-          baseNode.setPointingUp( true );
-          baseNode.setBodyCenter( proposedBodyCenter );
+          self.setPointingUp( true );
+          self.setBodyCenter( proposedBodyCenter );
         }
 
         var updatedLocation = false;
         //TODO: make sure types are compatible (AT, GC)
-        var connectionPoints = screenView.getConnectionPoints( baseNode );
+        var connectionPoints = screenView.getConnectionPoints( self );
         if ( connectionPoints.length > 0 ) {
           var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
           if ( closestConnectionPoint.point.distance( proposedBodyCenter ) < 30 ) {
@@ -73,25 +73,25 @@ define( function( require ) {
             //Close enough for connection.
             console.log( 'close' );
 
-            baseNode.setPointingUp( closestConnectionPoint.up );
-            baseNode.setBodyCenter( closestConnectionPoint.point );
+            self.setPointingUp( closestConnectionPoint.up );
+            self.setBodyCenter( closestConnectionPoint.point );
             updatedLocation = true;
           }
         }
         if ( !updatedLocation ) {
-          baseNode.setBodyCenter( proposedBodyCenter );
+          self.setBodyCenter( proposedBodyCenter );
         }
       };
 
-      baseNode.addInputListener( new SimpleDragHandler( {
+      self.addInputListener( new SimpleDragHandler( {
         start: function( event, trail ) {
 
-          screenView.connectionModel.remove( baseNode );
-          baseNode.inCarousel = false;
+          screenView.connectionModel.remove( self );
+          self.inCarousel = false;
           //increase size, pop out of carousel, create another one behind it in carousel (or already had a stack there?)
-          baseNode.detach();
-          baseNode.setScaleMagnitude( fullSize );
-          screenView.worldNode.addChild( baseNode );
+          self.detach();
+          self.setScaleMagnitude( fullSize );
+          screenView.worldNode.addChild( self );
           dragBase( event, trail );
         },
         drag: dragBase,
@@ -100,7 +100,7 @@ define( function( require ) {
 
           var updatedLocation = false;
           //TODO: make sure types are compatible (AT, GC)
-          var connectionPoints = screenView.getConnectionPoints( baseNode );
+          var connectionPoints = screenView.getConnectionPoints( self );
           if ( connectionPoints.length > 0 ) {
             var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
             if ( closestConnectionPoint.point.distance( proposedBodyCenter ) < 45 ) {
@@ -109,24 +109,24 @@ define( function( require ) {
               console.log( 'close' );
 
               //Rotate so it could connect.
-              baseNode.setPointingUp( closestConnectionPoint.up );
-              baseNode.setBodyCenter( closestConnectionPoint.point );
+              self.setPointingUp( closestConnectionPoint.up );
+              self.setBodyCenter( closestConnectionPoint.point );
               updatedLocation = true;
               closestConnectionPoint.connect();
             }
           }
           if ( !updatedLocation ) {
 
-            var initScale = baseNode.getScaleVector().x;
-            new TWEEN.Tween( { x: baseNode.x, y: baseNode.y, scale: initScale } )
-              .to( { x: baseNode.initialX, y: baseNode.initialY, scale: 0.4 }, 700 )
+            var initScale = self.getScaleVector().x;
+            new TWEEN.Tween( { x: self.x, y: self.y, scale: initScale } )
+              .to( { x: self.initialX, y: self.initialY, scale: 0.4 }, 700 )
               .easing( TWEEN.Easing.Cubic.InOut )
               .onUpdate( function() {
                 if ( this.y > Y_THRESHOLD_FOR_UPSIDE_UP ) {
-                  baseNode.setPointingUp( true );
+                  self.setPointingUp( true );
                 }
-                baseNode.setScaleMagnitude( this.scale );
-                baseNode.setTranslation( this.x, this.y );
+                self.setScaleMagnitude( this.scale );
+                self.setTranslation( this.x, this.y );
               } )
               .start( phet.joist.elapsedTime );
           }

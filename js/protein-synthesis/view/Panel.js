@@ -26,7 +26,7 @@ define( function( require ) {
    */
   function Panel( content, options ) {
 
-    var thisNode = this;
+    var self = this;
 
     // default options
     options = _.extend( {
@@ -40,7 +40,7 @@ define( function( require ) {
       backgroundPickable: false
     }, options );
 
-    Node.call( thisNode );
+    Node.call( self );
 
     // correct size will be set by updateBackground
     var background = new Rectangle( 0, 0, 1, 1, {

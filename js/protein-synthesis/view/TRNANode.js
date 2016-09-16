@@ -33,7 +33,7 @@ define( function( require ) {
 
     this.screenView = screenView;
 
-    var trnaNode = this;
+    var self = this;
     var children = [];
 
     var aminoAcidNode = new AminoAcidNode( RNACodonTable.table[ tRNATriplet ], labelsVisibleProperty );
@@ -84,13 +84,13 @@ define( function( require ) {
 //    //TODO: Use MovableDragHandler to constrain bounds?
     this.addInputListener( new SimpleDragHandler( {
       start: function( event, trail ) {
-        trnaNode.drag( event, trail );
+        self.drag( event, trail );
       },
       drag: function( event, trail ) {
-        trnaNode.drag( event, trail );
+        self.drag( event, trail );
       },
       end: function( event, trail ) {
-        trnaNode.end( event, trail );
+        self.end( event, trail );
       }
     } ) );
   }
@@ -115,14 +115,14 @@ define( function( require ) {
       this.drag( event, trail );
     },
     drag: function( event, trail ) {
-      var trnaNode = this;
+      var self = this;
       var screenView = this.screenView;
 
       var proposedBodyCenter = screenView.worldNode.globalToLocalPoint( event.pointer.point );
 
       var snapped = false;
       //TODO: make sure types are compatible (AT, GC)
-      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, trnaNode );
+      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, self );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
         var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
@@ -132,25 +132,25 @@ define( function( require ) {
           //Close enough for connection.
           console.log( 'close' );
 
-          trnaNode.setBodyCenter( newPoint );
+          self.setBodyCenter( newPoint );
           snapped = true;
         }
       }
       if ( !snapped ) {
-        trnaNode.setBodyCenter( proposedBodyCenter );
+        self.setBodyCenter( proposedBodyCenter );
       }
     },
     end: function( event, trail ) {
       //if it did not connect, then fly back to the RNACodonTable, where it originated
 
-      var trnaNode = this;
+      var self = this;
       var screenView = this.screenView;
 
       var proposedBodyCenter = screenView.worldNode.globalToLocalPoint( event.pointer.point );
 
       var snapped = false;
       //TODO: make sure types are compatible (AT, GC)
-      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, trnaNode );
+      var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, self );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
         var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
@@ -161,22 +161,22 @@ define( function( require ) {
           //Close enough for connection.
           console.log( 'close' );
 
-          trnaNode.setBodyCenter( newPoint );
+          self.setBodyCenter( newPoint );
           snapped = true;
-          screenView.trnaAttached( trnaNode, closestConnectionPoint );
+          screenView.trnaAttached( self, closestConnectionPoint );
         }
       }
       if ( !snapped ) {
-        var initScale = trnaNode.getScaleVector().x;
-        new TWEEN.Tween( { x: trnaNode.x, y: trnaNode.y, scale: initScale } )
-          .to( { x: trnaNode.initialX, y: trnaNode.initialY, scale: 0.2 }, 700 )
+        var initScale = self.getScaleVector().x;
+        new TWEEN.Tween( { x: self.x, y: self.y, scale: initScale } )
+          .to( { x: self.initialX, y: self.initialY, scale: 0.2 }, 700 )
           .easing( TWEEN.Easing.Cubic.InOut )
           .onUpdate( function() {
-            trnaNode.setScaleMagnitude( this.scale );
-            trnaNode.setTranslation( this.x, this.y );
+            self.setScaleMagnitude( this.scale );
+            self.setTranslation( this.x, this.y );
           } )
           .onComplete( function() {
-            trnaNode.detach();
+            self.detach();
           } )
           .start( phet.joist.elapsedTime );
       }
