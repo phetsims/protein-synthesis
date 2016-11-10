@@ -64,7 +64,7 @@ define( function( require ) {
       }
     };
     if ( options.resize ) {
-      content.addEventListener( 'bounds', function() {
+      content.on( 'bounds', function() {
         updateBackground();
       } );
     }
@@ -75,7 +75,7 @@ define( function( require ) {
   }
 
   proteinSynthesis.register( 'Panel', Panel );
-  
+
   return inherit( Node, Panel, {
 
     //Setters for the background rectangle stroke
