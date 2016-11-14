@@ -39,6 +39,7 @@ define( function( require ) {
   var AminoAcidNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/AminoAcidNode' );
   var HBox = require( 'SCENERY/nodes/HBox' );
   var Bounds2 = require( 'DOT/Bounds2' );
+  var ProteinSynthesisQueryParameters = require( 'PROTEIN_SYNTHESIS/protein-synthesis/ProteinSynthesisQueryParameters' );
 
   //constants
   var translationScaleFactor = 0.75;
@@ -394,13 +395,13 @@ define( function( require ) {
       worldNode.addChild( cytoplasmLabel );
 
       //Start in the cytoplasm, for debugging
-      if ( phet.chipper.getQueryParameter( 'translation' ) ) {
+      if ( ProteinSynthesisQueryParameters.translation ) {
         this.viewProperties.state = 'translation';
         this.viewProperties.location = 'cytoplasm';
       }
 
       //Create random strands
-      if ( phet.chipper.getQueryParameter( 'randomStrand' ) ) {
+      if ( ProteinSynthesisQueryParameters.randomStrand ) {
         (function() {
           var a = function() {return new Adenine( 'deoxyribose' );};
           var t = function() {return new Thymine( 'deoxyribose' );};
@@ -421,17 +422,17 @@ define( function( require ) {
         })();
       }
 
-      if ( phet.chipper.getQueryParameter( 'test' ) ) {
+      if ( ProteinSynthesisQueryParameters.test ) {
         new TestTRNAConnectionPoints( this ).test();
       }
 
-      if ( phet.chipper.getQueryParameter( 'testCodonTable' ) ) {
+      if ( ProteinSynthesisQueryParameters.testCodonTable ) {
 
         var c = new RNACodonTable( self, translationScaleFactor, { scale: translationScaleFactor } );
         this.addChild( c );
       }
 
-      if ( phet.chipper.getQueryParameter( 'aminoAcids' ) ) {
+      if ( ProteinSynthesisQueryParameters.aminoAcids ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
           return new AminoAcidNode( table[ element ], self.viewProperties.labelsVisibleProperty ).mutate( { scale: 0.25 } );
