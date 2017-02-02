@@ -15,7 +15,6 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var Screen = require( 'JOIST/Screen' );
   var Property = require( 'AXON/Property' );
-  var Color = require( 'SCENERY/util/Color' );
 
   /**
    * Creates the model and view for the ProteinSynthesisScreen
@@ -25,11 +24,11 @@ define( function( require ) {
     Screen.call( this,
       function() { return new ProteinSynthesisModel(); },
       function( model ) { return new ProteinSynthesisScreenView( model ); },
-      { backgroundColorProperty: new Property( Color.toColor( '#f6f3bd' ) ) /* pale yellow (cytoplasm)*/ }
+      { backgroundColorProperty: new Property( '#f6f3bd' ) /* pale yellow (cytoplasm)*/ }
     );
   }
 
   proteinSynthesis.register( 'ProteinSynthesisScreen', ProteinSynthesisScreen );
-  
+
   return inherit( Screen, ProteinSynthesisScreen );
 } );
