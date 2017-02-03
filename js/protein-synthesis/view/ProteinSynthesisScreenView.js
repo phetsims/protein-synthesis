@@ -285,7 +285,7 @@ define( function( require ) {
           var mrnaNodes = self.connectionModel.bottomBaseNodes;
 
           //Leftmost mRNA node should be parked directly in the ribosome
-          var leftmostMRNANodeX = _.min( mrnaNodes, function( mrnaNode ) {return mrnaNode.left;} ).x;
+          var leftmostMRNANodeX = _.minBy( mrnaNodes, function( mrnaNode ) {return mrnaNode.left;} ).x;
           self.distanceMRNATranslated = 2000 + 414.2696199129823 - leftmostMRNANodeX + 250.8; //TODO: So much magics
 
           mrnaNodes.forEach( function( baseNode ) {

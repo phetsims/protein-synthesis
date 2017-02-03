@@ -67,7 +67,7 @@ define( function( require ) {
         //TODO: make sure types are compatible (AT, GC)
         var connectionPoints = screenView.getConnectionPoints( self );
         if ( connectionPoints.length > 0 ) {
-          var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
+          var closestConnectionPoint = _.minBy( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
           if ( closestConnectionPoint.point.distance( proposedBodyCenter ) < 30 ) {
 
             //Close enough for connection.
@@ -102,7 +102,7 @@ define( function( require ) {
           //TODO: make sure types are compatible (AT, GC)
           var connectionPoints = screenView.getConnectionPoints( self );
           if ( connectionPoints.length > 0 ) {
-            var closestConnectionPoint = _.min( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
+            var closestConnectionPoint = _.minBy( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
             if ( closestConnectionPoint.point.distance( proposedBodyCenter ) < 45 ) {
 
               //Close enough for connection.
