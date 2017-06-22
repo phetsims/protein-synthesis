@@ -11,7 +11,6 @@ define( function( require ) {
   // modules
   var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
 
   /**
    * Main constructor for BackboneBond, which creates the bar magnet..
