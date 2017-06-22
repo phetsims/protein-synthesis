@@ -61,7 +61,7 @@ define( function( require ) {
         screenView, baseLabelsVisibleProperty, labelsVisibleProperty, false, true );
 
       //Start as pointing down (as in many textbooks).  TODO: should we allow these to flip vertically?
-      baseNode.base.angle = Math.PI;
+      baseNode.base.angleProperty.value = Math.PI;
       baseNode.setScaleMagnitude( BaseNode.fullSize );
       baseNode.translate( 140 * i - 43, 43 );
       children.push( baseNode );

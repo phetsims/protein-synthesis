@@ -13,7 +13,9 @@ define( function( require ) {
   var inherit = require( 'PHET_CORE/inherit' );
   var PropertySet = require( 'AXON/PropertySet' );
   var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
+  var Emitter = require( 'AXON/Emitter' );
 
+  // constants
   var CENTER_INDEX = 50;
   var LENGTH = CENTER_INDEX * 2;
 
@@ -22,7 +24,7 @@ define( function( require ) {
    * @constructor
    */
   function ConnectionModel( x, y ) {
-    PropertySet.call( this, { events: true } );//note to self, this just has events.  Maybe one day it should extend events if no other properties gained
+    this.changedEmitter = new Emitter();
     this.x = x;
     this.y = y;
     this.top = [];
@@ -40,7 +42,7 @@ define( function( require ) {
   }
 
   proteinSynthesis.register( 'ConnectionModel', ConnectionModel );
-  
+
   return inherit( PropertySet, ConnectionModel, {
     get size() {
       return this.sizeTop + this.sizeBottom;
@@ -92,7 +94,7 @@ define( function( require ) {
       else {
         this.bottom[ i ] = baseNode;
       }
-      this.trigger( 'changed' );
+      this.changedEmitter.emit();
     },
     remove: function( baseNode ) {
       var removed = false;
@@ -107,7 +109,7 @@ define( function( require ) {
         }
       }
       if ( removed ) {
-        this.trigger( 'changed' );
+        this.changedEmitter.emit();
       }
     },
     contains: function( baseNode ) {
@@ -290,9 +292,9 @@ define( function( require ) {
           var b = self.bottom[ i + 1 ];
           var c = self.bottom[ i + 2 ];
           if ( (a !== null && b !== null && c !== null) && (
-            a.base.canHydrogenBond( baseNodes[ 0 ].base ) &&
-            b.base.canHydrogenBond( baseNodes[ 1 ].base ) &&
-            c.base.canHydrogenBond( baseNodes[ 2 ].base )
+               a.base.canHydrogenBond( baseNodes[ 0 ].base ) &&
+               b.base.canHydrogenBond( baseNodes[ 1 ].base ) &&
+               c.base.canHydrogenBond( baseNodes[ 2 ].base )
             ) ) {
             var di = i - CENTER_INDEX;
             var x = self.x + di * 84 + proteinSynthesisScreenView.distanceMRNATranslated;

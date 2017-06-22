@@ -33,7 +33,13 @@ define( function( require ) {
       backgroundPickable: true,
       cursor: 'pointer'
     } );
-    var translationPanel = new Panel( translationText, { lineWidth: 1, stroke: 'gray', fill: null, backgroundPickable: true, cursor: 'pointer' } );
+    var translationPanel = new Panel( translationText, {
+      lineWidth: 1,
+      stroke: 'gray',
+      fill: null,
+      backgroundPickable: true,
+      cursor: 'pointer'
+    } );
 
     var updateButtonStates = function() {
       var state = stateProperty.value;
@@ -51,7 +57,7 @@ define( function( require ) {
 
     //when the user has created a 3-base strand in the coding strand, and it is contiguous, allow them to go to transcription
     //TODO: Could tooltip over the transcription button if it would be helpful
-    connectionModel.on( 'changed', function() {
+    connectionModel.changedEmitter.addListener( function() {
       updateButtonStates();
     } );
 

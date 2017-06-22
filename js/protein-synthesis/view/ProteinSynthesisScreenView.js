@@ -134,7 +134,7 @@ define( function( require ) {
       worldNode.addChild( complementaryStrandLabel );
 
       this.connectionModel = new ConnectionModel( this.dottedLine.centerX, this.dottedLine.centerY );
-      this.connectionModel.on( 'changed', function() {
+      this.connectionModel.changedEmitter.addListener( function() {
         //If something connected, stop showing the initial target
         self.dottedLine.visible = self.connectionModel.isEmpty;
       } );

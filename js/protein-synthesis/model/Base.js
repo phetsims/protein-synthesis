@@ -11,22 +11,23 @@ define( function( require ) {
   // modules
   var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
+  var Property = require( 'AXON/Property' );
 
   /**
    * Main constructor for Base
    * @constructor
    */
   function Base( shape, abbreviation, backboneType ) {
-    PropertySet.call( this, { angle: 0 } );
+    this.angleProperty = new Property( 0 );
+    Property.preventGetSet( this, 'angle' );
     this.shape = shape;
     this.abbreviation = abbreviation;
     this.backboneType = backboneType;
   }
 
   proteinSynthesis.register( 'Base', Base );
-  
-  return inherit( PropertySet, Base, {
+
+  return inherit( Object, Base, {
 
     //For making tRNA in the codon table, show the pairing partners
     get partnerAbbreviation() {

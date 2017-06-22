@@ -18,7 +18,6 @@ define( function( require ) {
    * @constructor
    */
   function HydrogenBond( topBaseNode, bottomBaseNode ) {
-    PropertySet.call( this, {} );
     this.topBaseNode = topBaseNode;
     this.bottomBaseNode = bottomBaseNode;
   }

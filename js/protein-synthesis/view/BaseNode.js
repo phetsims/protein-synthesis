@@ -191,7 +191,7 @@ define( function( require ) {
   return inherit( Node, BaseNode, {
     setPointingUp: function( pointingUp ) {
       this.pointingUp = pointingUp;
-      this.base.angle = this.pointingUp ? 0 : Math.PI;
+      this.base.angleProperty.value = this.pointingUp ? 0 : Math.PI;
     },
     getBaseNodeScale: function() {
       var scaleMag = this.getScaleVector();
