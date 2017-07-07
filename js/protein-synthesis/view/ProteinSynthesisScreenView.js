@@ -257,7 +257,7 @@ define( function( require ) {
         }
       } );
 
-      var labelsCheckBox = new CheckBox( new Text( 'Labels', new PhetFont( 17 ) ), this.viewProperties.labelsVisibleProperty, {
+      var labelsCheckBox = new CheckBox( new Text( 'Labels', { font: new PhetFont( 17 ) } ), this.viewProperties.labelsVisibleProperty, {
         left: this.layoutBounds.left + 5,
         centerY: sceneSelectionPanel.centerY
       } );
