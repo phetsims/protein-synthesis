@@ -9,11 +9,11 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
+  var Quadratic = require( 'KITE/segments/Quadratic' );
   var Shape = require( 'KITE/Shape' );
   var Vector2 = require( 'DOT/Vector2' );
-  var Quadratic = require( 'KITE/segments/Quadratic' );
 
   var neckWidth = 8 + 8;
   var topConnectorHeight = 50;

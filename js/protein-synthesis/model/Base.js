@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var inherit = require( 'PHET_CORE/inherit' );
   var Property = require( 'AXON/Property' );
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
 
   /**
    * Main constructor for Base

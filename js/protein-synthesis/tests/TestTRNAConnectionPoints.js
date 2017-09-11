@@ -9,9 +9,9 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
-  var inherit = require( 'PHET_CORE/inherit' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
+  var inherit = require( 'PHET_CORE/inherit' );
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
 
   /**
    *

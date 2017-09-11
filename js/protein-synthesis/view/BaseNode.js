@@ -9,15 +9,15 @@ define( function( require ) {
   'use strict';
 
   // modules
-  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
-  var inherit = require( 'PHET_CORE/inherit' );
-  var Text = require( 'SCENERY/nodes/Text' );
-  var Path = require( 'SCENERY/nodes/Path' );
-  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
   var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
-  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
+  var inherit = require( 'PHET_CORE/inherit' );
   var Node = require( 'SCENERY/nodes/Node' );
+  var Path = require( 'SCENERY/nodes/Path' );
+  var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
+  var SimpleDragHandler = require( 'SCENERY/input/SimpleDragHandler' );
+  var Text = require( 'SCENERY/nodes/Text' );
 
   var Y_THRESHOLD_FOR_UPSIDE_UP = 220;
   var fullSize = 0.6;
