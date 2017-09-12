@@ -19,7 +19,6 @@ define( function( require ) {
    */
   function Base( shape, abbreviation, backboneType ) {
     this.angleProperty = new Property( 0 );
-    Property.preventGetSet( this, 'angle' );
     this.shape = shape;
     this.abbreviation = abbreviation;
     this.backboneType = backboneType;
