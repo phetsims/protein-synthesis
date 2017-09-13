@@ -24,6 +24,7 @@ define( function( require ) {
   var Node = require( 'SCENERY/nodes/Node' );
   var Panel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
+  var Property = require( 'AXON/Property' );
   var PropertySet = require( 'AXON/PropertySet' );
   var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var ProteinSynthesisQueryParameters = require( 'PROTEIN_SYNTHESIS/protein-synthesis/ProteinSynthesisQueryParameters' );
@@ -52,8 +53,8 @@ define( function( require ) {
     this.model = model;
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 834, 504 ) } );
 
+    this.baseLabelsVisibleProperty = new Property( true );
     this.viewProperties = new PropertySet( {
-      baseLabelsVisible: true,
       labelsVisible: false,
       state: 'dna',//[dna,transcription/translation]
       location: 'nucleus', // [nucleus/cytoplasm]
@@ -140,7 +141,7 @@ define( function( require ) {
       } );
 
       var toBaseNode = function( base ) {
-        return new BaseNode( base, self, self.viewProperties.baseLabelsVisibleProperty, self.viewProperties.labelsVisibleProperty, true, false );
+        return new BaseNode( base, self, self.baseLabelsVisibleProperty, self.viewProperties.labelsVisibleProperty, true, false );
       };
       var createBaseNodeStack = function( index, constructor ) {
         var children = [];
@@ -339,7 +340,7 @@ define( function( require ) {
 
           //Create the RNACodonTable lazily so it will have the right highlighting
           var rnaCodonTable = new RNACodonTable( self, translationScaleFactor, {} );
-          var title = new Text( 'RNA codon table', new PhetFont( 24 ) );
+          var title = new Text( 'RNA codon table', { font: new PhetFont( 24 ) } );
           self.codonTableAccordionBox = new Panel( new VBox( {
             spacing: 10,
             children: [ rnaCodonTable, title ]
@@ -450,7 +451,7 @@ define( function( require ) {
     //Convenience constructor since several ProteinSynthesisScreenView properties are used
     //@param {string} string - the mRNA codon triplet
     createTRNANode: function( tRNATriplet, mRNATriplet ) {
-      return new TRNANode( tRNATriplet, mRNATriplet, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty );
+      return new TRNANode( tRNATriplet, mRNATriplet, this, this.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty );
     },
 
     //Convenience method for creating AUGC
@@ -461,7 +462,7 @@ define( function( require ) {
                  abbreviation === 'C' ? new Cytosine( 'ribose' ) :
                  null;
       assert && assert( base !== null );
-      return new BaseNode( base, this, this.viewProperties.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty, true, false );
+      return new BaseNode( base, this, this.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty, true, false );
     },
 
     //After the tRNAs have been translated out of the ribosome, detach any that can be detached
