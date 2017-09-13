@@ -10,7 +10,6 @@ define( function( require ) {
 
   // modules
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
 
   /**
@@ -23,8 +22,8 @@ define( function( require ) {
   }
 
   proteinSynthesis.register( 'HydrogenBond', HydrogenBond );
-  
-  return inherit( PropertySet, HydrogenBond, {
+
+  return inherit( Object, HydrogenBond, {
 
     contains: function( baseNode ) {
       return this.topBaseNode === baseNode || this.bottomBaseNode === baseNode;

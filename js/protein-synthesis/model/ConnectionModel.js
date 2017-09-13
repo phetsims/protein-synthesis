@@ -12,7 +12,6 @@ define( function( require ) {
   var ConnectionPoint = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/ConnectionPoint' );
   var Emitter = require( 'AXON/Emitter' );
   var inherit = require( 'PHET_CORE/inherit' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
 
   // constants
@@ -43,7 +42,7 @@ define( function( require ) {
 
   proteinSynthesis.register( 'ConnectionModel', ConnectionModel );
 
-  return inherit( PropertySet, ConnectionModel, {
+  return inherit( Object, ConnectionModel, {
     get size() {
       return this.sizeTop + this.sizeBottom;
     },
