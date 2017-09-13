@@ -55,8 +55,8 @@ define( function( require ) {
 
     this.baseLabelsVisibleProperty = new Property( true );
     this.labelsVisibleProperty = new Property( false );
+    this.stateProperty = new Property( 'dna' );//[dna,transcription/translation]
     this.viewProperties = new PropertySet( {
-      state: 'dna',//[dna,transcription/translation]
       location: 'nucleus', // [nucleus/cytoplasm]
       numAminoAcids: 0
     } );
@@ -129,7 +129,7 @@ define( function( require ) {
         left: this.dottedLine.left,
         bottom: this.dottedLine.bottom + 150
       } );
-      Property.multilink( [ this.labelsVisibleProperty, this.viewProperties.stateProperty ], function( labelsVisible, state ) {
+      Property.multilink( [ this.labelsVisibleProperty, this.stateProperty ], function( labelsVisible, state ) {
         complementaryStrandLabel.visible = labelsVisible && state === 'dna';
       } );
       worldNode.addChild( complementaryStrandLabel );
@@ -155,7 +155,7 @@ define( function( require ) {
         return children;
       };
 
-      var sceneSelectionPanel = new SceneSelectionPanel( this.connectionModel, this.viewProperties.stateProperty, {
+      var sceneSelectionPanel = new SceneSelectionPanel( this.connectionModel, this.stateProperty, {
         centerX: this.layoutBounds.centerX,
         bottom: this.layoutBounds.bottom - 4
       } );
@@ -216,7 +216,7 @@ define( function( require ) {
         }
       }
 
-      this.viewProperties.stateProperty.link( function( state ) {
+      this.stateProperty.link( function( state ) {
         dnaToolbox.visible = state === 'dna';
         mRNAToolbox.visible = state === 'transcription' || state === 'translation';
 
@@ -268,7 +268,7 @@ define( function( require ) {
       ribosomeNode.centerX = 2725;
       worldNode.addChild( ribosomeNode );
 
-      this.viewProperties.stateProperty.link( function( state, oldState ) {
+      this.stateProperty.link( function( state, oldState ) {
         if ( state === 'translation' && oldState === 'transcription' ) {
 
           new TWEEN.Tween( { progress: 0, x: 0 } )
@@ -302,7 +302,7 @@ define( function( require ) {
       } );
 
       var nonCodingStrand = [];
-      this.viewProperties.stateProperty.link( function( state, oldState ) {
+      this.stateProperty.link( function( state, oldState ) {
         if ( oldState === 'dna' && state === 'transcription' ) {
           nonCodingStrand.length = 0;
 
@@ -397,7 +397,7 @@ define( function( require ) {
 
       //Start in the cytoplasm, for debugging
       if ( ProteinSynthesisQueryParameters.translation ) {
-        this.viewProperties.state = 'translation';
+        this.stateProperty.value = 'translation';
         this.viewProperties.location = 'cytoplasm';
       }
 
