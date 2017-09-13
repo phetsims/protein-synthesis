@@ -54,8 +54,8 @@ define( function( require ) {
     ScreenView.call( this, { layoutBounds: new Bounds2( 0, 0, 834, 504 ) } );
 
     this.baseLabelsVisibleProperty = new Property( true );
+    this.labelsVisibleProperty = new Property( false );
     this.viewProperties = new PropertySet( {
-      labelsVisible: false,
       state: 'dna',//[dna,transcription/translation]
       location: 'nucleus', // [nucleus/cytoplasm]
       numAminoAcids: 0
@@ -120,7 +120,7 @@ define( function( require ) {
         left: this.dottedLine.left,
         bottom: this.dottedLine.top - 10
       } );
-      this.viewProperties.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
+      this.labelsVisibleProperty.linkAttribute( codingStrandLabel, 'visible' );
       worldNode.addChild( codingStrandLabel );
 
       //Label the complementary strand, only visible in the "dna" mode
@@ -129,7 +129,7 @@ define( function( require ) {
         left: this.dottedLine.left,
         bottom: this.dottedLine.bottom + 150
       } );
-      this.viewProperties.multilink( [ 'labelsVisible', 'state' ], function( labelsVisible, state ) {
+      Property.multilink( [ this.labelsVisibleProperty, this.viewProperties.stateProperty ], function( labelsVisible, state ) {
         complementaryStrandLabel.visible = labelsVisible && state === 'dna';
       } );
       worldNode.addChild( complementaryStrandLabel );
@@ -141,7 +141,7 @@ define( function( require ) {
       } );
 
       var toBaseNode = function( base ) {
-        return new BaseNode( base, self, self.baseLabelsVisibleProperty, self.viewProperties.labelsVisibleProperty, true, false );
+        return new BaseNode( base, self, self.baseLabelsVisibleProperty, self.labelsVisibleProperty, true, false );
       };
       var createBaseNodeStack = function( index, constructor ) {
         var children = [];
@@ -258,13 +258,13 @@ define( function( require ) {
         }
       } );
 
-      var labelsCheckBox = new CheckBox( new Text( 'Labels', { font: new PhetFont( 17 ) } ), this.viewProperties.labelsVisibleProperty, {
+      var labelsCheckBox = new CheckBox( new Text( 'Labels', { font: new PhetFont( 17 ) } ), this.labelsVisibleProperty, {
         left: this.layoutBounds.left + 5,
         centerY: sceneSelectionPanel.centerY
       } );
       this.addChild( labelsCheckBox );
 
-      var ribosomeNode = new RibosomeNode( this.viewProperties.labelsVisibleProperty );
+      var ribosomeNode = new RibosomeNode( this.labelsVisibleProperty );
       ribosomeNode.centerX = 2725;
       worldNode.addChild( ribosomeNode );
 
@@ -383,7 +383,7 @@ define( function( require ) {
         top: 10,
         right: this.layoutBounds.right - 10
       } );
-      this.viewProperties.labelsVisibleProperty.linkAttribute( nucleusLabel, 'visible' );
+      this.labelsVisibleProperty.linkAttribute( nucleusLabel, 'visible' );
       worldNode.addChild( nucleusLabel );
 
       // Add the nucleus label
@@ -392,7 +392,7 @@ define( function( require ) {
         top: 10,
         left: 2014.974609375
       } );
-      this.viewProperties.labelsVisibleProperty.linkAttribute( cytoplasmLabel, 'visible' );
+      this.labelsVisibleProperty.linkAttribute( cytoplasmLabel, 'visible' );
       worldNode.addChild( cytoplasmLabel );
 
       //Start in the cytoplasm, for debugging
@@ -436,7 +436,7 @@ define( function( require ) {
       if ( ProteinSynthesisQueryParameters.aminoAcids ) {
         var table = RNACodonTable.table;
         var children = _.keys( table ).map( function( element ) {
-          return new AminoAcidNode( table[ element ], self.viewProperties.labelsVisibleProperty ).mutate( { scale: 0.25 } );
+          return new AminoAcidNode( table[ element ], self.labelsVisibleProperty ).mutate( { scale: 0.25 } );
         } );
         var hbox = new HBox( { children: children, top: 100, align: 'bottom' } );
         this.addChild( hbox );
@@ -451,7 +451,7 @@ define( function( require ) {
     //Convenience constructor since several ProteinSynthesisScreenView properties are used
     //@param {string} string - the mRNA codon triplet
     createTRNANode: function( tRNATriplet, mRNATriplet ) {
-      return new TRNANode( tRNATriplet, mRNATriplet, this, this.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty );
+      return new TRNANode( tRNATriplet, mRNATriplet, this, this.baseLabelsVisibleProperty, this.labelsVisibleProperty );
     },
 
     //Convenience method for creating AUGC
@@ -462,7 +462,7 @@ define( function( require ) {
                  abbreviation === 'C' ? new Cytosine( 'ribose' ) :
                  null;
       assert && assert( base !== null );
-      return new BaseNode( base, this, this.baseLabelsVisibleProperty, this.viewProperties.labelsVisibleProperty, true, false );
+      return new BaseNode( base, this, this.baseLabelsVisibleProperty, this.labelsVisibleProperty, true, false );
     },
 
     //After the tRNAs have been translated out of the ribosome, detach any that can be detached
