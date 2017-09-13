@@ -25,7 +25,6 @@ define( function( require ) {
   var Panel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/Panel' );
   var PhetFont = require( 'SCENERY_PHET/PhetFont' );
   var Property = require( 'AXON/Property' );
-  var PropertySet = require( 'AXON/PropertySet' );
   var proteinSynthesis = require( 'PROTEIN_SYNTHESIS/proteinSynthesis' );
   var ProteinSynthesisQueryParameters = require( 'PROTEIN_SYNTHESIS/protein-synthesis/ProteinSynthesisQueryParameters' );
   var Rectangle = require( 'SCENERY/nodes/Rectangle' );
