@@ -125,7 +125,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, self );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.minBy( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
+        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.numAminoAcidsProperty.value * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
         if ( distance < 30 ) {
 
@@ -153,7 +153,7 @@ define( function( require ) {
       var connectionPoints = screenView.connectionModel.getConnectionPointsForTRNA( screenView, self );
       if ( connectionPoints.length > 0 ) {
         var closestConnectionPoint = _.minBy( connectionPoints, function( connectionPoint ) {return connectionPoint.point.distance( proposedBodyCenter );} );
-        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.viewProperties.numAminoAcids * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
+        var newPoint = closestConnectionPoint.point.plusXY( 85 - screenView.numAminoAcidsProperty.value * BaseShape.BODY_WIDTH * 3 * BaseNode.fullSize, 60 );
         var distance = newPoint.distance( proposedBodyCenter );
         console.log( 'distance', distance );
         if ( distance < 30 ) {

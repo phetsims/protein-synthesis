@@ -55,11 +55,9 @@ define( function( require ) {
 
     this.baseLabelsVisibleProperty = new Property( true );
     this.labelsVisibleProperty = new Property( false );
-    this.stateProperty = new Property( 'dna' );//[dna,transcription/translation]
-    this.viewProperties = new PropertySet( {
-      location: 'nucleus', // [nucleus/cytoplasm]
-      numAminoAcids: 0
-    } );
+    this.stateProperty = new Property( 'dna' ); // [dna,transcription/translation]
+    this.locationProperty = new Property( 'nucleus' ); // [nucleus/cytoplasm]
+    this.numAminoAcidsProperty = new Property( 0 );
 
     //TODO: Rewrite resetAll using the normal conventions.
     this.initChildren();
@@ -96,7 +94,13 @@ define( function( require ) {
         bottom: this.layoutBounds.maxY - 5,
         listener: function() {
           self.model.reset();
-          self.viewProperties.reset();
+
+          self.baseLabelsVisibleProperty.reset();
+          self.labelsVisibleProperty.reset();
+          self.stateProperty.reset();
+          self.locationProperty.reset();
+          self.numAminoAcidsProperty.reset();
+
           self.removeAllChildren();
           self.initChildren();
         }
@@ -369,11 +373,11 @@ define( function( require ) {
               .start( phet.joist.elapsedTime );
           } );
 
-          self.viewProperties.location = 'cytoplasm';
+          self.locationProperty.value = 'cytoplasm';
           self.codonTableAccordionBox.moveToFront();//move in front of mRNA strands.
         }
         else if ( oldState === 'translation' && state === 'dna' ) {
-          self.viewProperties.location = 'nucleus';
+          self.locationProperty.value = 'nucleus';
         }
       } );
 
@@ -398,7 +402,7 @@ define( function( require ) {
       //Start in the cytoplasm, for debugging
       if ( ProteinSynthesisQueryParameters.translation ) {
         this.stateProperty.value = 'translation';
-        this.viewProperties.location = 'cytoplasm';
+        this.locationProperty.value = 'cytoplasm';
       }
 
       //Create random strands
@@ -475,7 +479,7 @@ define( function( require ) {
       for ( var i = 0; i < this.attachedTRNANodes.length; i++ ) {
         var trnaNode = this.attachedTRNANodes[ i ];
 
-        var aaConnectedToTheRight = i < this.viewProperties.numAminoAcids - 1;
+        var aaConnectedToTheRight = i < this.numAminoAcidsProperty.value - 1;
         var lastCodon = i === numCompleteCodons - 1;
 
         if ( aaConnectedToTheRight || lastCodon ) {
@@ -509,7 +513,7 @@ define( function( require ) {
           .onComplete( function() {
             numTranslated++;
             if ( numTranslated === numToTranslate ) {
-              self.viewProperties.numAminoAcids = self.viewProperties.numAminoAcids + 1;
+              self.numAminoAcidsProperty.value = self.numAminoAcidsProperty.value + 1;
               self.detachTRNAs();
             }
           } )
