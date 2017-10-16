@@ -315,7 +315,7 @@ define( function( require ) {
 
             baseNode.originalY = baseNode.y;
             //TODO: Move these baseNodes behind the control panels
-            worldNode.removeChild( baseNode );
+            worldNode.hasChild( baseNode ) && worldNode.removeChild( baseNode );
             worldNode.insertChild( worldNode.indexOfChild( nucleusShape ) + 1, baseNode );
 
             self.connectionModel.remove( baseNode );
