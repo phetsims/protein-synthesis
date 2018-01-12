@@ -14,7 +14,7 @@ define( function( require ) {
   var BaseNode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/BaseNode' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var Bounds2 = require( 'DOT/Bounds2' );
-  var CheckBox = require( 'SUN/CheckBox' );
+  var Checkbox = require( 'SUN/Checkbox' );
   var Circle = require( 'SCENERY/nodes/Circle' );
   var ConnectionModel = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/ConnectionModel' );
   var Cytosine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Cytosine' );
@@ -261,11 +261,11 @@ define( function( require ) {
         }
       } );
 
-      var labelsCheckBox = new CheckBox( new Text( 'Labels', { font: new PhetFont( 17 ) } ), this.labelsVisibleProperty, {
+      var labelsCheckbox = new Checkbox( new Text( 'Labels', { font: new PhetFont( 17 ) } ), this.labelsVisibleProperty, {
         left: this.layoutBounds.left + 5,
         centerY: sceneSelectionPanel.centerY
       } );
-      this.addChild( labelsCheckBox );
+      this.addChild( labelsCheckbox );
 
       var ribosomeNode = new RibosomeNode( this.labelsVisibleProperty );
       ribosomeNode.centerX = 2725;
