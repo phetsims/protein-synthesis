@@ -417,7 +417,7 @@ define( function( require ) {
             var baseNode = toBaseNode( stack[ k % stack.length ]() );
             baseNode.setScaleMagnitude( 0.6 );
             var cp = self.connectionModel.getConnectionPoints( baseNode );
-            var element = Math.floor( Math.random() * cp.length );
+            var element = Math.floor( phet.joist.random.nextDouble() * cp.length );
             baseNode.setPointingUp( cp[ element ].up );
             baseNode.setBodyCenter( cp[ element ].point );
             cp[ element ].connect();
