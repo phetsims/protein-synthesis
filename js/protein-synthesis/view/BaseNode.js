@@ -9,6 +9,7 @@ define( function( require ) {
   'use strict';
 
   // modules
+  var Animation = require( 'TWIXT/Animation' );
   var Base = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Base' );
   var BaseShape = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/BaseShape' );
   var inherit = require( 'PHET_CORE/inherit' );
@@ -117,18 +118,30 @@ define( function( require ) {
           }
           if ( !updatedLocation ) {
 
-            var initScale = self.getScaleVector().x;
-            new TWEEN.Tween( { x: self.x, y: self.y, scale: initScale } )
-              .to( { x: self.initialX, y: self.initialY, scale: 0.4 }, 700 )
-              .easing( TWEEN.Easing.Cubic.InOut )
-              .onUpdate( function() {
-                if ( this.y > Y_THRESHOLD_FOR_UPSIDE_UP ) {
+            var animation = new Animation( {
+              duration: 0.7,
+              targets: [ {
+                object: self,
+                attribute: 'x',
+                to: self.initialX
+              }, {
+                object: self,
+                attribute: 'y',
+                to: self.initialY
+              }, {
+                object: self,
+                attribute: 'scaleMag',
+                to: 0.4
+              } ]
+            } );
+            animation.updateEmitter.addListener(
+              function() {
+                if ( self.y > Y_THRESHOLD_FOR_UPSIDE_UP ) {
                   self.setPointingUp( true );
                 }
-                self.setScaleMagnitude( this.scale );
-                self.setTranslation( this.x, this.y );
-              } )
-              .start( phet.joist.elapsedTime );
+              }
+            );
+            animation.start();
           }
         }
       } ) );
@@ -189,6 +202,16 @@ define( function( require ) {
   proteinSynthesis.register( 'BaseNode', BaseNode );
 
   return inherit( Node, BaseNode, {
+
+    // Support for animation
+    set scaleMag( a ) {
+      this.setScaleMagnitude( a );
+    },
+
+    // Support for animation
+    get scaleMag() {
+      return this.getScaleVector().x;
+    },
     setPointingUp: function( pointingUp ) {
       this.pointingUp = pointingUp;
       this.base.angleProperty.value = this.pointingUp ? 0 : Math.PI;
