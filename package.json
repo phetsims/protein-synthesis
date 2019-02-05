@@ -17,7 +17,8 @@
     "phetLibs": [
       "twixt"
     ],
-    "runnable": false,
+    "runnable": true,
+    "automatedTestEnabled": false,
     "supportedBrands": [
       "phet",
       "adapted-from-phet"
