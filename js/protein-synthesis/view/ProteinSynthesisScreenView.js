@@ -38,7 +38,7 @@ define( function( require ) {
   var Thymine = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Thymine' );
   var TRNANode = require( 'PROTEIN_SYNTHESIS/protein-synthesis/view/TRNANode' );
   var Uracil = require( 'PROTEIN_SYNTHESIS/protein-synthesis/model/Uracil' );
-  var Util = require( 'DOT/Util' );
+  var Utils = require( 'DOT/Utils' );
   var VBox = require( 'SCENERY/nodes/VBox' );
 
   //constants
@@ -279,7 +279,7 @@ define( function( require ) {
             .easing( TWEEN.Easing.Cubic.InOut )
             .onUpdate( function() {
               self.worldNode.x = this.x;
-              var scale = Util.linear( 0, 1, 1, translationScaleFactor, this.progress );
+              var scale = Utils.linear( 0, 1, 1, translationScaleFactor, this.progress );
               worldNode.x = -this.progress * 2000 * scale;
               //bring any mRNA out of the nucleus to the cytoplasm.
               worldNode.setScaleMagnitude( scale );
