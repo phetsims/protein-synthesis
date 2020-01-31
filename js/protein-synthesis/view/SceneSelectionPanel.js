@@ -1,6 +1,6 @@
 // Copyright 2014-2017, University of Colorado Boulder
 
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules

@@ -3,7 +3,7 @@
 /**
  * Query parameters supported by this simulation.
  */
-define( function( require ) {
+define( require => {
   'use strict';
 
   // modules
